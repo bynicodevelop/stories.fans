@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -e
+
+HOSTNAME=`hostname`
+APP_IP=`/sbin/ifconfig eth0| grep 'inet addr:' | awk {'print $2'}| cut -d ':' -f 2`
+DIR="/var/www/html"
+
+echo "ServerName $APP_IP"
+
+rm -f /var/run/apache2/apache2.pid
+
+exec apache2 -DFOREGROUND

@@ -1,0 +1,31 @@
+services:
+  database:
+    image: postgres
+    networks:
+      - backend
+    container_name: postgress_nicodevelop
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: nicodevelop
+      POSTGRES_USER: nicodevelop
+      POSTGRES_DB: nicodevelop
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  php-apache:
+    container_name: website_nicodevelop
+    build:
+      context: .
+    networks:
+      - backend
+    ports:
+      - "8080:80"
+    volumes:
+      - ./www:/var/www/html
+    depends_on:
+      - database
+
+networks:
+  backend:
