@@ -54,10 +54,10 @@ RUN chown -R www-data /var/www/html/public
 RUN chown -R www-data /var/www/html/storage
 RUN chmod -R 755 /var/www/html/storage
 
-RUN npm i
-RUN npm run prod
+# RUN npm i
+# RUN npm run prod
 
-RUN composer install
+# RUN composer install
 RUN php artisan key:generate
 
 EXPOSE 80

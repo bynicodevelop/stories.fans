@@ -1,0 +1,79 @@
+name: Stories app Deployment
+
+on:
+  push:
+    branches: [ main, develop ]
+  # release:
+  #   types: [published]
+
+jobs: 
+  build: 
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: eu.gcr.io/${{ secrets.GCP_SERVICE }}/${{ secrets.GCP_APPLICATION }}
+
+    steps: 
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Create .env file
+        id: env_file
+        uses: timheuer/base64-to-file@v1
+        with:
+          fileName: ".env"
+          encodedString: ${{ secrets.ENV }}
+
+      - name: Move .env into project
+        run: mv ${{ steps.env_file.outputs.filePath }} ./www
+
+      - name: Deploy to Cloud Run (Setup)
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          project_id: ${{ secrets.GCP_SERVICE }}
+          service_account_email: ${{ secrets.GCP_EMAIL }}
+          service_account_key: ${{ secrets.GCP_CREDENTIALS }}
+          export_default_credentials: true
+
+      - name: Configure Docker
+        run: gcloud auth configure-docker --quiet
+        
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0.8'
+
+      - name: Install dependencies
+        working-directory: ./www
+        run: | 
+          composer install --prefer-dist
+
+      - name: Install Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Install dependencies (Node)
+        working-directory: ./www
+        run: |
+          npm i
+          npm run prod
+
+      - name: Build docker
+        run: docker build . -t $IMAGE_NAME
+
+      - name: Push Docker image
+        run: docker push $IMAGE_NAME
+          
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          port: ${{ secrets.SSH_POST }}
+          key: ${{ secrets.SSH_KEY }} | base64
+          username: ${{ secrets.SSH_USERNAME }}
+          script: |
+            docker pull eu.gcr.io/${{ secrets.GCP_SERVICE }}/${{ secrets.GCP_APPLICATION }}:latest
+            docker stop
+            docker rm -f /website_nicodevelop
+            docker run -d --name=website_nicodevelop --network=backend -p 80:80 eu.gcr.io/${{ secrets.GCP_SERVICE }}/${{ secrets.GCP_APPLICATION }}
+            docker exec -t website_nicodevelop php artisan migrate
