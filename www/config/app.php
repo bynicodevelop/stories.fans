@@ -176,6 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
+        Artesaos\SEOTools\Providers\SEOToolsServiceProvider::class,
 
     ],
 
@@ -233,6 +234,7 @@ return [
         'Price' => App\Helpers\PriceHelper::class,
         'Premium' => App\Helpers\PremiumHelper::class,
         'FormatNumber' => App\Helpers\FormatNumberHelper::class,
+        'SEO' => Artesaos\SEOTools\Facades\SEOTools::class,
     ],
 
 ];
