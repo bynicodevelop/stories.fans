@@ -119,7 +119,7 @@
                                 </div>
 
                                 <x-jet-dropdown-link href="{{ route('invitation.index') }}">
-                                    {{ __('navigation.invation') }}
+                                    {{ __('navigation.invitation') }}
                                 </x-jet-dropdown-link>
 
                                 <x-jet-dropdown-link href="{{ route('profile.show') }}">
@@ -151,7 +151,7 @@
                                     @csrf
 
                                     <x-jet-dropdown-link href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                                this.closest('form').submit();">
+                                                                        this.closest('form').submit();">
                                         {{ __('navigation.logout') }}
                                     </x-jet-dropdown-link>
                                 </form>
