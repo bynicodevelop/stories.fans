@@ -17,3 +17,5 @@ docker-compose.override.yml
 /.secrets
 /stories-fans-353d6aa78c63.json
 /www/.env.prod
+/www/supervisord.log
+/www/supervisord.pid
