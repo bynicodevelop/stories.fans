@@ -19,3 +19,4 @@ docker-compose.override.yml
 /www/.env.prod
 /www/supervisord.log
 /www/supervisord.pid
+/www/public/js/app.js.LICENSE.txt

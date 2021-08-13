@@ -2,10 +2,13 @@
 
 namespace App\Actions\Fortify;
 
+use App\Mail\WelcomeMail;
 use App\Models\InvitationStat;
 use App\Models\User;
+use App\Notifications\WelcomeEmail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Jetstream\Jetstream;
@@ -58,6 +61,9 @@ class CreateNewUser implements CreatesNewUsers
                 'user_id' => $user['id']
             ]);
         }
+
+        Mail::to($user)
+            ->queue((new WelcomeMail($user))->onQueue('email'));
 
         return $user;
     }

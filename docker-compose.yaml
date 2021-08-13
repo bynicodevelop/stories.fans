@@ -1,4 +1,12 @@
 services:
+  redis:
+    image: redis
+    container_name: redis_nicodevelop
+    networks:
+      - backend
+    ports:
+      - 6379:6379
+
   database:
     image: postgres
     networks:
@@ -26,6 +34,7 @@ services:
       - ./www:/var/www/html
     depends_on:
       - database
+      - redis
 
 networks:
   backend:

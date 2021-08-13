@@ -178,6 +178,7 @@ return [
         App\Providers\JetstreamServiceProvider::class,
         Artesaos\SEOTools\Providers\SEOToolsServiceProvider::class,
 
+
     ],
 
     /*

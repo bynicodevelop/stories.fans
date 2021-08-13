@@ -56,3 +56,5 @@ Route::get('/register/{slug}', [RegisteredUserController::class, 'create'])
 Route::post('/register', [RegisteredUserController::class, 'store'])
     ->middleware(['guest:' . config('fortify.guard')])
     ->name('register-post');
+
+Route::get('/email', [IndexController::class, 'email']);

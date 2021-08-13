@@ -18,6 +18,9 @@ RUN apt update \
     pdo_pgsql \
     pgsql
 
+RUN pecl install redis \
+    && docker-php-ext-enable redis
+
 RUN curl -fsSL https://deb.nodesource.com/setup_current.x | bash -
 
 RUN apt update \
