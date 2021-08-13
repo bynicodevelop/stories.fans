@@ -10,4 +10,5 @@ return [
     'manage-account' => 'Gestion de compte',
     'card' => 'Moyens de paiements',
     'subscriptions' => 'Mes souscriptions',
+    'invitation' => 'Invitation',
 ];

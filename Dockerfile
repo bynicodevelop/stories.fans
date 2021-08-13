@@ -50,9 +50,12 @@ COPY www /var/www/html
 
 WORKDIR /var/www/html
 
+RUN chown -R www-data /var/www/html/bootstrap/cache/
 RUN chown -R www-data /var/www/html/public
 RUN chown -R www-data /var/www/html/storage
 RUN chmod -R 755 /var/www/html/storage
+
+RUN php artisan storage:link
 
 # RUN npm i
 # RUN npm run prod
