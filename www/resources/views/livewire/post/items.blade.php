@@ -1,7 +1,11 @@
 <div class="space-y-6">
     @if (count($posts) == 0)
         <div class="bg-white rounded p-6 text-center">
-            <p>{!! __('post.items-not-found', ['route' => route('home')]) !!}</p>
+            @if ($user['id'] == Auth::id())
+                <p>{!! __('post.items-not-found-auth', ['route' => route('home')]) !!}</p>
+            @else
+                <p>{!! __('post.items-not-found') !!}</p>
+            @endif
         </div>
     @else
         @foreach ($posts as $post)
