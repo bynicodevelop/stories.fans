@@ -73,7 +73,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           script: |
             docker pull eu.gcr.io/${{ secrets.GCP_SERVICE }}/${{ secrets.GCP_APPLICATION }}:latest
-            docker stop
+            docker stop website_nicodevelop
             docker rm -f /website_nicodevelop
             docker run -d --name=website_nicodevelop --network=backend -p 80:80 -v /var/www/storage:/var/www/html/storage eu.gcr.io/${{ secrets.GCP_SERVICE }}/${{ secrets.GCP_APPLICATION }}
             docker exec -t website_nicodevelop php artisan migrate
