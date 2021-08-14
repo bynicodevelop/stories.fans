@@ -2,6 +2,7 @@
 
 namespace App\Actions\Fortify;
 
+use App\Jobs\CreateInvitedHash;
 use App\Mail\WelcomeMail;
 use App\Models\InvitationStat;
 use App\Models\User;
@@ -61,6 +62,8 @@ class CreateNewUser implements CreatesNewUsers
                 'user_id' => $user['id']
             ]);
         }
+
+        CreateInvitedHash::dispatch($user);
 
         Mail::to($user)
             ->queue((new WelcomeMail($user))->onQueue('email'));

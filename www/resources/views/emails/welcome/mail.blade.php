@@ -1,5 +1,5 @@
 @component('mail::message')
-{{ __('welcome-mail.hello', [ 'name' => $name ]) }},
+{{ __('welcome-mail.hello', [ 'name' => Str::ucfirst($name) ]) }},
 
 {{ __('welcome-mail.welcome-intro', ['sitename' => config('app.name')]) }}
 

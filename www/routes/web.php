@@ -41,7 +41,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('/card', [CardController::class, 'index'])->name('card');
 
-    Route::get('/invitation', [InvitationController::class, 'index'])->name('invitation.index');
+    Route::get('/invitation', [InvitationController::class, 'index'])->name('invitation.index')->middleware(['invitedhash']);
 });
 
 Route::get('/i/{linkId}', [InvitationController::class, 'redirect'])->name('invitation.redirect');
