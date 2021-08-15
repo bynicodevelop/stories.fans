@@ -51,6 +51,13 @@ COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 COPY www /var/www/html
 
+RUN mkdir -p /var/www/html/storage/app/public \
+    /var/www/html/storage/uploads \
+    /var/www/html/storage/framework/cache \
+    /var/www/html/storage/framework/sessions \
+    /var/www/html/storage/framework/views \
+    /var/www/html/storage/logs
+
 WORKDIR /var/www/html
 
 RUN chown -R www-data /var/www/html/bootstrap/cache/
