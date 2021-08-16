@@ -26,10 +26,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if (app()->environment('production')) {
-            URL::forceScheme('https');
-        };
-
         Cashier::calculateTaxes();
 
         Blade::directive('price', function ($expression) {
