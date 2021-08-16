@@ -22,11 +22,6 @@
 
     @stack('styles')
 
-    <script type="application/javascript">
-        window.livewire_app_url = "{{ config('app.url') }}";
-        console.log(window.livewire_app_url);
-    </script>
-
     <!-- Scripts -->
     <script src="{{ mix('js/app.js') }}" defer></script>
 
