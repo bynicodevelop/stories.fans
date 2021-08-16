@@ -77,4 +77,4 @@ jobs:
             docker rm /website_nicodevelop
             docker run -d --rm --name=website_nicodevelop --network=backend -p 80:80 -v /var/www/storage:/var/www/html/storage eu.gcr.io/${{ secrets.GCP_SERVICE }}/${{ secrets.GCP_APPLICATION }}
             docker exec -t website_nicodevelop chown -R www-data /var/www/html/storage
-            docker exec -t website_nicodevelop php artisan migrate
+            docker exec -t website_nicodevelop php artisan migrate --force
