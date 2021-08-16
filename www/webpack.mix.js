@@ -19,6 +19,10 @@ mix.js("resources/js/app.js", "public/js").postCss(
 
 if (mix.inProduction()) {
     mix.version();
+
+    mix.browserSync({
+        proxy: process.env.MIX_ASSET_URL,
+    });
 }
 
 mix.disableNotifications();
