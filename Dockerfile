@@ -21,14 +21,6 @@ RUN apt update \
 RUN pecl install redis \
     && docker-php-ext-enable redis
 
-RUN curl -fsSL https://deb.nodesource.com/setup_current.x | bash -
-
-RUN apt update \
-    && apt install -y \
-    nodejs
-
-RUN npm install -g npm@7.20.5
-
 RUN rm -rf /var/www/html \
     && mkdir -p /var/lock/apache2 /var/run/apache2 /var/log/apache2 /var/www/html \
     && chown -R www-data:www-data /var/lock/apache2 /var/run/apache2 /var/log/apache2 /var/www/html
