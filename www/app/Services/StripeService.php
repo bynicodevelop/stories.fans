@@ -7,7 +7,6 @@ use App\Exceptions\InvalidPriceIdException;
 use App\Exceptions\InvalidStripeIdException;
 use App\Exceptions\InvalidStripeServiceException;
 
-
 class StripeService
 {
     private $stripe;

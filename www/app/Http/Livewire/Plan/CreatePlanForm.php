@@ -82,7 +82,7 @@ class CreatePlanForm extends Component
         ]);
 
         /**
-         * @var User $user 
+         * @var User $user
          */
         $user = Auth::user();
 

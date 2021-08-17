@@ -9,8 +9,8 @@ class Like extends Model
 {
     use HasFactory;
 
-    const USER_ID = 'user_id';
-    const POST_ID = 'post_id';
+    public const USER_ID = 'user_id';
+    public const POST_ID = 'post_id';
 
     protected $fillable = [
         self::USER_ID,

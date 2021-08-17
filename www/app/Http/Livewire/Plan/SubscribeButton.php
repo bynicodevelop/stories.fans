@@ -14,11 +14,11 @@ use Stripe\StripeClient;
 
 class SubscribeButton extends Component
 {
-    const MONTHLY = 'month';
+    public const MONTHLY = 'month';
 
-    const QUARTERLY = 'quarterly';
+    public const QUARTERLY = 'quarterly';
 
-    const ANNUALLY = 'year';
+    public const ANNUALLY = 'year';
 
     /**
      *
@@ -49,7 +49,7 @@ class SubscribeButton extends Component
         if ($this->period == self::QUARTERLY) {
             $priceId = $this->plan[Plan::PRICE_QUARTERLY_ID];
             $pricePeriod = Plan::PRICE_QUARTERLY;
-        } else if ($this->period == self::ANNUALLY) {
+        } elseif ($this->period == self::ANNUALLY) {
             $priceId = $this->plan[Plan::PRICE_ANNUALLY_ID];
             $pricePeriod = Plan::PRICE_ANNUALLY;
         }
