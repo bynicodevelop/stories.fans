@@ -44,4 +44,5 @@ jobs:
           npm run prod
 
       - name: Run tests
+        working-directory: ./www
         run: ./vendor/phpunit/phpunit/phpunit
