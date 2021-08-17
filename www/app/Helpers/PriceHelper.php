@@ -18,4 +18,9 @@ class PriceHelper
 
         return number_format((intval($price) / 100) / $delta, 2);
     }
+
+    public static function netPrice(int $price, int $fee)
+    {
+        return $price - $price * $fee / 100;
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Fee;
 use App\Models\Plan;
 use App\Models\Post;
 use App\Models\User;
@@ -17,8 +18,10 @@ class DevelopmentSeeder extends Seeder
     public function run()
     {
         $this->call([
-            StorySeeder::class
+            StoriesSeeder::class
         ]);
+
+        Fee::factory()->create();
 
         \App\Models\User::factory(50)->has(
             Post::factory()->count(10)->state(function (array $attributes, User $user) {

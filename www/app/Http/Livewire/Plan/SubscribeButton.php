@@ -2,9 +2,11 @@
 
 namespace App\Http\Livewire\Plan;
 
+use App\Exceptions\InvalidStripeIdException;
 use App\Models\Plan;
 use App\Models\User;
 use App\Models\UserSubscription;
+use App\Services\StripeService;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -30,9 +32,11 @@ class SubscribeButton extends Component
      */
     public $period;
 
-    public function subscribe(): void
+    public function subscribe()
     {
         $stripe = new StripeClient(config('services.stripe.secret'));
+
+        $stripeService = new StripeService($stripe);
 
         /**
          * @var User $user
@@ -78,18 +82,31 @@ class SubscribeButton extends Component
                 'message' => __('plan.subscribed-renew')
             ]);
         } else {
-            $subscriptionParams = [
-                'customer' => $user->stripe_id,
-                'items' => [
-                    ['price' => $priceId],
-                ],
-            ];
+            try {
+                $subscription = $stripeService->createSubscription(
+                    $user->stripe_id,
+                    $priceId,
+                    !empty($this->plan['day_trial']) ? $this->plan['day_trial'] : null
+                );
+            } catch (InvalidStripeIdException $e) {
+                session()->flash('flash.banner', __('plan.register-card-before-subscribe'));
 
-            if (!empty($this->plan['day_trial'])) {
-                $subscriptionParams['trial_period_days'] = $this->plan['day_trial'];
+                return redirect()->route('card');
             }
 
-            $subscription = $stripe->subscriptions->create($subscriptionParams);
+
+            // $subscriptionParams = [
+            //     'customer' => $user->stripe_id,
+            //     'items' => [
+            //         ['price' => $priceId],
+            //     ],
+            // ];
+
+            // if (!empty($this->plan['day_trial'])) {
+            //     $subscriptionParams['trial_period_days'] = $this->plan['day_trial'];
+            // }
+
+            // $subscription = $stripe->subscriptions->create($subscriptionParams);
 
             $date = new DateTime();
 
