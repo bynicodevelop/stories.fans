@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Mail\InvoiceMail;
+use App\Mail\NewSubscriberMail;
 use App\Models\Fee;
 use App\Models\Payment;
 use App\Models\Plan;
@@ -24,7 +25,9 @@ class StripeControllerTest extends TestCase
 
         Fee::factory()->create();
 
-        User::factory()->has(Plan::factory()->count(1))->create();
+        User::factory()->has(Plan::factory()->count(1))->create([
+            "email" => "jane@domain.tld"
+        ]);
 
         User::factory()->has(UserSubscription::factory()->count(1)->state([
             "plan_id" => Plan::first()['id'],
@@ -62,6 +65,12 @@ class StripeControllerTest extends TestCase
                 && $mail->author->id == "1"
                 && $mail->payment->id == "1"
                 && $mail->hasTo("john.doe@domain.tld");
+        });
+
+        Mail::assertQueued(function (NewSubscriberMail $mail) {
+            return $mail->user->id == "1"
+                && $mail->subscriber->id == "2"
+                && $mail->hasTo("jane@domain.tld");
         });
 
         $payment = Payment::first();

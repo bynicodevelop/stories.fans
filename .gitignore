@@ -20,4 +20,4 @@ docker-compose.override.yml
 /www/supervisord.log
 /www/supervisord.pid
 /www/public/js/app.js.LICENSE.txt
-/.php-cs-fixer.cache
+/**/.php-cs-fixer.cache

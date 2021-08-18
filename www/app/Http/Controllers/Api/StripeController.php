@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Helpers\PriceHelper;
 use App\Http\Controllers\Controller;
 use App\Mail\InvoiceMail;
+use App\Mail\NewSubscriberMail;
 use App\Models\Fee;
 use App\Models\UserSubscription;
 use Illuminate\Http\Request;
@@ -17,13 +18,13 @@ class StripeController extends Controller
     {
         $data = $request->all();
 
-        Log::debug($data);
-
         if ($data["type"] != "invoice.payment_succeeded") {
             return response()->json([
                 "status" => true
             ]);
         }
+
+        Log::debug($data);
 
         $fee = Fee::latestFee();
 
@@ -40,11 +41,16 @@ class StripeController extends Controller
             "hosted_invoice_url" => $data["data"]["object"]["hosted_invoice_url"],
         ]);
 
-        $user = $userSubscription['user'];
+        $subscriber = $userSubscription['user'];
         $author = $userSubscription['plan']['user'];
 
-        Mail::to($user)
-            ->queue((new InvoiceMail($user, $author, $payment))->onQueue('email'));
+        Mail::to($subscriber)
+            ->queue((new InvoiceMail($subscriber, $author, $payment))
+                ->onQueue('email'));
+
+        Mail::to($author)
+            ->queue((new NewSubscriberMail($author, $subscriber))
+                ->onQueue('email'));
 
         return response()->json([
             "created" => true
