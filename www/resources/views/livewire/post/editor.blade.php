@@ -21,10 +21,13 @@
                 </textarea>
             </div>
             <div class="flex justify-end">
-                <label class="inline-flex items-center mr-3">
-                    <span class="mr-1 text-base">Contenu premium</span>
-                    <input type="checkbox" class="h-5 w-5 rounded" wire:model="isPremium">
-                </label>
+                @if ($havePlan)
+                    <label class="inline-flex items-center mr-3">
+                        <span class="mr-1 text-base">Contenu premium</span>
+                        <input type="checkbox" class="h-5 w-5 rounded" wire:model="isPremium">
+                    </label>
+                @endif
+
 
                 @if ($isDisabled)
                     <x-default-submit-button disabled>

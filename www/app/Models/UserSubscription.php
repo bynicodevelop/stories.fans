@@ -29,4 +29,9 @@ class UserSubscription extends Model
     {
         return $this->belongsTo(Plan::class);
     }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
 }

@@ -68,8 +68,8 @@ class Editor extends Component
     {
         $this->isDisabled();
 
-        $plans = $this->user->plans()->where('deleted', false)->get();
+        $havePlan = $this->user->plans()->count() > 0;
 
-        return view('livewire.post.editor', compact('plans'));
+        return view('livewire.post.editor', compact('havePlan'));
     }
 }

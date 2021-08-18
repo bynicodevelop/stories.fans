@@ -1,5 +1,0 @@
-{
-    "require": {
-        "fedeisas/laravel-mail-css-inliner": "^4.0"
-    }
-}

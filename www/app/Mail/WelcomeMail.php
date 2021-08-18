@@ -10,7 +10,8 @@ use Illuminate\Queue\SerializesModels;
 
 class WelcomeMail extends Mailable implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * @var User
@@ -37,6 +38,6 @@ class WelcomeMail extends Mailable implements ShouldQueue
         return $this->markdown('emails.welcome.mail', [
             'name' => $this->user['name'],
             'slug' => $this->user['slug'],
-        ])->subject(__('welcome-mail.subjects', ['name' => ucfirst($this->user['name']), 'appname' => config('app.name')]));
+        ])->subject(__('welcome-mail.subject', ['name' => ucfirst($this->user['name']), 'appname' => config('app.name')]));
     }
 }

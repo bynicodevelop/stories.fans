@@ -23,7 +23,7 @@ class PlanFactory extends Factory
     {
         return [
             "name" => $this->faker->words(2, true),
-            "price_monthly" => $this->faker->randomDigit(),
+            "price_monthly" => 1000,
             "price_monthly_id" => 10,
         ];
     }

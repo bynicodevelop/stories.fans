@@ -56,4 +56,5 @@ return [
     "premium-button" => "Contenu exclusif",
     "day-trial-number" => ":days jours d'essai",
     "trial-period" => "Votre période d'essai se termine :date",
+    "register-card-before-subscribe" => "Vous devez avoir enregistrer une carte avant de souscrire à une offre.",
 ];

@@ -11,4 +11,5 @@ return [
     'card' => 'Moyens de paiements',
     'subscriptions' => 'Mes souscriptions',
     'invitation' => 'Invitations',
+    'payments' => 'Mes paiements',
 ];

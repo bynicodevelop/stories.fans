@@ -18,14 +18,9 @@ class SubscriptionList extends Component
 
         // DB::enableQueryLog();
 
-        // $users = $user->subscriptions()->with('plan')->where('cancelled', false)->get()->map(function ($userSubscription) {
-        $users = $user->subscriptions()->with('plan')->get()->map(function ($userSubscription) {
-            return [
-                'userSubscription' => $userSubscription,
-                'plan' => $userSubscription->plan,
-                'user' => $userSubscription->plan()->with('user')->first()->user
-            ];
-        });
+        $users = $user->subscriptions()->with(['plan' => function ($query) {
+            $query->with('user');
+        }], 'user')->get();
 
         // dd(DB::getQueryLog());
 

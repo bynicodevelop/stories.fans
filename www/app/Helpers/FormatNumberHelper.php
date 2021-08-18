@@ -6,9 +6,7 @@ class FormatNumberHelper
 {
     public static function thousandsFormat($num)
     {
-
         if ($num > 1000) {
-
             $x = round($num);
             $x_number_format = number_format($x);
             $x_array = explode(',', $x_number_format);

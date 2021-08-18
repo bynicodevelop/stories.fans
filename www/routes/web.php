@@ -4,10 +4,12 @@ use App\Http\Controllers\CardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\InvitationController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\SpyController;
 use App\Http\Controllers\SubscriptionController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\RegisteredUserController;
@@ -26,10 +28,6 @@ use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 Route::get('/', [IndexController::class, 'index']);
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    // Route::get('/dashboard', function () {
-    //     return view('dashboard');
-    // })->name('dashboard');
-
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
     Route::get('/user/profile/subscriptions', [SubscriptionController::class, 'index'])->name('subscriptions');
@@ -42,6 +40,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/card', [CardController::class, 'index'])->name('card');
 
     Route::get('/invitation', [InvitationController::class, 'index'])->name('invitation.index')->middleware(['invitedhash']);
+
+    Route::get('/payments', [PaymentController::class, 'index'])->name('payments');
 });
 
 Route::get('/i/{linkId}', [InvitationController::class, 'redirect'])->name('invitation.redirect');
@@ -58,3 +58,7 @@ Route::post('/register', [RegisteredUserController::class, 'store'])
     ->name('register-post');
 
 Route::get('/email', [IndexController::class, 'email']);
+
+if (config('app.env') != 'production') {
+    Route::get('/dev/auth/{userId}', [SpyController::class, 'auth']);
+}
