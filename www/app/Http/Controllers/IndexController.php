@@ -16,20 +16,20 @@ class IndexController extends Controller
         return view("welcome");
     }
 
-    // public function email()
-    // {
-    //     /**
-    //      * @var User $user
-    //      */
-    //     $user = Auth::user();
+    public function email()
+    {
+        /**
+         * @var User $user
+         */
+        $user = Auth::user();
 
-    //     // Mail::to($user)
-    //     //     ->queue(new WelcomeMail($user));
+        Mail::to($user)
+            ->send(new WelcomeMail($user));
 
-    //     // return response()->json([
-    //     //     'name' => 'Cool',
-    //     // ]);
+        return response()->json([
+            'name' => 'Cool',
+        ]);
 
-    //     return new WelcomeMail($user);
-    // }
+        // return new WelcomeMail($user);
+    }
 }
