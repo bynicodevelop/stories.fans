@@ -57,8 +57,7 @@ Route::post('/register', [RegisteredUserController::class, 'store'])
     ->middleware(['guest:' . config('fortify.guard')])
     ->name('register-post');
 
-Route::get('/email', [IndexController::class, 'email']);
-
 if (config('app.env') != 'production') {
+    Route::get('/email', [IndexController::class, 'email']);
     Route::get('/dev/auth/{userId}', [SpyController::class, 'auth']);
 }
