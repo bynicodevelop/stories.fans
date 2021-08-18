@@ -21,24 +21,24 @@
                     <span class="block font-medium text-sm text-gray-500">
                         {{ Str::of($user['user']['bio'])->limit(40) }}
                     </span>
-                    @if ($user['userSubscription']['cancelled'])
+                    @if ($user['cancelled'])
                         <span class="block font-medium text-xs italic">
-                            ({!! __('plan.end-period', ['date' => \Carbon\Carbon::parse($user['userSubscription']['ends_at'])->diffForHumans()]) !!})
+                            ({!! __('plan.end-period', ['date' => \Carbon\Carbon::parse($user['ends_at'])->diffForHumans()]) !!})
                         </span>
                     @endif
 
-                    @if (!empty($user['userSubscription']['trial_ends_at']) && !$user['userSubscription']['cancelled'])
+                    @if (!empty($user['trial_ends_at']) && !$user['cancelled'])
                         <span class="block font-medium text-xs italic">
-                            ({!! __('plan.trial-period', ['date' => \Carbon\Carbon::parse($user['userSubscription']['trial_ends_at'])->diffForHumans()]) !!})
+                            ({!! __('plan.trial-period', ['date' => \Carbon\Carbon::parse($user['trial_ends_at'])->diffForHumans()]) !!})
                         </span>
                     @endif
                 </div>
 
-                @if (!$user['userSubscription']['cancelled'])
+                @if (!$user['cancelled'])
                     <div class="pt-1 mr-3 text-right">
-                        @if ($user['userSubscription']['price_period'] == \App\Models\Plan::PRICE_MONTHLY)
+                        @if ($user['price_period'] == \App\Models\Plan::PRICE_MONTHLY)
                             @price([
-                            'price' => $user['plan'][$user['userSubscription']['price_period']],
+                            'price' => $user['plan'][$user['price_period']],
                             'period' => \App\Models\Plan::PRICE_MONTHLY
                             ])
                             {{ __('plan.per-month') }}
@@ -47,9 +47,9 @@
                             </div>
                         @endif
 
-                        @if ($user['userSubscription']['price_period'] == \App\Models\Plan::PRICE_QUARTERLY)
+                        @if ($user['price_period'] == \App\Models\Plan::PRICE_QUARTERLY)
                             @price([
-                            'price' => $user['plan'][$user['userSubscription']['price_period']],
+                            'price' => $user['plan'][$user['price_period']],
                             'period' => \App\Models\Plan::PRICE_QUARTERLY
                             ])
                             {{ __('plan.per-month') }}
@@ -58,9 +58,9 @@
                             </div>
                         @endif
 
-                        @if ($user['userSubscription']['price_period'] == \App\Models\Plan::PRICE_ANNUALLY)
+                        @if ($user['price_period'] == \App\Models\Plan::PRICE_ANNUALLY)
                             @price([
-                            'price' => $user['plan'][$user['userSubscription']['price_period']],
+                            'price' => $user['plan'][$user['price_period']],
                             'period' => \App\Models\Plan::PRICE_ANNUALLY
                             ])
                             {{ __('plan.per-month') }}
@@ -73,13 +73,13 @@
 
 
                 <div class="pt-2">
-                    @if ($user['userSubscription']['cancelled'])
+                    @if ($user['cancelled'])
                         <x-default-link-button class="mt-2"
                             href="{{ route('plans-show', ['userId' => $user['user']['id']]) }}">
                             {{ __('plan.renew') }}
                         </x-default-link-button>
                     @else
-                        @livewire('plan.unsubscribe-button', [ 'subscription' => $user['userSubscription'] ])
+                        @livewire('plan.unsubscribe-button', [ 'subscription' => $user ])
                     @endif
 
                 </div>

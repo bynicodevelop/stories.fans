@@ -2,7 +2,9 @@
 
 namespace App\Http\Livewire\Plan;
 
+use App\Mail\CancelledSubscriptionMail;
 use App\Models\UserSubscription;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use Stripe\StripeClient;
 
@@ -32,6 +34,10 @@ class UnsubscribeButton extends Component
         ]);
 
         $this->cancelled = $this->subscription['cancelled'];
+
+        Mail::to($this->subscription['user'])
+            ->queue((new CancelledSubscriptionMail($this->subscription['user'], $this->subscription['plan']['user']))
+                ->onQueue('email'));
 
         $this->emitTo('plan.subscription-list', '$refresh');
 

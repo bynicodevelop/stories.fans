@@ -28,10 +28,6 @@ use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 Route::get('/', [IndexController::class, 'index']);
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    // Route::get('/dashboard', function () {
-    //     return view('dashboard');
-    // })->name('dashboard');
-
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
     Route::get('/user/profile/subscriptions', [SubscriptionController::class, 'index'])->name('subscriptions');
@@ -61,8 +57,7 @@ Route::post('/register', [RegisteredUserController::class, 'store'])
     ->middleware(['guest:' . config('fortify.guard')])
     ->name('register-post');
 
-Route::get('/email', [IndexController::class, 'email']);
-
 if (config('app.env') != 'production') {
+    Route::get('/email', [IndexController::class, 'email']);
     Route::get('/dev/auth/{userId}', [SpyController::class, 'auth']);
 }

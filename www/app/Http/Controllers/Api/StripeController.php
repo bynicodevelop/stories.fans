@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Helpers\PriceHelper;
 use App\Http\Controllers\Controller;
+use App\Mail\CancelledSubscriptionMail;
 use App\Mail\InvoiceMail;
 use App\Mail\NewSubscriberMail;
 use App\Models\Fee;
@@ -14,23 +15,24 @@ use Illuminate\Support\Facades\Mail;
 
 class StripeController extends Controller
 {
-    public function webhook(Request $request)
+    private function _getUserSubscription($data)
     {
-        $data = $request->all();
-
-        if ($data["type"] != "invoice.payment_succeeded") {
-            return response()->json([
-                "status" => true
-            ]);
-        }
-
-        Log::debug($data);
-
-        $fee = Fee::latestFee();
-
         $userSubscription = UserSubscription::where("stripe_id", $data["data"]["object"]["subscription"])->with(['plan' => function ($query) {
             $query->with('user');
         }], 'user')->first();
+
+        return [
+            "userSubscription" => $userSubscription,
+            "subscriber" => $userSubscription['user'],
+            "author" => $userSubscription['plan']['user']
+        ];
+    }
+
+    private function _createSubscription($data)
+    {
+        $fee = Fee::latestFee();
+
+        extract($this->_getUserSubscription($data));
 
         // Log::debug($userSubscription);
 
@@ -40,9 +42,6 @@ class StripeController extends Controller
             "net_price" => PriceHelper::netPrice($userSubscription['plan'][$userSubscription['price_period']], $fee['fee']),
             "hosted_invoice_url" => $data["data"]["object"]["hosted_invoice_url"],
         ]);
-
-        $subscriber = $userSubscription['user'];
-        $author = $userSubscription['plan']['user'];
 
         Mail::to($subscriber)
             ->queue((new InvoiceMail($subscriber, $author, $payment))
@@ -55,5 +54,20 @@ class StripeController extends Controller
         return response()->json([
             "created" => true
         ]);
+    }
+
+    public function webhook(Request $request)
+    {
+        $data = $request->all();
+
+        if ($data["type"] != "invoice.payment_succeeded") {
+            return response()->json([
+                "status" => true
+            ]);
+        }
+
+        Log::debug($data);
+
+        return $this->_createSubscription($data);
     }
 }
