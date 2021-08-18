@@ -19,6 +19,7 @@ class CreatePaymentsTable extends Migration
             $table->unsignedBigInteger('user_subscription_id');
             $table->unsignedBigInteger('fee_id');
             $table->integer('net_price');
+            $table->string('hosted_invoice_url');
             $table->timestamps();
 
             $table->foreign('fee_id')->references('id')->on('fees')->onDelete('cascade');

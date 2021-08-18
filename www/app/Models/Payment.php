@@ -13,6 +13,7 @@ class Payment extends Model
         'plan_id',
         'fee_id',
         'net_price',
+        'hosted_invoice_url',
     ];
 
     public function userSubscription()

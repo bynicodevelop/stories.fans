@@ -19,7 +19,7 @@ class PaymentController extends Controller
             $query->whereHas('plan', function ($query) use ($user) {
                 $query->where('user_id', $user['id']);
             });
-        })->orderBy('created_at')->get();
+        })->orderBy('created_at', 'desc')->get();
 
         $amount = $payments->sum('net_price');
         $payableAmount = $payments->where('created_at', '<', now()->subDays(30))->sum('net_price');

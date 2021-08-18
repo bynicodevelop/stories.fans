@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Mail\InvoiceMail;
 use App\Models\Fee;
 use App\Models\Payment;
 use App\Models\Plan;
@@ -10,6 +11,7 @@ use App\Models\UserSubscription;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class StripeControllerTest extends TestCase
@@ -27,7 +29,9 @@ class StripeControllerTest extends TestCase
         User::factory()->has(UserSubscription::factory()->count(1)->state([
             "plan_id" => Plan::first()['id'],
             "stripe_id" => "sub_K3W6iYAK6X536t"
-        ]), "subscriptions")->create();
+        ]), "subscriptions")->create([
+            "email" => "john.doe@domain.tld"
+        ]);
     }
 
     protected function tearDown(): void
@@ -37,11 +41,14 @@ class StripeControllerTest extends TestCase
 
     public function test_create_new_payment()
     {
+        Mail::fake();
+
         $response = $this->post('/api/v1/stripe/webhook', [
             "type" => "invoice.payment_succeeded",
             "data" => [
                 "object" => [
-                    "subscription" => "sub_K3W6iYAK6X536t"
+                    "subscription" => "sub_K3W6iYAK6X536t",
+                    "hosted_invoice_url" => "url"
                 ]
             ]
         ]);
@@ -49,6 +56,13 @@ class StripeControllerTest extends TestCase
         $response->assertStatus(200)->assertJson([
             'created' => true,
         ]);
+
+        Mail::assertQueued(function (InvoiceMail $mail) {
+            return $mail->user->id == "2"
+                && $mail->author->id == "1"
+                && $mail->payment->id == "1"
+                && $mail->hasTo("john.doe@domain.tld");
+        });
 
         $payment = Payment::first();
 
