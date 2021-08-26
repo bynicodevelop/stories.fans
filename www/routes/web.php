@@ -4,6 +4,7 @@ use App\Http\Controllers\CardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\InvitationController;
+use App\Http\Controllers\MediaController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PostController;
@@ -57,7 +58,10 @@ Route::post('/register', [RegisteredUserController::class, 'store'])
     ->middleware(['guest:' . config('fortify.guard')])
     ->name('register-post');
 
+Route::get('/media/{id}', [MediaController::class, 'index'])->name('media');
+
 if (config('app.env') != 'production') {
     Route::get('/email', [IndexController::class, 'email']);
+    Route::get('/post-created-event', [IndexController::class, 'createPostEvent']);
     Route::get('/dev/auth/{userId}', [SpyController::class, 'auth']);
 }

@@ -1,6 +1,6 @@
 @props(['post'])
 
-<div class="flex py-5 justify-end">
+<div class="flex justify-end px-2 py-2">
     @livewire('post.copy-button', ['post' => $post], key($post['id']))
 
     @auth

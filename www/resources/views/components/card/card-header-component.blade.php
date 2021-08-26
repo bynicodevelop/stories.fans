@@ -1,6 +1,6 @@
 @props(['user', 'post'])
 
-<div class="flex mb-4">
+<div class="flex px-4 py-4">
     <a href="{{ route('profiles-slug', ['slug' => $user['slug']]) }}">
         <img class="w-12 h-12 rounded-full" src="{{ $user['profile_photo_url'] }}" />
     </a>

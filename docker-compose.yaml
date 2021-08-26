@@ -22,6 +22,26 @@ services:
     ports:
       - "5432:5432"
 
+  laravel-echo:
+    container_name: laravel_echo_nicodevelop
+    build:
+      context: ./docker/laravel-echo
+    environment:
+      - LARAVEL_ECHO_SERVER_AUTH_HOST=http://website_nicodevelop
+      - ECHO_REDIS_HOSTNAME=redis_nicodevelop
+      - ECHO_REDIS_PORT=6379
+      - ECHO_ALLOW_CORS=true
+      - ECHO_ALLOW_ORIGIN=http://stories.localhost:8080
+      - ECHO_DEVMODE=true
+      - LARAVEL_ECHO_SERVER_DEBUG=true
+    ports:
+      - "6001:6001"
+    networks:
+      - backend
+    depends_on:
+      - database
+      - redis
+
   php-apache:
     container_name: website_nicodevelop
     build:
@@ -35,6 +55,7 @@ services:
     depends_on:
       - database
       - redis
+      - laravel-echo
 
 networks:
   backend:

@@ -13,12 +13,15 @@
         "friendsofphp/php-cs-fixer": "^3.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+        "intervention/image": "^2.6",
         "laravel/cashier": "^13.4",
         "laravel/framework": "^8.40",
         "laravel/jetstream": "^2.3",
         "laravel/sanctum": "^2.6",
         "laravel/tinker": "^2.5",
+        "league/flysystem-aws-s3-v3": "^1.0",
         "livewire/livewire": "^2.5",
+        "php-ffmpeg/php-ffmpeg": "^0.18.0",
         "predis/predis": "^1.1"
     },
     "require-dev": {

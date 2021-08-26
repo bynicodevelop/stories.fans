@@ -7,19 +7,29 @@ RUN apt update \
     libicu-dev \
     libpq-dev \
     libzip-dev \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
     zip \
     zlib1g-dev \
     supervisor \
     curl \
+    ffmpeg \
+    && docker-php-ext-configure \
+    gd --with-jpeg \
+    && docker-php-ext-configure \
+    exif \
     && docker-php-ext-install \
     intl \
     opcache \
     pdo \
     pdo_pgsql \
-    pgsql
+    pgsql \
+    exif \
+    gd
 
 RUN pecl install redis \
-    && docker-php-ext-enable redis
+    && docker-php-ext-enable redis exif
 
 RUN rm -rf /var/www/html \
     && mkdir -p /var/lock/apache2 /var/run/apache2 /var/log/apache2 /var/www/html \
@@ -44,6 +54,7 @@ COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY www /var/www/html
 
 RUN mkdir -p /var/www/html/storage/app/public \
+    /var/www/html/storage/app/private \
     /var/www/html/storage/uploads \
     /var/www/html/storage/framework/cache \
     /var/www/html/storage/framework/sessions \

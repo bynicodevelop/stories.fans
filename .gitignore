@@ -22,3 +22,6 @@ docker-compose.override.yml
 /www/public/js/app.js.LICENSE.txt
 /**/.php-cs-fixer.cache
 /credentials.csv
+/faker
+/.DS_Store
+/www/laravel-echo-server.json

@@ -1,4 +1,4 @@
-<div class="relative inline-block text-left dropdown">
+<div class="relative inline-block text-left dropdown z-50">
     <button type="button" id="menu-button" aria-expanded="true" aria-haspopup="true">
         <i class="fas fa-ellipsis-h text-gray-500"></i>
     </button>

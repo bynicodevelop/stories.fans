@@ -7,6 +7,24 @@ use Illuminate\Support\Facades\Auth;
 
 class PremiumHelper
 {
+    public static function protectedContent(Post $post)
+    {
+        if (!Auth::check()) {
+            return true;
+        }
+
+        /**
+         * @var User $user
+         */
+        $user = Auth::user();
+
+        if ($post['user_id'] == $user['id']) {
+            return false;
+        }
+
+        return self::isPremium($post);
+    }
+
     public static function isPremium(Post $post)
     {
         if (!Auth::check()) {

@@ -17,6 +17,7 @@
         "axios": "^0.21.1",
         "browser-sync": "^2.27.5",
         "browser-sync-webpack-plugin": "^2.3.0",
+        "laravel-echo": "^1.11.1",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
         "postcss": "^8.3.6",
@@ -26,6 +27,7 @@
     "dependencies": {
         "@tailwindcss/aspect-ratio": "^0.2.1",
         "grapesjs": "^0.17.19",
-        "grapesjs-parser-postcss": "^0.1.1"
+        "grapesjs-parser-postcss": "^0.1.1",
+        "socker.io": "^0.0.0-alpha-beta"
     }
 }

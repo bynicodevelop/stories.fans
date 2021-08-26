@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Mail\WelcomeMail;
 use App\Models\User;
-use App\Notifications\WelcomeEmail;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
