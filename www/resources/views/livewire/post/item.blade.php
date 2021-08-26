@@ -1,4 +1,4 @@
-<div class="bg-white rounded h-screen">
+<div class="bg-white rounded">
     <x-card-header-component :post="$post" :user="$post['user']" :wire:key="$post['id']" />
 
     @if (!empty($post['content']))
@@ -13,5 +13,6 @@
             @livewire('post.video-item', ['post' => $post, 'media' => $media])
         @endforeach
     </div>
-    <x-card-footer-component :post="$post" :wire:key="$post['id']" />
+
+    <x-card-footer-component :post="$post" :isUnique="$isUnique" :wire:key="$post['id']" />
 </div>

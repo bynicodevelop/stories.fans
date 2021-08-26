@@ -43,4 +43,9 @@ class Post extends Model
     {
         return $this->hasMany(Like::class)->count();
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class)->where('parent_id', null);
+    }
 }

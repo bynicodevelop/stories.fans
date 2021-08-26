@@ -11,7 +11,7 @@
                     </div>
                 </div>
 
-                @livewire('post.item', ['post' => $post], key(time() . $post['id']))
+                @livewire('post.item', ['post' => $post, 'isUnique' => true], key(time() . $post['id']))
             </div>
         </div>
 

@@ -8,4 +8,6 @@ return [
     "cancel" => "Annuler",
     "confirm" => "Confirmer",
     "post-send" => "Votre contenu est envoyé, il va apparaitre dans quelques instants",
+    "post-comment" => "Ecrire un commentaire",
+    "number-comments" => "{1} Afficher l'autre commentaire|[2,*] Afficher les :number autres commentaires",
 ];

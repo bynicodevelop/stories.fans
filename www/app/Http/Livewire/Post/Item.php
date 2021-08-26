@@ -12,6 +12,11 @@ class Item extends Component
      */
     public $post;
 
+    /**
+     * @var boolean
+     */
+    public $isUnique = false;
+
     public function render()
     {
         return view('livewire.post.item');

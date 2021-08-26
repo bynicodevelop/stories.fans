@@ -4,6 +4,7 @@ namespace App\View\Components;
 
 use App\Models\Post;
 use Illuminate\View\Component;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class CardFooterComponent extends Component
 {
@@ -13,14 +14,17 @@ class CardFooterComponent extends Component
      */
     public $post;
 
+    public $isUnique = false;
+
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct(Post $post)
+    public function __construct(Post $post, bool $isUnique)
     {
         $this->post = $post;
+        $this->isUnique = $isUnique;
     }
 
     /**
