@@ -83,7 +83,7 @@ jobs:
             docker stop /laravel_echo_nicodevelop
             docker stop /redis_nicodevelop
             docker run -d --rm --name=redis_nicodevelop --network=backend -v /var/www/redis:/data redis
-            docker run -d --rm --name=laravel_echo_nicodevelop --network=backend -p 8443:6001 -e LARAVEL_ECHO_SERVER_AUTH_HOST=http://website_nicodevelop -e ECHO_REDIS_HOSTNAME=redis_nicodevelop -e ECHO_PORT=2053 -e ECHO_REDIS_PORT=6379 -e ECHO_ALLOW_CORS=true -e ECHO_ALLOW_ORIGIN=https://stories.fans -e ECHO_DEVMODE=false -e LARAVEL_ECHO_SERVER_DEBUG=false eu.gcr.io/${{ secrets.GCP_SERVICE }}/${{ secrets.GCP_APPLICATION_WEBSOCKET_SERVER }}
+            docker run -d --rm --name=laravel_echo_nicodevelop --network=backend -p 2053:2053 -e LARAVEL_ECHO_SERVER_AUTH_HOST=http://website_nicodevelop -e ECHO_REDIS_HOSTNAME=redis_nicodevelop -e ECHO_PORT=2053 -e ECHO_REDIS_PORT=6379 -e ECHO_ALLOW_CORS=true -e ECHO_ALLOW_ORIGIN=https://stories.fans -e ECHO_DEVMODE=false -e LARAVEL_ECHO_SERVER_DEBUG=false eu.gcr.io/${{ secrets.GCP_SERVICE }}/${{ secrets.GCP_APPLICATION_WEBSOCKET_SERVER }}
             docker run -d --rm --name=website_nicodevelop --network=backend -p 80:80 -v /var/www/storage:/var/www/html/storage eu.gcr.io/${{ secrets.GCP_SERVICE }}/${{ secrets.GCP_APPLICATION_APP }}
             docker exec -t website_nicodevelop chown -R www-data /var/www/html/storage
             docker exec -t website_nicodevelop php artisan migrate --force
