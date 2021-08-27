@@ -58,7 +58,7 @@ jobs:
           npm run prod
 
       - name: Build docker web socker server
-        run: docker build ./docker/laravel-echo -t $IMAGE_NAME_WEB_SOCKET_SERVER
+        run: docker build -t $IMAGE_NAME_WEB_SOCKET_SERVER -f docker/laravel-echo/Dockerfile .
 
       - name: Push Docker image web socker server
         run: docker push $IMAGE_NAME_WEB_SOCKET_SERVER
