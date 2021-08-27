@@ -1,15 +1,37 @@
 services:
+  traefik:
+    container_name: traefik_nicodevelop
+    image: traefik:v2.5
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websocket.address=:6001"
+    networks:
+      - backend
+    ports:
+      - "80:80"
+      - "8080:8080"
+      - "6001:6001"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
   redis:
     image: redis
     container_name: redis_nicodevelop
     networks:
       - backend
+    volumes:
+      - ./redis:/data
+    depends_on:
+      - traefik
 
   database:
     image: postgres
     networks:
       - backend
-    container_name: postgress_nicodevelop
+    container_name: postgresql_nicodevelop
     restart: unless-stopped
     environment:
       POSTGRES_PASSWORD: nicodevelop
@@ -17,41 +39,56 @@ services:
       POSTGRES_DB: nicodevelop
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
+    depends_on:
+      - traefik
 
   laravel-echo:
     container_name: laravel_echo_nicodevelop
     build:
-      context: ./docker/laravel-echo
+      context: .
+      dockerfile: docker/laravel-echo/Dockerfile
     environment:
       - LARAVEL_ECHO_SERVER_AUTH_HOST=http://website_nicodevelop
       - ECHO_REDIS_HOSTNAME=redis_nicodevelop
       - ECHO_REDIS_PORT=6379
       - ECHO_ALLOW_CORS=true
-      - ECHO_ALLOW_ORIGIN=http://stories.localhost:8080
-      - ECHO_PORT=2053
+      - ECHO_ALLOW_ORIGIN=http://stories.localhost
+      - ECHO_PORT=6001
       - ECHO_DEVMODE=true
       - LARAVEL_ECHO_SERVER_DEBUG=true
-    ports:
-      - "6001:6001"
+    # ports:
+    #   - "6001:6001"
+    labels:
+      - "traefik.port=6001"
+      - "traefik.enable=true"
+      - "traefik.http.routers.laravel-echo.rule=Host(`stories.localhost`)"
+      - "traefik.http.routers.laravel-echo.entrypoints=websocket"
     networks:
       - backend
     depends_on:
+      - traefik
       - database
       - redis
 
   php-apache:
     container_name: website_nicodevelop
     build:
-      context: ./docker/app
+      context: .
+      dockerfile: docker/app/Dockerfile
     networks:
       - backend
-    ports:
-      - "8080:80"
+    # ports:
+    #   - "8080:80"
     volumes:
       - ./www:/var/www/html
+    labels:
+      - "traefik.port=80"
+      - "traefik.enable=true"
+      - "traefik.http.routers.php-apache.rule=Host(`stories.localhost`)"
+      - "traefik.http.routers.php-apache.entrypoints=web"
+
     depends_on:
+      - traefik
       - database
       - redis
       - laravel-echo

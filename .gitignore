@@ -25,3 +25,4 @@ docker-compose.override.yml
 /faker
 /.DS_Store
 /www/laravel-echo-server.json
+/redis

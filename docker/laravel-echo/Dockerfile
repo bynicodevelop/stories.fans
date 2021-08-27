@@ -5,7 +5,7 @@ RUN \
     mkdir -p /opt/laravel-echo-server && \
     cd /opt/laravel-echo-server
 
-COPY ./config /opt/laravel-echo-server
+COPY /docker/laravel-echo/config /opt/laravel-echo-server
 
 WORKDIR /opt/laravel-echo-server
 
