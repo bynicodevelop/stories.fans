@@ -1,16 +1,13 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\App\Services;
 
-use App\Exceptions\InvalidPriceId;
 use App\Exceptions\InvalidPriceIdException;
-use App\Exceptions\InvalidStripeId;
 use App\Exceptions\InvalidStripeIdException;
 use App\Exceptions\InvalidStripeServiceException;
 use App\Services\StripeService;
 use Mockery;
 use PHPUnit\Framework\TestCase;
-use Mockery\MockInterface;
 use Stripe\Service\SubscriptionService;
 use Stripe\StripeClient;
 

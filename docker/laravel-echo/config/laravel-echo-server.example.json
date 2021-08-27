@@ -1,0 +1,41 @@
+{
+	"authHost": "{{ LARAVEL_ECHO_SERVER_AUTH_HOST }}",
+	"authEndpoint": "/broadcasting/auth",
+	"clients": [
+		{
+			"appId": "5452f37eb20a7df1",
+			"key": "fb3663eb6237af3e525f03e6e38c3cbd"
+		}
+	],
+	"database": "redis",
+	"databaseConfig": {
+		"redis": {
+			"port": "{{ ECHO_REDIS_PORT }}",
+			"host": "{{ ECHO_REDIS_HOSTNAME }}",
+			"keyPrefix": ""
+		},
+		"sqlite": {
+			"databasePath": "/database/laravel-echo-server.sqlite"
+		}
+	},
+	"devMode": "{{ ECHO_DEVMODE }}",
+	"host": null,
+	"port": "{{ ECHO_PORT }}",
+	"protocol": "{{ ECHO_PROTOCOL }}",
+	"socketio": {},
+	"secureOptions": 67108864,
+	"sslCertPath": "{{ ECHO_SSL_CERT_PATH }}",
+	"sslKeyPath": "{{ ECHO_SSL_KEY_PATH }}",
+	"sslCertChainPath": "{{ ECHO_SSL_CHAIN_PATH }}",
+	"sslPassphrase": "{{ ECHO_SSL_PASSPHRASE }}",
+	"subscribers": {
+		"http": true,
+		"redis": true
+	},
+	"apiOriginAllow": {
+		"allowCors": {{ ECHO_ALLOW_CORS }},
+		"allowOrigin": "{{ ECHO_ALLOW_ORIGIN }}",
+		"allowMethods": "{{ ECHO_ALLOW_METHODS }}",
+		"allowHeaders": "{{ ECHO_ALLOW_HEADERS }}"
+	}
+}

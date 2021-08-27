@@ -34,8 +34,18 @@ class Post extends Model
         return $this->belongsToMany(Like::class, 'likes', 'post_id', 'user_id'); //->withTimestamps();
     }
 
+    public function media()
+    {
+        return $this->hasMany(Media::class);
+    }
+
     public function countLikes()
     {
         return $this->hasMany(Like::class)->count();
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class)->where('parent_id', null);
     }
 }

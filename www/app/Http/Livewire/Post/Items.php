@@ -42,7 +42,7 @@ class Items extends Component
 
     public function render()
     {
-        $paginate = $this->user->posts()->orderBy("created_at", 'desc')->with('user')->paginate($this->perPage);
+        $paginate = $this->user->posts()->orderBy("created_at", 'desc')->with('user', 'media')->paginate($this->perPage);
 
         $this->finished = !$paginate->hasPages();
 

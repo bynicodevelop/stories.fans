@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    {{-- <title>{{ config('app.name', 'Laravel') }}</title> --}}
     {!! SEO::generate() !!}
 
     <!-- Fonts -->
@@ -14,7 +13,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
         integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-
     <!-- Styles -->
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 
@@ -23,6 +21,8 @@
     @stack('styles')
 
     <!-- Scripts -->
+    <script src="//{{ Request::getHost() }}:6001/socket.io/socket.io.js"></script>
+
     <script src="{{ mix('js/app.js') }}" defer></script>
 
     @if (!empty(config('tag_manager_id')))
@@ -57,6 +57,8 @@
 
     <x-jet-banner />
 
+    @livewire('alert-component')
+
     <div class="min-h-screen bg-gray-100">
         @livewire('navigation-menu')
 
@@ -76,6 +78,7 @@
     </div>
 
     @stack('modals')
+
     @stack('scripts')
 
     @livewireScripts

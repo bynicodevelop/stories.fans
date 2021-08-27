@@ -4,15 +4,19 @@ use App\Http\Controllers\CardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\InvitationController;
+use App\Http\Controllers\MediaController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\PrivacyPolicyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SpyController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\TermsOfServiceController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\RegisteredUserController;
+use Laravel\Jetstream\Jetstream;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +29,7 @@ use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 |
 */
 
-Route::get('/', [IndexController::class, 'index']);
+Route::get('/', [IndexController::class, 'index'])->name("index");
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
@@ -53,12 +57,19 @@ Route::get('/register/{slug}', [RegisteredUserController::class, 'create'])
     ->middleware(['guest:' . config('fortify.guard')])
     ->name('register');
 
+if (Jetstream::hasTermsAndPrivacyPolicyFeature()) {
+    Route::get('/terms-of-service', [TermsOfServiceController::class, 'show'])->name('terms.show');
+    Route::get('/privacy-policy', [PrivacyPolicyController::class, 'show'])->name('policy.show');
+}
+
 Route::post('/register', [RegisteredUserController::class, 'store'])
     ->middleware(['guest:' . config('fortify.guard')])
     ->name('register-post');
 
-Route::get('/email', [IndexController::class, 'email']);
+Route::get('/media/{id}', [MediaController::class, 'index'])->name('media');
 
 if (config('app.env') != 'production') {
+    Route::get('/email', [IndexController::class, 'email']);
+    Route::get('/post-created-event', [IndexController::class, 'createPostEvent']);
     Route::get('/dev/auth/{userId}', [SpyController::class, 'auth']);
 }
