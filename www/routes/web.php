@@ -8,12 +8,15 @@ use App\Http\Controllers\MediaController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\PrivacyPolicyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SpyController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\TermsOfServiceController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\RegisteredUserController;
+use Laravel\Jetstream\Jetstream;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,6 +56,11 @@ Route::get('/posts/{postId}', [PostController::class, 'index'])->name('post');
 Route::get('/register/{slug}', [RegisteredUserController::class, 'create'])
     ->middleware(['guest:' . config('fortify.guard')])
     ->name('register');
+
+if (Jetstream::hasTermsAndPrivacyPolicyFeature()) {
+    Route::get('/terms-of-service', [TermsOfServiceController::class, 'show'])->name('terms.show');
+    Route::get('/privacy-policy', [PrivacyPolicyController::class, 'show'])->name('policy.show');
+}
 
 Route::post('/register', [RegisteredUserController::class, 'store'])
     ->middleware(['guest:' . config('fortify.guard')])
