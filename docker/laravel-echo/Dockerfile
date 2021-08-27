@@ -11,7 +11,7 @@ WORKDIR /opt/laravel-echo-server
 
 RUN chmod +x entrypoint.sh
 
-EXPOSE 6001
+EXPOSE 2053
 
 ENV \
     LARAVEL_ECHO_SERVER_AUTH_HOST=http://localhost \
