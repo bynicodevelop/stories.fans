@@ -42,16 +42,16 @@ RUN a2dismod mpm_event \
 RUN mv /etc/apache2/apache2.conf /etc/apache2/apache2.conf.dist  \
     && rm /etc/apache2/conf-enabled/* /etc/apache2/sites-enabled/*
 
-COPY docker/apache/apache2.conf /etc/apache2/apache2.conf
-COPY docker/sites-enabled/000-default.conf /etc/apache2/sites-enabled/000-default.conf
+COPY /docker/app/apache/apache2.conf /etc/apache2/apache2.conf
+COPY /docker/app/sites-enabled/000-default.conf /etc/apache2/sites-enabled/000-default.conf
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-COPY docker/php/php.ini /usr/local/etc/php/
-COPY docker/run /usr/local/bin/
-COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY /docker/app/php/php.ini /usr/local/etc/php/
+COPY /docker/app/run /usr/local/bin/
+COPY /docker/app/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-COPY www /var/www/html
+COPY /www /var/www/html
 
 RUN mkdir -p /var/www/html/storage/app/public \
     /var/www/html/storage/app/private \

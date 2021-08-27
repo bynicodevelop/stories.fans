@@ -4,8 +4,6 @@ services:
     container_name: redis_nicodevelop
     networks:
       - backend
-    ports:
-      - 6379:6379
 
   database:
     image: postgres
@@ -32,6 +30,7 @@ services:
       - ECHO_REDIS_PORT=6379
       - ECHO_ALLOW_CORS=true
       - ECHO_ALLOW_ORIGIN=http://stories.localhost:8080
+      - ECHO_PORT=2053
       - ECHO_DEVMODE=true
       - LARAVEL_ECHO_SERVER_DEBUG=true
     ports:
@@ -45,7 +44,7 @@ services:
   php-apache:
     container_name: website_nicodevelop
     build:
-      context: .
+      context: ./docker/app
     networks:
       - backend
     ports:

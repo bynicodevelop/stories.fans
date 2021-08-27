@@ -20,7 +20,7 @@
 	},
 	"devMode": "{{ ECHO_DEVMODE }}",
 	"host": null,
-	"port": "6001",
+	"port": "{{ ECHO_PORT }}",
 	"protocol": "{{ ECHO_PROTOCOL }}",
 	"socketio": {},
 	"secureOptions": 67108864,

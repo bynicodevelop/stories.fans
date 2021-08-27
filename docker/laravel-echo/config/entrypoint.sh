@@ -19,5 +19,6 @@ sed -i -e "s%{{ ECHO_ALLOW_CORS }}%$ECHO_ALLOW_CORS%g" laravel-echo-server.json
 sed -i -e "s%{{ ECHO_ALLOW_ORIGIN }}%$ECHO_ALLOW_ORIGIN%g" laravel-echo-server.json
 sed -i -e "s%{{ ECHO_ALLOW_METHODS }}%$ECHO_ALLOW_METHODS%g" laravel-echo-server.json
 sed -i -e "s%{{ ECHO_ALLOW_HEADERS }}%$ECHO_ALLOW_HEADERS%g" laravel-echo-server.json
+sed -i -e "s%{{ ECHO_PORT }}%$ECHO_PORT%g" laravel-echo-server.json
 
 $@
