@@ -16,12 +16,18 @@
     <!-- Styles -->
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 
+    <script>
+        window.configJS = {
+            websocket_url: "{{ config('app.websocket_url') }}"
+        }
+    </script>
+
     @livewireStyles
 
     @stack('styles')
 
     <!-- Scripts -->
-    <script src="//{{ Request::getHost() }}:6001/socket.io/socket.io.js"></script>
+    <script src="{{ config('app.websocket_url') }}/socket.io/socket.io.js"></script>
 
     <script src="{{ mix('js/app.js') }}" defer></script>
 
