@@ -62,8 +62,8 @@ jobs:
         run: |
           npm i
           npm run prod
-          ls ./www
-          cat ./www/.env
+          ls
+          cat .env
 
       - name: Build docker web socker server
         run: docker build --no-cache -t $IMAGE_NAME_WEB_SOCKET_SERVER -f docker/laravel-echo/Dockerfile .
