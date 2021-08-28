@@ -93,4 +93,4 @@ jobs:
             docker run -d --rm --name=website_nicodevelop --network=backend -v /var/www/storage:/var/www/html/storage -l="traefik.enable=true" -l="traefik.http.routers.php-apache.rule=Host(\"stories.fans\")" -l="traefik.http.routers.php-apache.entrypoints=websecure" -l="traefik.http.routers.php-apache.tls.certresolver=storiesresolver" eu.gcr.io/${{ secrets.GCP_SERVICE }}/${{ secrets.GCP_APPLICATION_APP }}
             docker exec -t website_nicodevelop chown -R www-data /var/www/html/storage
             docker exec -t website_nicodevelop php artisan migrate --force
-            docker rmi $(docker images -q)
+            docker image prune --force
