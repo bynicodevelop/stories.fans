@@ -29,7 +29,7 @@ jobs:
       - name: Move .env into project
         run: |
           mv ${{ steps.env_file.outputs.filePath }} ./www
-          cat ./www
+          cat ./www/.env
 
       - name: Deploy to Cloud Run (Setup)
         uses: google-github-actions/setup-gcloud@master
