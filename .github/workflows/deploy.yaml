@@ -14,10 +14,6 @@ jobs:
     steps: 
       - name: Checkout
         uses: actions/checkout@master
-      
-      - name: Remove .env file
-        run: |
-          rm /home/runner/work/_temp/.env
 
       - name: Create .env file
         id: env_file
@@ -27,7 +23,9 @@ jobs:
           encodedString: ${{ secrets.ENV }}
 
       - name: Move .env into project
-        run: mv ${{ steps.env_file.outputs.filePath }} ./www
+        run: |
+          cat ${{ steps.env_file.outputs.filePath }}
+          mv ${{ steps.env_file.outputs.filePath }} ./www
 
       - name: Deploy to Cloud Run (Setup)
         uses: google-github-actions/setup-gcloud@master
