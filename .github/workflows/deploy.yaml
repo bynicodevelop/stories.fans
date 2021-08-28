@@ -83,6 +83,7 @@ jobs:
             docker stop /website_nicodevelop
             docker stop /laravel_echo_nicodevelop
             docker stop /redis_nicodevelop
+            docker stop /traefik_nicodevelop
             docker run -d --rm --name=traefik_nicodevelop --network=backend -p 80:80 -p 443:443 -p 8080:8080 -p 6001:6001 -v /var/www/letsencrypt:/letsencrypt -v /var/run/docker.sock:/var/run/docker.sock:ro traefik:v2.5 --api.insecure=true --providers.docker=true --providers.docker.exposedbydefault=false --entrypoints.web.address=:80 --entrypoints.websecure.address=:443 --entrypoints.websocket.address=:6001 --certificatesresolvers.storiesresolver.acme.tlschallenge=true --certificatesresolvers.storiesresolver.acme.email=nicolas@nico-develop.com --certificatesresolvers.storiesresolver.acme.storage=/letsencrypt/acme.json
             docker run -d --rm --name=postgresql_nicodevelop --network=backend -v /var/www/postgres-data:/var/lib/postgresql/data -e POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} -e POSTGRES_USER=${{ secrets.POSTGRES_USER }} -e POSTGRES_DB=${{ secrets.POSTGRES_DB }} postgres
             docker run -d --rm --name=redis_nicodevelop --network=backend -v /var/www/redis:/data redis
