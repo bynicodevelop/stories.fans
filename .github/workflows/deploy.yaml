@@ -28,7 +28,6 @@ jobs:
 
       - name: Move .env into project
         run: |
-          rm ./www/.env
           mv ${{ steps.env_file.outputs.filePath }} ./www
           cat ./www
 
