@@ -58,13 +58,13 @@ jobs:
           npm run prod
 
       - name: Build docker web socker server
-        run: docker build -t $IMAGE_NAME_WEB_SOCKET_SERVER -f docker/laravel-echo/Dockerfile .
+        run: docker build --no-cache -t $IMAGE_NAME_WEB_SOCKET_SERVER -f docker/laravel-echo/Dockerfile .
 
       - name: Push Docker image web socker server
         run: docker push $IMAGE_NAME_WEB_SOCKET_SERVER
 
       - name: Build docker website
-        run: docker build -t $IMAGE_NAME_APP -f docker/app/Dockerfile .
+        run: docker build --no-cache -t $IMAGE_NAME_APP -f docker/app/Dockerfile .
 
       - name: Push Docker image website
         run: docker push $IMAGE_NAME_APP
