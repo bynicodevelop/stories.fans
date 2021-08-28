@@ -70,7 +70,7 @@ RUN chmod -R 755 /var/www/html/storage
 
 RUN php artisan storage:link
 
-RUN php artisan key:generate -force
+RUN php artisan key:generate --force
 
 EXPOSE 80
 
