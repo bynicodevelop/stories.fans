@@ -31,7 +31,7 @@ class MediaController extends Controller
         try {
             extract($this->mediaService->blurred($user, $id));
 
-            $storagePath = Storage::disk('spaces')->get("private/{$name}.{$ext}"); // storage_path("app/private/{$name}.{$ext}");
+            $storagePath = Storage::get("private/{$name}.{$ext}"); // storage_path("app/private/{$name}.{$ext}");
 
             if ($type == Media::IMAGE) {
                 $image = Image::make($storagePath);
@@ -47,7 +47,7 @@ class MediaController extends Controller
                 $isPreview = $request->input('preview');
 
                 if (!is_null($isPreview)) {
-                    $previewStoragePath = Storage::disk('spaces')->get("private/{$name}-preview.jpg");
+                    $previewStoragePath = Storage::get("private/{$name}-preview.jpg");
 
                     $image = Image::make($previewStoragePath);
 
@@ -59,7 +59,7 @@ class MediaController extends Controller
                 }
             }
 
-            $stream = Storage::disk('spaces')->readStream("private/{$name}.{$ext}");
+            $stream = Storage::readStream("private/{$name}.{$ext}");
 
             return response()->stream(function () use ($stream) {
                 fpassthru($stream);

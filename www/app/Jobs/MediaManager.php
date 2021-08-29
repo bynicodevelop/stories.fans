@@ -4,11 +4,7 @@ namespace App\Jobs;
 
 use App\Events\PostCreatedEvent;
 use App\Models\Media;
-use FFMpeg\Coordinate\TimeCode;
-use FFMpeg\FFMpeg;
-use FFMpeg\FFProbe;
 use FFMpeg\Format\Video\X264;
-use FFMpeg\Media\Video;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -17,6 +13,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
+use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
 class MediaManager implements ShouldQueue
 {
@@ -56,12 +53,19 @@ class MediaManager implements ShouldQueue
     {
         $name = md5($this->name . microtime());
 
-        $storagePath = storage_path("app/tmp/{$this->name}");
+        $path = "tmp/{$this->name}";
+
+        Log::debug("Media uploaded info:", [
+            "path" => $path,
+            "mediaType" => $this->mediaType,
+        ]);
 
         if ($this->mediaType == Media::IMAGE) {
+            $storagePath = Storage::disk('local')->get($path);
+
             extract($this->imageStorage($storagePath, $name));
         } else {
-            extract($this->videoStorage($storagePath, $name));
+            extract($this->videoStorage($path, $name));
         }
 
         Log::debug("Orientation file: ", [
@@ -76,6 +80,9 @@ class MediaManager implements ShouldQueue
             "orientation" => $orientation,
         ]);
 
+        Log::debug("Delete temporary file", [
+            "path" => $path
+        ]);
         Storage::disk('local')->delete("tmp/{$this->name}");
 
         event(new PostCreatedEvent());
@@ -88,56 +95,40 @@ class MediaManager implements ShouldQueue
 
     private function videoStorage($storagePath, $name): array
     {
-        $ffprobe = FFProbe::create();
+        $media = FFMpeg::fromDisk('local')
+            ->open($storagePath);
 
-        $videoDimensions = $ffprobe
-            ->streams($storagePath)
-            ->videos()
-            ->first()
+        $videoDuration = $media->getDurationInSeconds();
+        $videoDimensions = $media->getVideoStream()
             ->getDimensions();
 
-        $videoDuration = $ffprobe
-            ->streams($storagePath)
-            ->videos()
-            ->first()
-            ->get('duration');
-
-        $previewTime = $videoDuration * .33;
-
-        $ffmpeg = FFMpeg::create();
-
-        /**
-         * @var Video
-         */
-        $video = $ffmpeg->open($storagePath);
-
-        $frame = $video->frame(TimeCode::fromSeconds($previewTime));
-
-        $pathPreview = storage_path("app/private/{$name}-preview.jpg");
-
-        $frame->save($pathPreview);
-
-        $image = Image::make($pathPreview);
-        $image->save($pathPreview, 60);
+        $media->getFrameFromSeconds($videoDuration * .33)
+            ->export()
+            ->toDisk('spaces')
+            ->save("private/{$name}-preview.jpg");
 
         $format = new X264();
         $format->setAudioCodec("libmp3lame");
-        $video->save($format, storage_path("app/private/{$name}-full.mp4"));
 
-        copy(storage_path("app/private/{$name}-full.mp4"), storage_path("app/private/{$name}.mp4"));
+        $media = FFMpeg::fromDisk('local')
+            ->open($storagePath);
 
-        Storage::disk('spaces')->put("private/{$name}-full.mp4", Storage::disk('local')->get("private/{$name}-full.mp4"));
-        Storage::disk('spaces')->put("private/{$name}-preview.jpg", Storage::disk('local')->get("private/{$name}-preview.jpg"));
-        Storage::disk('spaces')->put("private/{$name}.mp4", Storage::disk('local')->get("private/{$name}.mp4"));
+        $media
+            ->export()
+            ->toDisk('spaces')
+            ->inFormat($format)
+            ->save("private/{$name}-full.mp4");
 
-        Storage::disk('local')->delete("private/{$name}-full.mp4");
-        Storage::disk('local')->delete("private/{$name}-preview.jpg");
-        Storage::disk('local')->delete("private/{$name}.mp4");
+        $media
+            ->export()
+            ->toDisk('spaces')
+            ->inFormat($format)
+            ->save("private/{$name}.mp4");
 
         return [
             "orientation" => $this->getOrientation($videoDimensions->getWidth(), $videoDimensions->getHeight()),
             "ext" => "mp4",
-            "preview" => storage_path("app/private/{$name}-preview.jpg"),
+            "preview" => "{$name}-preview.jpg",
         ];
     }
 
@@ -145,7 +136,7 @@ class MediaManager implements ShouldQueue
     {
         $image = Image::make($storagePath)->orientate();
 
-        $image->save(storage_path("app/private/{$name}-full.{$this->ext}"));
+        $fullImage = $image->stream()->detach();
 
         $image = Image::make($storagePath)->orientate();
 
@@ -153,13 +144,10 @@ class MediaManager implements ShouldQueue
             $constraint->aspectRatio();
         });
 
-        $image->save(storage_path("app/private/{$name}.{$this->ext}"), 80);
+        $stdImage = $image->stream()->detach();
 
-        Storage::disk('spaces')->put("private/{$name}-full.{$this->ext}", Storage::disk('local')->get("private/{$name}-full.{$this->ext}"));
-        Storage::disk('spaces')->put("private/{$name}.{$this->ext}", Storage::disk('local')->get("private/{$name}.{$this->ext}"));
-
-        Storage::disk('local')->delete("private/{$name}-full.{$this->ext}");
-        Storage::disk('local')->delete("private/{$name}.{$this->ext}");
+        Storage::put("private/{$name}-full.{$this->ext}", $fullImage);
+        Storage::put("private/{$name}.{$this->ext}", $stdImage);
 
         return [
             "orientation" => $this->getOrientation($image->width(), $image->height()),

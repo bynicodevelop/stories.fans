@@ -184,6 +184,7 @@ return [
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
         Artesaos\SEOTools\Providers\SEOToolsServiceProvider::class,
+        ProtoneMedia\LaravelFFMpeg\Support\ServiceProvider::class,
 
 
     ],
@@ -243,6 +244,7 @@ return [
         'Premium' => App\Helpers\PremiumHelper::class,
         'FormatNumber' => App\Helpers\FormatNumberHelper::class,
         'SEO' => Artesaos\SEOTools\Facades\SEOTools::class,
+        'FFMpegFacade' => ProtoneMedia\LaravelFFMpeg\Support\FFMpeg::class
     ],
 
 ];

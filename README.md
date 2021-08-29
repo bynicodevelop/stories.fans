@@ -1,6 +1,7 @@
 ## Packages
 
 [SEOTools](https://github.com/artesaos/seotools)
+[Laravel FFMpeg](https://packagist.org/packages/pbmedia/laravel-ffmpeg)
 
 
 ## Stripe Dev Mode

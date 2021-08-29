@@ -6,14 +6,34 @@ use App\Events\PostCreatedEvent;
 use App\Jobs\MediaManager;
 use App\Models\Media;
 use ContentRequiresException;
+use Facades\Livewire\GenerateSignedUploadUrl;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 use Livewire\Component;
+use Livewire\FileUploadConfiguration;
 use Livewire\WithFileUploads;
 
 class Editor extends Component
 {
     use WithFileUploads;
+
+    public function startUpload($name, $fileInfo, $isMultiple)
+    {
+        if (FileUploadConfiguration::isUsingS3()) {
+            throw_if($isMultiple, S3DoesntSupportMultipleFileUploads::class);
+
+            $file = UploadedFile::fake()->create($fileInfo[0]['name'], $fileInfo[0]['size'] / 1024, $fileInfo[0]['type']);
+
+            $this->emit('upload:generatedSignedUrlForS3', $name, GenerateSignedUploadUrl::forS3($file))->self();
+
+            return;
+        }
+
+        $this->emit('upload:generatedSignedUrl', $name, GenerateSignedUploadUrl::forLocal())->self();
+    }
 
     public function getListeners()
     {
@@ -79,13 +99,6 @@ class Editor extends Component
     public function updatedMedia()
     {
         $this->validate();
-
-        $this->preUploadMedia();
-    }
-
-    public function preUploadMedia()
-    {
-        $this->media->store('media');
     }
 
     public function post()

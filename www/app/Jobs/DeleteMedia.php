@@ -47,8 +47,8 @@ class DeleteMedia implements ShouldQueue
             ];
 
             foreach ($listPathes as $path) {
-                if (Storage::disk('spaces')->exists($path)) {
-                    Storage::disk('spaces')->delete($path);
+                if (Storage::exists($path)) {
+                    Storage::delete($path);
                 }
             }
         }
