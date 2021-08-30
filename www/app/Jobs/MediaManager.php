@@ -83,6 +83,7 @@ class MediaManager implements ShouldQueue
         Log::debug("Delete temporary file", [
             "path" => $path
         ]);
+
         Storage::disk('local')->delete("tmp/{$this->name}");
 
         event(new PostCreatedEvent());
@@ -104,24 +105,23 @@ class MediaManager implements ShouldQueue
 
         $media->getFrameFromSeconds($videoDuration * .33)
             ->export()
-            ->toDisk('spaces')
+            ->toDisk(config('filesystems.default'))
             ->save("private/{$name}-preview.jpg");
 
-        $format = new X264();
-        $format->setAudioCodec("libmp3lame");
+        $format = new X264('libmp3lame', 'libx264');
 
         $media = FFMpeg::fromDisk('local')
             ->open($storagePath);
 
         $media
             ->export()
-            ->toDisk('spaces')
+            ->toDisk(config('filesystems.default'))
             ->inFormat($format)
             ->save("private/{$name}-full.mp4");
 
         $media
             ->export()
-            ->toDisk('spaces')
+            ->toDisk(config('filesystems.default'))
             ->inFormat($format)
             ->save("private/{$name}.mp4");
 

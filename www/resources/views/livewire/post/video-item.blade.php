@@ -1,3 +1,4 @@
+{{-- <div class="h-96 overflow-hidden flex items-center"> --}}
 <div>
     @if ($media['type'] == \App\Models\Media::IMAGE)
         <img class="object-contain" src="{{ route('media', ['id' => $media['id']]) }}"
