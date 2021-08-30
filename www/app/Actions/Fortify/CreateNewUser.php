@@ -7,6 +7,7 @@ use App\Mail\WelcomeMail;
 use App\Models\InvitationStat;
 use App\Models\User;
 use App\Notifications\WelcomeEmail;
+use App\Traits\CreateUniqueSlug;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -17,6 +18,7 @@ use Laravel\Jetstream\Jetstream;
 class CreateNewUser implements CreatesNewUsers
 {
     use PasswordValidationRules;
+    use CreateUniqueSlug;
 
     /**
      * Validate and create a newly registered user.
@@ -34,13 +36,7 @@ class CreateNewUser implements CreatesNewUsers
             'parent_id' => ['required'],
         ])->validate();
 
-        $slug = Str::slug($input['name']);
-
-        $userFound = User::where('slug', $slug)->get();
-
-        if ($userFound->sum() > 0) {
-            $slug = Str::slug($input['name']) . '-' . $userFound->sum();
-        }
+        $slug = $this->getUniqueSlug(Str::slug($input['name']));
 
         /**
          * @var User $user
