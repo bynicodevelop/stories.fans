@@ -1,12 +1,12 @@
 name: Stories app Deployment
 
-# on:
-#   release:
-#     types: [ published ]
-
 on:
-  push:
-    branches: [ main ]
+  release:
+    types: [ published ]
+
+# on:
+#   push:
+#     branches: [ main ]
 
 jobs: 
   deploy: 
