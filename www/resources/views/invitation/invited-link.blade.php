@@ -1,5 +1,4 @@
-<x-jet-form-section submit="copyLink
-">
+<x-jet-form-section submit="copyLink">
     <x-slot name="title">
         {{ __('invitation.information') }}
     </x-slot>

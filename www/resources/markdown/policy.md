@@ -4,6 +4,11 @@
 
 Devant le développement des nouveaux outils de communication, il est nécessaire de porter une attention particulière à la protection de la vie privée. C’est pourquoi, nous nous engageons à respecter la confidentialité des renseignements personnels que nous collectons.
 
+## Inscription
+
+Avant l'inscription l'utilisateur reconnait avoir 18 ans ou plus. L'inscription des mineurs n'est pas autorisé.
+
+L'utilisateur reconnait que le site Stories.fans peut lui demander des pièces justificatives (carte d'identité, passport...) afin de vérifier par le biais de son identitié, son age. Toute demande d'identité sans réponses sous 7 jours peut entrainer la suspenssion du compte et suspension sans réserve des services proposés.
 ## Collecte des renseignements personnels
 
 ### Adresse électronique
