@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ open: false }" class="border-b border-gray-100 mb-10 md:mb-0">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -156,7 +156,7 @@
 
                                     <x-jet-dropdown-link href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
-                                                                                            this.closest('form').submit();">
+                                                                                                                                                            this.closest('form').submit();">
                                         {{ __('navigation.logout') }}
                                     </x-jet-dropdown-link>
                                 </form>
@@ -165,6 +165,12 @@
                     </div>
                 </div>
             @endauth
+
+            @guest
+                <div class="flex items-center ml-6">
+                    <x-default-link-button href="{{ route('login') }}">@lang('common.login')</x-default-link-button>
+                </div>
+            @endguest
 
 
             <!-- Hamburger -->

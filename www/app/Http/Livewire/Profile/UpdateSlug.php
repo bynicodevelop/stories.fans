@@ -13,6 +13,11 @@ class UpdateSlug extends Component
     public $slug;
 
     /**
+     * @var String
+     */
+    public $bio;
+
+    /**
      * @var User
      */
     public $user;
@@ -28,6 +33,7 @@ class UpdateSlug extends Component
         $this->user = Auth::user();
 
         $this->slug = $this->user['slug'];
+        $this->bio = $this->user['bio'];
     }
 
     protected function rules(): array
@@ -54,6 +60,7 @@ class UpdateSlug extends Component
     {
         $this->user->update([
             'slug' => $this->slug,
+            'bio' => $this->bio,
         ]);
 
         $this->emit('saved');

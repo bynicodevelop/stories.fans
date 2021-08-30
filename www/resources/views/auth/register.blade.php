@@ -1,5 +1,6 @@
 <x-guest-layout>
     <x-jet-authentication-card>
+        <x-slot name="logo"></x-slot>
         <h6 class="text-center mb-3">{{ __('register.invited-by') }}</h6>
 
         <x-header-profile :user="$user" />

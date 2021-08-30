@@ -14,8 +14,9 @@ return [
     "slug" => "Identifiant",
     "slug-required" => "L'identifiant est requis",
     "slug-unique" => "L'identifiant existe déjà",
-    "update-slug" => "Mise à jour de votre identifiant",
-    "update-slug-description" => "Votre identifiant doit être unique. Il vous permet d'être trouver sur internet par le bias d'une URL.",
+    "update-slug" => "Personnalisation du profil",
+    "update-slug-description" => "Choisissez un identifiant unique et ajoutez une description de profil.",
+    "bio" => "Statut",
     "follow" => "Suivre",
     "unfollow" => "Ne plus suivre",
 ];
