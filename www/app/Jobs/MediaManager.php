@@ -108,7 +108,7 @@ class MediaManager implements ShouldQueue
             ->toDisk(config('filesystems.default'))
             ->save("private/{$name}-preview.jpg");
 
-        $format = new X264('libmp3lame', 'libx264');
+        $format = new X264();
 
         $media = FFMpeg::fromDisk('local')
             ->open($storagePath);
