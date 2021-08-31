@@ -130,7 +130,7 @@ class EditorTest extends TestCase
         Livewire::test('post.editor')
             ->call('post')
             ->assertEmitted('showMessage', [
-                "message" => "post.invalid-content"
+                "message" => "post.required-content"
             ]);
     }
 

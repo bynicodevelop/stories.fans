@@ -143,7 +143,7 @@ class Editor extends Component
     {
         if (empty($this->content) && empty($this->media)) {
             $this->emitTo('alert-component', 'showMessage', [
-                "message" => "post.invalid-content"
+                "message" => "post.required-content"
             ]);
 
             return;

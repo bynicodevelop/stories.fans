@@ -14,5 +14,7 @@ return [
     "clear-content" => "Supprimer ce contenu",
     "monetize-posts" => "Monétiser mes posts",
     "premium-content" => "Contenu premium",
+    "required-content" => "Le contenu est requis",
+    "required-comment" => "Le commentaire est requis",
     "button" => "Post",
 ];
