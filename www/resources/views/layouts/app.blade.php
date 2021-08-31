@@ -83,6 +83,8 @@
             {{ $slot }}
         </main>
 
+        @include('cookie-consent::index')
+
         <footer>
             <div class="max-w-3xl mx-auto flex items-center justify-center h-32">
                 <a class="text-sm mx-3 hover:text-pink-500 hover:underline transition duration-500 ease-in-out"

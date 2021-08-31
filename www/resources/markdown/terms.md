@@ -87,6 +87,11 @@ A défaut d’acceptation, l’Utilisateur est informé que certaines fonctionna
 
 L’Utilisateur pourra désactiver ces cookies par l’intermédiaire des paramètres figurant au sein de son logiciel de navigation.
 
+Les informations de navigation sont collecté par différents services de traking comment : 
+
+* [Google Tag Manager](https://marketingplatform.google.com/intl/fr/about/analytics/tag-manager/use-policy/)
+* [Google Analytics](https://marketingplatform.google.com/about/analytics/terms/fr/)
+
 ## ARTICLE 8 : Publication par l’Utilisateur
 
 Le site permet aux membres de publier les contenus suivants :

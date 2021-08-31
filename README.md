@@ -2,6 +2,7 @@
 
 [SEOTools](https://github.com/artesaos/seotools)
 [Laravel FFMpeg](https://packagist.org/packages/pbmedia/laravel-ffmpeg)
+[Laravel cookie consent](https://github.com/spatie/laravel-cookie-consent)
 
 
 ## Stripe Dev Mode
