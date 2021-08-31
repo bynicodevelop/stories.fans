@@ -2,16 +2,15 @@
 
 namespace Tests\Unit\App\Traits;
 
-use App\Actions\Fortify\CreateNewUser;
 use App\Models\User;
+use App\Traits\CreateUniqueSlug;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Mockery;
-use Mockery\Mock;
 use Tests\TestCase;
 
-class CreateUniqueSlug_test extends TestCase
+class CreateUniqueSlugTest extends TestCase
 {
     use DatabaseMigrations;
+    use CreateUniqueSlug;
 
     public function test_create_new_slug()
     {
@@ -20,9 +19,7 @@ class CreateUniqueSlug_test extends TestCase
             "slug" => "jeff"
         ]);
 
-        $createUser = new CreateNewUser();
-
-        $response = $createUser->getUniqueSlug("john");
+        $response = $this->getUniqueSlug("john");
 
         $this->assertEquals($response, "john");
     }
@@ -34,9 +31,7 @@ class CreateUniqueSlug_test extends TestCase
             "slug" => "jeff"
         ]);
 
-        $createUser = new CreateNewUser();
-
-        $response = $createUser->getUniqueSlug("jeff");
+        $response = $this->getUniqueSlug("jeff");
 
         $this->assertEquals($response, "jeff-1");
     }

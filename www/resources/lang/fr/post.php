@@ -10,4 +10,9 @@ return [
     "post-send" => "Votre contenu est envoyé, il va apparaitre dans quelques instants",
     "post-comment" => "Ecrire un commentaire",
     "number-comments" => "{1} Afficher l'autre commentaire|[2,*] Afficher les :number autres commentaires",
+    "content-ready-to-send" => "Votre média est prêt à être envoyé.",
+    "clear-content" => "Supprimer ce contenu",
+    "monetize-posts" => "Monétiser mes posts",
+    "premium-content" => "Contenu premium",
+    "button" => "Post",
 ];

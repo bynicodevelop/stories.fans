@@ -23,7 +23,11 @@ class MediaManager implements ShouldQueue
 
     const PORTRAIT = "portrait";
 
-    private $post;
+    /**
+     *
+     * @var User
+     */
+    private $user;
 
     private $mediaType;
 
@@ -31,14 +35,20 @@ class MediaManager implements ShouldQueue
 
     private $ext;
 
+    private $content;
+
+    private $isPremium;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($post, $mediaType, $name, $ext)
+    public function __construct($user, $content, $isPremium, $mediaType, $name, $ext)
     {
-        $this->post = $post;
+        $this->user = $user;
+        $this->content = $content;
+        $this->isPremium = $isPremium;
         $this->mediaType = $mediaType;
         $this->name = $name;
         $this->ext = $ext;
@@ -61,30 +71,55 @@ class MediaManager implements ShouldQueue
         ]);
 
         if ($this->mediaType == Media::IMAGE) {
-            $storagePath = Storage::disk('local')->get($path);
+            $storagePath = storage_path("app/{$path}"); // Storage::disk('local')->get($path);
+
+            Log::info("Run traitement image", [
+                "path" => $storagePath
+            ]);
 
             extract($this->imageStorage($storagePath, $name));
-        } else {
+        } else if ($this->mediaType == Media::VIDEO) {
+            Log::info("Run traitement video", [
+                "path" => $path
+            ]);
+
             extract($this->videoStorage($path, $name));
         }
 
-        Log::debug("Orientation file: ", [
-            "orientation" => $orientation
+        Log::debug("Create new post");
+
+        $post = $this->user->posts()->create([
+            "content" => empty($this->content) ? null : $this->content,
+            "is_premium" => $this->isPremium,
         ]);
 
-        $this->post->media()->create([
-            "type" => $this->mediaType,
-            "name_preview" => $preview,
-            "name" => $name,
-            "ext" => $ext,
-            "orientation" => $orientation,
+        Log::debug("Post created", [
+            "post_id" => $post["id"]
         ]);
+
+        if ($this->mediaType != Media::POST) {
+            Log::debug("Create new media");
+
+            Log::debug("Orientation file: ", [
+                "orientation" => $orientation
+            ]);
+
+            $post->media()->create([
+                "type" => $this->mediaType,
+                "name_preview" => $preview,
+                "name" => $name,
+                "ext" => $ext,
+                "orientation" => $orientation,
+            ]);
+        }
 
         Log::debug("Delete temporary file", [
             "path" => $path
         ]);
 
-        Storage::disk('local')->delete("tmp/{$this->name}");
+        if (Storage::disk('local')->exists("tmp/{$this->name}")) {
+            Storage::disk('local')->delete("tmp/{$this->name}");
+        }
 
         event(new PostCreatedEvent());
     }
@@ -136,6 +171,7 @@ class MediaManager implements ShouldQueue
     {
         $image = Image::make($storagePath)->orientate();
 
+        // Create stream to send image from file
         $fullImage = $image->stream()->detach();
 
         $image = Image::make($storagePath)->orientate();
@@ -144,6 +180,7 @@ class MediaManager implements ShouldQueue
             $constraint->aspectRatio();
         });
 
+        // Create stream to send image from file
         $stdImage = $image->stream()->detach();
 
         Storage::put("private/{$name}-full.{$this->ext}", $fullImage);
