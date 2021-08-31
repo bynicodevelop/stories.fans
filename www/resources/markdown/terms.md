@@ -74,11 +74,17 @@ Des liens hypertextes peuvent être présents sur le site. L’Utilisateur est i
 ## ARTICLE 7 : Cookies
 
 L’Utilisateur est informé que lors de ses visites sur le site, un cookie peut s’installer automatiquement sur son logiciel de navigation.
+
 Les cookies sont de petits fichiers stockés temporairement sur le disque dur de l’ordinateur de l’Utilisateur par votre navigateur et qui sont nécessaires à l’utilisation du site https://stories.fans. Les cookies ne contiennent pas d’information personnelle et ne peuvent pas être utilisés pour identifier quelqu’un. Un cookie contient un identifiant unique, généré aléatoirement et donc anonyme. Certains cookies expirent à la fin de la visite de l’Utilisateur, d’autres restent.
+
 L’information contenue dans les cookies est utilisée pour améliorer le site https://stories.fans.
+
 En naviguant sur le site, L’Utilisateur les accepte.
+
 L’Utilisateur doit toutefois donner son consentement quant à l’utilisation de certains cookies.
+
 A défaut d’acceptation, l’Utilisateur est informé que certaines fonctionnalités ou pages risquent de lui être refusées.
+
 L’Utilisateur pourra désactiver ces cookies par l’intermédiaire des paramètres figurant au sein de son logiciel de navigation.
 
 ## ARTICLE 8 : Publication par l’Utilisateur
@@ -90,13 +96,48 @@ Le site permet aux membres de publier les contenus suivants :
 * Des vidéos
 
 Dans ses publications, le membre s’engage à respecter les règles de la Netiquette (règles de bonne conduite de l’internet) et les règles de droit en vigueur.
+
 Le site peut exercer une modération sur les publications et se réserve le droit de refuser leur mise en ligne, sans avoir à s’en justifier auprès du membre.
+
 Le membre reste titulaire de l’intégralité de ses droits de propriété intellectuelle. Mais en publiant une publication sur le site, il cède à la société éditrice le droit non exclusif et gratuit de représenter, reproduire, adapter, modifier, diffuser et distribuer sa publication, directement ou par un tiers autorisé, dans le monde entier, sur tout support (numérique ou physique), pour la durée de la propriété intellectuelle. Le Membre cède notamment le droit d'utiliser sa publication sur internet et sur les réseaux de téléphonie mobile.
+
 La société éditrice s'engage à faire figurer le nom du membre à proximité de chaque utilisation de sa publication.
+
 Tout contenu mis en ligne par l'Utilisateur est de sa seule responsabilité. L'Utilisateur s'engage à ne pas mettre en ligne de contenus pouvant porter atteinte aux intérêts de tierces personnes. Tout recours en justice engagé par un tiers lésé contre le site sera pris en charge par l'Utilisateur.
+
 Le contenu de l'Utilisateur peut être à tout moment et pour n'importe quelle raison supprimé ou modifié par le site, sans préavis.
- 
-## ARTICLE 9 : Droit applicable et juridiction compétente
+
+## ARTICLE 9 : Abonnements
+
+L'utilisateur peut choisir de souscrire à un abonnement payable mensuellement d’un ou plusieurs membres du site Stories.fans. Le paiement est traité conformément à l'article : Coordonnées bancaires des politiques de confidentialité.
+
+Les conditions techniques d'abonnement sont celles rédigées dans les conditions générales du site Stories.fans, ici présent.
+
+### ARTICLE 9.1 : Conditions d'annulation d'abonnement
+
+Les abonnements payables mensuellement sont sans engagement. Par conséquence, chaque utilisateur peut annuler son abonnement à tout moment sans contre partie financière.
+
+L'annulation d'un abonnement entraine par la même occasion, le renoncement sans réserve des tarifs proposés par le membre proposant l'abonnement. 
+
+Une fois l'abonnement annulé, l'utilisateur ne pourra pas récupérer les avantages tarifaires précédents.
+
+### ARTICLE 9.2 : Annulation d'abonnement en cours de période
+
+L'utilisateur peut annuler son abonnement en cours de période.
+
+Le site Stories.fans ne propose pas de remboursement au prorata de la période restante.
+
+L'utilisateur pourra jouir des contenus du membre auquel il a souscrit un abonnement, jusqu'à la fin de la période en cours.
+
+**Par exemple :** 
+
+Si la période d'abonnement commence le 10 du mois, celle-ci se terminera le 10 du mois suivant.
+
+Si l'utilisateur annule son abonnement le 20, alors il pourra profiter des contenus exclusifs du membre jusqu'au 10 du mois suivant.
+
+À la fin de cette période, l'utilisateur n'aura plus accès aux contenus exclusifs.
+
+## ARTICLE 10 : Droit applicable et juridiction compétente
 
 La législation française s'applique au présent contrat. En cas d'absence de résolution amiable d'un litige né entre les parties, les tribunaux français seront seuls compétents pour en connaître.
 Pour toute question relative à l’application des présentes CGU, vous pouvez joindre l’éditeur aux coordonnées inscrites à l’ARTICLE 1.

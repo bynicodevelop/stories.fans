@@ -159,6 +159,8 @@
     </div>
 
     <div class="max-w-4xl mx-auto mt-10 px-5 py-5 text-xs text-gray-700 text-center rounded">
-        {{ __('plan.cgv') }}
+        {!! __('plan.cgv', [
+    'policy' => '<a href="' . route('terms.show') . '" target="_blank">' . __('common.terms_of_service') . '</a>',
+]) !!}
     </div>
 </x-app-layout>
