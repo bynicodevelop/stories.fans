@@ -13,14 +13,20 @@
     }
 })">
             <div class="flex-shrink-0 relative">
-                @protectedcontent ($post)
-                <img src="{{ route('media', ['id' => $media['id']]) }}" alt="@{{ $post['user']['name'] }}">
-                @elseprotectedcontent
-                <video x-ref="video" @click="play = !play" loop playsinline preload="none"
-                    poster="{{ route('media', ['id' => $media['id'], 'preview' => true]) }}">
-                    <source src="{{ route('media', ['id' => $media['id']]) }}">
-                </video>
-                @endprotectedcontent
+                @if ($media['type'] == \App\Models\Media::VIDEO)
+                    @can('seePost', $post)
+                        <video x-ref="video" @click="play = !play" loop playsinline preload="none"
+                            poster="{{ route('media', ['id' => $media['id'], 'preview' => true]) }}">
+                            <source src="{{ route('media', ['id' => $media['id']]) }}">
+                        </video>
+                    @else
+                        <img src="{{ route('media', ['id' => $media['id'], 'preview' => true]) }}"
+                            alt="@{{ $post['user']['name'] }}">
+                    @endcan
+
+                @else
+                    <img src="{{ route('media', ['id' => $media['id']]) }}" alt="@{{ $post['user']['name'] }}">
+                @endif
 
                 <div @click="play = true" x-show="!play" x-transition:leave="transition ease-in duration-300"
                     x-transition:leave-start="opacity-100 transform scale-100"

@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\Media;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class MediaService
@@ -41,7 +40,8 @@ class MediaService
             "name" => $media["name"],
             "type" => $media["type"],
             "ext" => $media["ext"],
-            "isBlurred" => !empty($media['post']['is_premium']) && is_null($subscription)
+            "post" => $media["post"],
+            // "isBlurred" => !empty($media['post']['is_premium']) && is_null($subscription)
         ];
     }
 }

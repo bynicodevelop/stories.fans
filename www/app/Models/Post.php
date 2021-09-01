@@ -9,6 +9,9 @@ class Post extends Model
 {
     use HasFactory;
 
+    const CONTENT = "content";
+    const IS_PREMIUM = "is_premium";
+
     protected $fillable = [
         'content',
         'is_premium',

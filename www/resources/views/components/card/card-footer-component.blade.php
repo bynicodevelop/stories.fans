@@ -8,11 +8,11 @@
             @livewire('post.like-button', ['post' => $post], key($post['id']))
         @endauth
 
-        @premium ($post)
-        <x-default-link-button class="ml-2" href="{{ route('plans-show', ['userId' => $post['user_id']]) }}">
-            {{ __('plan.premium-button') }}
-        </x-default-link-button>
-        @endpremium
+        @cannot('seePremiumButton', $post)
+            <x-default-link-button class="ml-2" href="{{ route('plans-show', ['userId' => $post['user_id']]) }}">
+                {{ __('plan.premium-button') }}
+            </x-default-link-button>
+        @endcannot
     </div>
 
     @livewire('post.post-comment', ['post' => $post, 'isUnique' => $isUnique], key($post['id']))
