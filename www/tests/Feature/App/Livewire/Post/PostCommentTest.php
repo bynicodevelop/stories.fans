@@ -19,7 +19,7 @@ class PostCommentTest extends TestCase
             'post' => new Post([
                 'id' => 1
             ])
-        ])->assertDontSeeHtml('<form wire:submit.prevent="sendComment">');
+        ])->assertDontSeeHtml('<form x-data wire:submit.prevent="sendComment">');
     }
 
     public function test_clear()

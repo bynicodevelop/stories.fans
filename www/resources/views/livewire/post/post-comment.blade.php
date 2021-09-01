@@ -2,7 +2,7 @@
     @livewire('post.post-comments-item', ['post' => $post, 'isUnique' => $isUnique], key($post->id))
 
     @auth
-        <form wire:submit.prevent="sendComment">
+        <form x-data wire:submit.prevent="sendComment">
             <div class="px-2 border-t">
                 <div class="relative">
                     <input type="text"

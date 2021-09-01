@@ -28,7 +28,7 @@ class PostCommentsItem extends Component
     {
         $nComments = $this->post->comments()->count();
 
-        $commentsQuery = $this->post->comments()->with('user')->orderBy('created_at', 'desc');
+        $commentsQuery = $this->post->comments()->with('user')->orderBy('created_at', 'asc');
 
         if (!$this->isUnique) {
             $commentsQuery->take($this->limitComments);
