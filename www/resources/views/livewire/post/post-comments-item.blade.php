@@ -16,9 +16,6 @@
                             href="{{ route('profiles-slug', ['slug' => $comment['user']['slug']]) }}"><strong>{{ $comment['user']['name'] }}</strong></a>
                         {{ $comment['comment'] }}
                     </span>
-                    {{-- <span>
-                        <i class="far fa-heart text-xs"></i>
-                    </span> --}}
                 </div>
             @endforeach
         </div>
