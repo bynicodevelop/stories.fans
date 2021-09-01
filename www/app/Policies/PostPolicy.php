@@ -41,7 +41,7 @@ class PostPolicy
      */
     public function create(User $user)
     {
-        //
+        return true;
     }
 
     /**
@@ -65,7 +65,7 @@ class PostPolicy
      */
     public function delete(User $user, Post $post)
     {
-        //
+        return $user['id'] == $post['user_id'];
     }
 
     /**
@@ -125,7 +125,7 @@ class PostPolicy
         $result = $user->subscriptions()->with(['plan' => function ($query) use ($post) {
             $query->where('user_id', $post['user']['id'])->first();
         }])
-            ->where('ends_at', '>', now()->timestamp)
+            ->whereDate('ends_at', '>', now())
             ->get()
             ->filter(function ($r) {
                 return !empty($r['plan']);

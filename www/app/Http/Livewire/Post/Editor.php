@@ -5,9 +5,11 @@ namespace App\Http\Livewire\Post;
 use App\Events\PostCreatedEvent;
 use App\Jobs\MediaManager;
 use App\Models\Media;
+use App\Models\Post;
 use App\Traits\MediaHelper;
 use ContentRequiresException;
 use Facades\Livewire\GenerateSignedUploadUrl;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -17,6 +19,7 @@ use Livewire\WithFileUploads;
 
 class Editor extends Component
 {
+    use AuthorizesRequests;
     use WithFileUploads;
     use MediaHelper;
 
@@ -86,6 +89,8 @@ class Editor extends Component
 
     public function mount()
     {
+        $this->authorize('create', Post::class);
+
         /**
          * @var User $user
          */

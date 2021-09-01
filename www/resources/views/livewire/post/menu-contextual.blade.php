@@ -13,16 +13,13 @@
                     id="menu-item-6">{{ __('contextual-menu.share') }}</button>
             </div>
 
-            @auth
-                @if ($post['user_id'] == Auth::id())
-                    <div class="py-1" role="none">
-                        <a href="#" wire:click.prevent="$toggle('confirmingPostDeletion')"
-                            class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1"
-                            id="menu-item-6">{{ __('contextual-menu.delete') }}</a>
-                    </div>
-                @endif
-
-            @endauth
+            @can('delete', $post)
+                <div class="py-1" role="none">
+                    <a href="#" wire:click.prevent="$toggle('confirmingPostDeletion')"
+                        class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1"
+                        id="menu-item-6">{{ __('contextual-menu.delete') }}</a>
+                </div>
+            @endcan
         </div>
     </div>
 

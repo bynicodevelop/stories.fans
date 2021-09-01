@@ -16,5 +16,5 @@ return [
     "premium-content" => "Contenu premium",
     "required-content" => "Le contenu est requis",
     "required-comment" => "Le commentaire est requis",
-    "button" => "Post",
+    "button" => "Post"
 ];

@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\User;
 use App\Models\UserSubscription;
 use App\Policies\PostPolicy;
+use DateTime;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -230,7 +231,7 @@ class PostPolicyTest extends TestCase
             'plan_id' => 1,
             'price_period' => Plan::PRICE_MONTHLY,
             'stripe_id' => "id_stripe",
-            'ends_at' =>  now()->addDays(30)->timestamp,
+            'ends_at' =>  now()->addDays(30),
             'trial_ends_at' => null,
         ];
 
@@ -262,5 +263,43 @@ class PostPolicyTest extends TestCase
         $result = $this->postPolicy->seePost($user, $user['posts'][0]);
 
         $this->assertTrue($result);
+    }
+
+    /**
+     * Verifie que tout le monde de connecté peut créer du contenu
+     */
+    public function test_create_with_authenticated_user()
+    {
+        $authenticatedUser = User::factory()->create();
+
+        $result = $this->postPolicy->create($authenticatedUser);
+
+        $this->assertTrue($result);
+    }
+
+    /**
+     * Vérifie qu'un utilisateur peut supprimer son contenu
+     */
+    public function test_delete_with_post_owner_allow()
+    {
+        $owner = User::factory()->has(Post::factory()->count(1))->create();
+
+        $result = $this->postPolicy->delete($owner, $owner['posts'][0]);
+
+        $this->assertTrue($result);
+    }
+
+    /**
+     * Vérifier qu'un utilisateur ne peut pas supprimer le contenu de quelqu'un d'autre
+     */
+    public function test_delete_with_post_owner_deny()
+    {
+        $owner = User::factory()->has(Post::factory()->count(1))->create();
+
+        $user = User::factory()->create();
+
+        $result = $this->postPolicy->delete($user, $owner['posts'][0]);
+
+        $this->assertFalse($result);
     }
 }

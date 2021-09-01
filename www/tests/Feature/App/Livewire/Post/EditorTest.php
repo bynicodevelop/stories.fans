@@ -154,4 +154,10 @@ class EditorTest extends TestCase
 
         Queue::assertPushed(MediaManager::class);
     }
+
+    public function test_send_post_with_unauthenticated_user()
+    {
+        Livewire::test('post.editor')
+            ->assertForbidden();
+    }
 }
