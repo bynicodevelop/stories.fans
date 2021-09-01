@@ -1,6 +1,6 @@
 <nav x-data="{ open: false }" class="border-b border-gray-100 mb-10 md:mb-0">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 {{ Route::current()->getName() == 'index' ? '' : 'bg-white' }}">
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
@@ -156,7 +156,7 @@
 
                                     <x-jet-dropdown-link href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
-                                                                                                                                                            this.closest('form').submit();">
+                                                                                                                                                                    this.closest('form').submit();">
                                         {{ __('navigation.logout') }}
                                     </x-jet-dropdown-link>
                                 </form>
