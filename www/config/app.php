@@ -185,6 +185,7 @@ return [
         App\Providers\JetstreamServiceProvider::class,
         Artesaos\SEOTools\Providers\SEOToolsServiceProvider::class,
         ProtoneMedia\LaravelFFMpeg\Support\ServiceProvider::class,
+        App\Providers\BladeMarkdownProvider::class,
 
 
     ],

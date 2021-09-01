@@ -40,34 +40,5 @@ class AppServiceProvider extends ServiceProvider
                 echo \App\Helpers\PriceHelper::price($params[\'price\'], $params[\'period\']);
             ?>';
         });
-
-        Blade::directive('premium', function ($expression) {
-            return '<?php  
-
-                if($this->isPremium(' . $expression . ')) {
-            ?>';
-        });
-
-        Blade::directive('elsepremium', function ($expression) {
-            return '<?php } else { ?>';
-        });
-
-        Blade::directive('endpremium', function ($expression) {
-            return '<?php } ?>';
-        });
-
-        Blade::directive('protectedcontent', function ($expression) {
-            return '<?php  
-                if(\App\Helpers\PremiumHelper::protectedContent(' . $expression . ')) {
-            ?>';
-        });
-
-        Blade::directive('elseprotectedcontent', function ($expression) {
-            return '<?php } else { ?>';
-        });
-
-        Blade::directive('endprotectedcontent', function ($expression) {
-            return '<?php } ?>';
-        });
     }
 }
