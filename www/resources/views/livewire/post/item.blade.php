@@ -3,7 +3,7 @@
 
     @if (!empty($post['content']))
         <div class="text-gray-800 dark:text-gray-100 leading-snug md:leading-normal pb-3 px-4">
-            {{ $post['content'] }}
+            @md($post['content'])
         </div>
     @endif
 

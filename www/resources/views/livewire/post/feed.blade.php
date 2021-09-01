@@ -22,9 +22,14 @@
             window.onscroll = function(ev) {
                 if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
                     window.livewire.emit('loadMore')
-
                 }
             };
+
+            document.addEventListener('livewire:load', function() {
+                window.addEventListener('newPostsLoaded', function() {
+                    Prism.highlightAll();
+                })
+            })
         </script>
     @endpush
 </div>

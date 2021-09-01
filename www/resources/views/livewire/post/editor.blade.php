@@ -14,11 +14,9 @@
         </div>
 
         <form wire:submit.prevent="post">
-            <div>
-                <textarea
-                    class="tracking-wide py-2 px-4 mb-3 leading-relaxed appearance-none block w-full bg-white border border-gray-200 rounded focus:outline-none focus:border-gray-500"
-                    wire:model="content" rows="4">
-                </textarea>
+            <div wire:ignore
+                class="tracking-wide px-2 mb-3 leading-relaxed appearance-none block w-full bg-white border border-gray-200 rounded focus:outline-none focus:border-gray-500">
+                <textarea id="editor" wire:model="content" rows="4" class="border-none resize-none h-16"></textarea>
             </div>
             <div class="flex justify-between" x-data="{ isUploading: false, progress: 0 }"
                 x-on:livewire-upload-start="isUploading = true; $wire.uploading(true)"
@@ -88,10 +86,54 @@
         </div>
     @endif
 
+    @push('styles')
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+
+        <style>
+            .CodeMirror,
+            .CodeMirror-scroll {
+                min-height: 3.4rem;
+                border: none;
+                font-size: 16px;
+            }
+
+            .CodeMirror {
+                padding: 10px 0;
+            }
+
+            .CodeMirror-vscrollbar {
+                display: none !important;
+            }
+
+        </style>
+    @endpush
+
     @push('scripts')
+        <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+
         <script type="application/javascript">
             document.querySelector('#upload-media').addEventListener('click', function() {
                 document.querySelector('input[type=file]').click()
+            })
+
+            document.addEventListener('livewire:load', function() {
+                var simplemde = new SimpleMDE({
+                    element: document.getElementById("editor"),
+                    toolbar: false,
+                    status: false,
+                    autofocus: false,
+                    spellChecker: false,
+                    placeholder: '# Laissez libre cours à votre imagination...',
+                    forceSync: true,
+                });
+
+                simplemde.codemirror.on("change", function() {
+                    @this.content = simplemde.value();
+                });
+
+                window.addEventListener('clear', function() {
+                    simplemde.value('');
+                })
             })
         </script>
     @endpush

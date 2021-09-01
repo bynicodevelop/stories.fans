@@ -1,4 +1,5 @@
 require("./bootstrap");
+require("./prism");
 
 import Alpine from "alpinejs";
 import Echo from "laravel-echo";
@@ -13,3 +14,5 @@ if (window.configJS != undefined) {
 window.Alpine = Alpine;
 
 Alpine.start();
+
+Prism.highlightAll();

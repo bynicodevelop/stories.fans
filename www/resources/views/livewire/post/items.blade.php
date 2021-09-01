@@ -19,8 +19,6 @@
         </div>
     @endif
 
-
-
     @push('scripts')
         <script>
             window.onscroll = function(ev) {
@@ -28,6 +26,12 @@
                     window.livewire.emit('loadMore')
                 }
             };
+
+            document.addEventListener('livewire:load', function() {
+                window.addEventListener('newPostsLoaded', function() {
+                    Prism.highlightAll();
+                })
+            })
         </script>
     @endpush
 </div>

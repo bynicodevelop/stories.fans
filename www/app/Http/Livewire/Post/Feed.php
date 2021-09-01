@@ -4,7 +4,6 @@ namespace App\Http\Livewire\Post;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Livewire\Component;
 
@@ -42,6 +41,8 @@ class Feed extends Component
     public function loadMore(): void
     {
         $this->perPage += 5;
+
+        $this->dispatchBrowserEvent('newPostsLoaded');
     }
 
     public function render(): View

@@ -183,6 +183,7 @@ class Editor extends Component
 
         $this->clear();
         $this->isDisabled();
+        $this->dispatchBrowserEvent('clear');
     }
 
     public function render()

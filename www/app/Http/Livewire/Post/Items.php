@@ -38,6 +38,8 @@ class Items extends Component
     public function loadMore()
     {
         $this->perPage += 5;
+
+        $this->dispatchBrowserEvent('newPostsLoaded');
     }
 
     public function render()
