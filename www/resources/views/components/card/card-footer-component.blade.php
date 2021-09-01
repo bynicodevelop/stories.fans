@@ -9,9 +9,19 @@
         @endauth
 
         @cannot('seePremiumButton', $post)
-            <x-default-link-button class="ml-2" href="{{ route('plans-show', ['userId' => $post['user_id']]) }}">
-                {{ __('plan.premium-button') }}
-            </x-default-link-button>
+            @auth
+                <x-default-link-button class="ml-2" href="{{ route('plans-show', ['userId' => $post['user_id']]) }}">
+                    {{ __('plan.premium-button') }}
+                </x-default-link-button>
+            @endauth
+
+            @guest
+                <x-default-link-button class="ml-2"
+                    href="{{ route('register', ['slug' => $post['user']['slug']]) }}">
+                    {{ __('plan.premium-button') }}
+                </x-default-link-button>
+            @endguest
+
         @endcannot
     </div>
 
