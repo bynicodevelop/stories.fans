@@ -5,12 +5,15 @@ namespace App\Http\Livewire\Post;
 use App\Jobs\DeleteMedia;
 use App\Models\Post;
 use App\Models\User;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class MenuContextual extends Component
 {
+    use AuthorizesRequests;
+
     /**
      *
      * @var boolean $confirmingPostDeletion
@@ -40,6 +43,8 @@ class MenuContextual extends Component
 
     public function delete()
     {
+        $this->authorize('delete', $this->post);
+
         Log::debug("Delete post", [
             "post" => $this->post
         ]);
@@ -60,8 +65,6 @@ class MenuContextual extends Component
 
     public function render()
     {
-        $authUser = Auth::user();
-
-        return view('livewire.post.menu-contextual', compact('authUser'));
+        return view('livewire.post.menu-contextual');
     }
 }

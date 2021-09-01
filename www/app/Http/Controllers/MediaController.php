@@ -23,6 +23,8 @@ class MediaController extends Controller
 
     public function index(Request $request, $id)
     {
+        $isBlurred = false;
+
         /**
          * @var User $user
          */
@@ -30,6 +32,12 @@ class MediaController extends Controller
 
         try {
             extract($this->mediaService->blurred($user, $id));
+
+            try {
+                $this->authorize('seePost', $post);
+            } catch (Exception $e) {
+                $isBlurred = true;
+            }
 
             $storagePath = Storage::get("private/{$name}.{$ext}"); // storage_path("app/private/{$name}.{$ext}");
 

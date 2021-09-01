@@ -44,7 +44,7 @@ return [
     "offer" => ":offer% de réduction immédiate",
     "show-title" => "Forfaits",
     "show-description" => "Toutes les offres sont <strong>sans engagement</strong> et <strong>résiliables à tous moment</strong>.<br><br>Notre système d'abonnement est <strong>sécurisé et crypté</strong> par Stripe.",
-    "cgv" => "TODO : conditions",
+    "cgv" => "Conformément aux :policy, les abonnements sur Stories.fans sont sans engagement. Vous pouvez annuler votre abonnement à tout moment sans contrepartie. Si vous annulez un abonnement, vous renoncez, sans réserve, aux conditions de l'offre qui vous ont été faites par le membre de Stories.fans.",
     "pay-monthly" => "Paiement mensuel",
     "pay-quarterly" => "Paiement trimestriel",
     "pay-annually" => "Paiement annuel",

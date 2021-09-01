@@ -13,6 +13,8 @@ class Media extends Model
 
     const IMAGE = "image";
 
+    const POST = "post";
+
     protected $fillable = [
         'name_preview',
         'name',

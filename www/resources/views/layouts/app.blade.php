@@ -32,7 +32,7 @@
 
     <script src="{{ mix('js/app.js') }}" defer></script>
 
-    @if (!empty(config('tag_manager_id')))
+    @if (!empty(config('tabmanager.tag_manager_id')))
         <!-- Google Tag Manager -->
         <script>
             (function(w, d, s, l, i) {
@@ -48,17 +48,17 @@
                 j.src =
                     'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
                 f.parentNode.insertBefore(j, f);
-            })(window, document, 'script', 'dataLayer', {{ config('tag_manager_id') }});
+            })(window, document, 'script', 'dataLayer', {{ config('tabmanager.tag_manager_id') }});
         </script>
         <!-- End Google Tag Manager -->
     @endif
 </head>
 
 <body class="font-sans antialiased">
-    @if (!empty(config('tag_manager_id')))
+    @if (!empty(config('tabmanager.tag_manager_id')))
         <!-- Google Tag Manager (noscript) -->
-        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ config('tag_manager_id') }}" height="0"
-                width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ config('tabmanager.tag_manager_id') }}"
+                height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <!-- End Google Tag Manager (noscript) -->
     @endif
 
@@ -82,6 +82,8 @@
         <main>
             {{ $slot }}
         </main>
+
+        @include('cookie-consent::index')
 
         <footer>
             <div class="max-w-3xl mx-auto flex items-center justify-center h-32">

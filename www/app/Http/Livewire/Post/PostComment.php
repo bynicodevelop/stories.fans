@@ -21,6 +21,9 @@ class PostComment extends Component
 
 
     /**
+     * Is used to differenciate post in the feed
+     * Or unique post
+     * 
      * @var boolean
      */
     public $isUnique = false;
@@ -39,10 +42,20 @@ class PostComment extends Component
         }
     }
 
-    public function sendComment()
+    public function clear(): void
+    {
+        $this->comment = null;
+        $this->isDisabled = true;
+    }
+
+    public function sendComment(): void
     {
         if (empty($this->comment)) {
-            throw new ContentRequiresException();
+            $this->emitTo('alert-component', 'showMessage', [
+                "message" => "post.required-comment"
+            ]);
+
+            return;
         }
 
         $this->post->comments()->create([
@@ -52,8 +65,7 @@ class PostComment extends Component
 
         $this->emitTo('post.post-comments-item', '$refresh');
 
-        $this->comment = "";
-        $this->isDisabled = true;
+        $this->clear();
     }
 
     public function render()

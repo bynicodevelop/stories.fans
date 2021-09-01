@@ -43,7 +43,8 @@ class AppServiceProvider extends ServiceProvider
 
         Blade::directive('premium', function ($expression) {
             return '<?php  
-                if(\App\Helpers\PremiumHelper::isPremium(' . $expression . ')) {
+
+                if($this->isPremium(' . $expression . ')) {
             ?>';
         });
 

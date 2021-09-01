@@ -3,10 +3,13 @@
 namespace App\Http\Livewire\Post;
 
 use App\Models\Post;
+use App\Traits\PremiumHelper;
 use Livewire\Component;
 
 class Item extends Component
 {
+    use PremiumHelper;
+
     /**
      * @var Post
      */

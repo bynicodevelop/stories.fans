@@ -4,12 +4,27 @@
 
 Devant le développement des nouveaux outils de communication, il est nécessaire de porter une attention particulière à la protection de la vie privée. C’est pourquoi, nous nous engageons à respecter la confidentialité des renseignements personnels que nous collectons.
 
+## Inscription
+
+Avant l'inscription l'utilisateur reconnait avoir 18 ans ou plus. L'inscription des mineurs n'est pas autorisé.
+
+L'utilisateur reconnait que le site Stories.fans peut lui demander des pièces justificatives (carte d'identité, passport...) afin de vérifier par le biais de son identitié, son age. Toute demande d'identité sans réponses sous 7 jours peut entrainer la suspenssion du compte et suspension sans réserve des services proposés.
 ## Collecte des renseignements personnels
 
 ### Adresse électronique
+
 Les renseignements personnels que nous collectons sont recueillis au travers de formulaires et grâce à l’interactivité établie entre vous et notre site Web. Nous utilisons également, comme indiqué dans la section suivante, des fichiers témoins et/ou journaux pour réunir des informations vous concernant.
 
+### Coordonnées bancaires
+
+Le site collecte des données de carte bancaire pour la mise en place d'abonnements. Le site Stories.fans ne stocke pas les données physiquement sur ses serveurs.
+
+Les données bancaires sont traitées et stockées sur des serveurs sécurisés de la société Stripe.
+
+La transmission des informations bancaire entre le site Stories.fans et la société Stripe est chiffrée par un certificat SSL.
+
 ## Formulaires et interactivité:
+
 Vos renseignements personnels sont collectés par le biais de formulaire, à savoir :
 
 * Formulaire d'inscription au site Web
