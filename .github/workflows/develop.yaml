@@ -5,9 +5,8 @@ on:
     branches: [ develop ]
 
 jobs: 
-  ci: 
+  install:
     runs-on: ubuntu-latest
-    
     steps: 
       - name: Checkout
         uses: actions/checkout@master
@@ -43,6 +42,10 @@ jobs:
           npm i
           npm run prod
 
+  ci: 
+    needs: [install]
+    runs-on: ubuntu-latest
+    steps: 
       - name: Run tests
         working-directory: ./www
         run: ./vendor/phpunit/phpunit/phpunit
