@@ -24,9 +24,9 @@ class PostCommentMenuContextual extends Component
     {
         $this->authorize('delete', $this->comment);
 
-        // $this->comment->delete();
+        $this->comment->delete();
 
-        // $this->emitTo('post.post-comments-item', '$refresh');
+        $this->emitTo('post.post-comments-item', '$refresh');
 
         $this->emitTo('alert-component', 'showMessage', [
             "message" => "post.required-content"

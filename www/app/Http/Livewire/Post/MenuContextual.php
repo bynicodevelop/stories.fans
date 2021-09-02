@@ -35,9 +35,8 @@ class MenuContextual extends Component
 
     public function copied()
     {
-        $this->dispatchBrowserEvent('banner-message', [
-            'style' => 'success',
-            'message' => __('contextual-menu.copied')
+        $this->emitTo('alert-component', 'showMessage', [
+            "message" => "contextual-menu.copied"
         ]);
     }
 
