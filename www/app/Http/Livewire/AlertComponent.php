@@ -30,7 +30,7 @@ class AlertComponent extends Component
 
     public function toggleShow()
     {
-        $this->show = !$this->show;
+        $this->show = $this->show ? !$this->show : $this->show;
     }
 
     public function showMessage($params)
