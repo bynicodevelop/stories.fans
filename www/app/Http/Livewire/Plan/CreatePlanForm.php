@@ -50,7 +50,7 @@ class CreatePlanForm extends Component
     protected $rules = [
         'name' => 'required|string',
         'content' => 'string',
-        'priceMonthly' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+        'priceMonthly' => 'required|regex:/^\d+(\.\d{1,2})?$/|min:5',
         'priceQuarterly' => 'regex:/^\d+(\.\d{1,2})?$/',
         'priceAnnually' => 'regex:/^\d+(\.\d{1,2})?$/',
         'dayTrial' => 'integer',
@@ -62,6 +62,7 @@ class CreatePlanForm extends Component
             'name.required' => __('plan.required-name'),
             'name.string' => __('plan.name-must-be-string'),
             'priceMonthly.required' => __('plan.required-price-monthly'),
+            'priceMonthly.min' => __('plan.required-price-min'),
             'priceMonthly.regex' => __('plan.price-monthly-must-be-double'),
             'priceQuarterly.regex' => __('plan.price-quarterly-must-be-double'),
             'priceAnnually.regex' => __('plan.price-annually-must-be-double'),

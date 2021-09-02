@@ -32,6 +32,7 @@ return [
     "required-name" => "Le nom de votre formule est requis",
     "name-must-be-string" => "Le nom de votre formule doit être une chaine de caractère",
     "required-price-monthly" => "Vous devez saisir un prix pour votre formule",
+    "required-price-min" => "Vous devez mettre un montant supérieur à 5 €",
     "price-monthly-must-be-double" => "Le prix mensuelle de votre formule doit être un prix valide (ex : 12, 12.23)",
     "price-quarterly-must-be-double" => "Le prix trimestriel de votre formule doit être un prix valide (ex : 12, 12.23)",
     "price-annually-must-be-double" => "Le prix annuel de votre formule doit être un prix valide (ex : 12, 12.23)",
