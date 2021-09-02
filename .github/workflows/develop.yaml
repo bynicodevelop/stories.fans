@@ -7,7 +7,6 @@ on:
 jobs: 
   ci: 
     runs-on: ubuntu-latest
-    
     steps: 
       - name: Checkout
         uses: actions/checkout@master
@@ -42,7 +41,7 @@ jobs:
         run: |
           npm i
           npm run prod
-
+          
       - name: Run tests
         working-directory: ./www
         run: ./vendor/phpunit/phpunit/phpunit
