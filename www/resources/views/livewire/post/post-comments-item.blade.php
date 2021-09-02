@@ -10,12 +10,17 @@
     @if ($nComments)
         <div class="px-4 pb-2">
             @foreach ($comments as $comment)
-                <div class="flex justify-between">
-                    <span class="text-sm">
+                <div class="flex justify-between group">
+                    <p class="text-sm inline pb-1">
                         <a
                             href="{{ route('profiles-slug', ['slug' => $comment['user']['slug']]) }}"><strong>{{ $comment['user']['name'] }}</strong></a>
                         {{ $comment['comment'] }}
-                    </span>
+                    </p>
+                    @auth
+                        @can('delete', $comment)
+                            @livewire('post.post-comment-menu-contextual', ['comment' => $comment], key($comment['id']))
+                        @endcan
+                    @endauth
                 </div>
             @endforeach
         </div>

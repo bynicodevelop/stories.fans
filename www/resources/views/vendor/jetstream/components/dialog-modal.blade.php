@@ -2,16 +2,20 @@
 
 <x-jet-modal :id="$id" :maxWidth="$maxWidth" {{ $attributes }}>
     <div class="px-6 py-4">
-        <div class="text-lg">
-            {{ $title }}
-        </div>
+        @if (!empty($title))
+            <div class="text-lg mb-4">
+                {{ $title }}
+            </div>
+        @endif
 
-        <div class="mt-4">
+        <div>
             {{ $content }}
         </div>
     </div>
 
-    <div class="px-6 py-4 bg-gray-100 text-right">
-        {{ $footer }}
-    </div>
+    @if (!empty($footer))
+        <div class="px-6 py-4 bg-gray-100 text-right">
+            {{ $footer }}
+        </div>
+    @endif
 </x-jet-modal>
