@@ -16,8 +16,8 @@
             @can('delete', $post)
                 <div class="py-1" role="none">
                     <a href="#" wire:click.prevent="$toggle('confirmingPostDeletion')"
-                        class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1"
-                        id="menu-item-6">{{ __('contextual-menu.delete') }}</a>
+                        class="text-red-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1"
+                        id="menu-item-6">{{ __('contextual-menu.delete-content') }}</a>
                 </div>
             @endcan
         </div>

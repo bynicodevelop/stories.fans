@@ -15,7 +15,7 @@
                         <button type="button"
                             class="w-full text-red-700 block px-4 py-2 text-sm focus:outline-none focus:font-semibold"
                             role="menuitem" tabindex="0"
-                            wire:click="delete">{{ __('contextual-menu.share') }}</button>
+                            wire:click="delete">{{ __('contextual-menu.delete-comment') }}</button>
                     </div>
                 </div>
                 <div class="w-full" role="menu" aria-orientation="vertical" aria-labelledby="menu-button"
