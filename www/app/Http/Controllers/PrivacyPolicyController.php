@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Laravel\Jetstream\Jetstream;
 use League\CommonMark\CommonMarkConverter;
-use League\CommonMark\Environment;
+use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
 
 class PrivacyPolicyController extends Controller
@@ -20,7 +20,8 @@ class PrivacyPolicyController extends Controller
     {
         $policyFile = Jetstream::localizedMarkdownPath('policy.md');
 
-        $environment = Environment::createCommonMarkEnvironment();
+        $environment = new Environment();
+
         $environment->addExtension(new GithubFlavoredMarkdownExtension());
 
         return view('policy.index', [
