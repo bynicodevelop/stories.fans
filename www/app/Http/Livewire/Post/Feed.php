@@ -30,7 +30,7 @@ class Feed extends Component
 
     protected $listeners = [
         'loadMore' => 'loadMore',
-        '$refresh'
+        '$refresh' => 'refreshFeed'
     ];
 
     public function mount(User $user): void
@@ -38,11 +38,16 @@ class Feed extends Component
         $this->user = $user;
     }
 
+    public function refreshFeed()
+    {
+        $this->dispatchBrowserEvent('newPostsLoaded');
+    }
+
     public function loadMore(): void
     {
         $this->perPage += 5;
 
-        $this->dispatchBrowserEvent('newPostsLoaded');
+        $this->refreshFeed();
     }
 
     public function render(): View
