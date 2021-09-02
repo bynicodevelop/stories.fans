@@ -53,6 +53,8 @@ class CreateNewUser implements CreatesNewUsers
 
         $user->follow($parentUser);
 
+        $user->follow($user);
+
         if (!empty($input['invited_id'])) {
             InvitationStat::where('id', $input['invited_id'])->update([
                 'user_id' => $user['id']
