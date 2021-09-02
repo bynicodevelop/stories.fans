@@ -2,7 +2,7 @@
     <x-card-header-component :post="$post" :user="$post['user']" :wire:key="$post['id']" />
 
     @if (!empty($post['content']))
-        <div class="text-gray-800 dark:text-gray-100 leading-snug md:leading-normal pb-3 px-4">
+        <div class="text-gray-800 dark:text-gray-100 leading-snug md:leading-normal px-4">
             @md($post['content'])
         </div>
     @endif

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Laravel\Jetstream\Jetstream;
 use League\CommonMark\CommonMarkConverter;
-use League\CommonMark\Environment;
+use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
 
 class TermsOfServiceController extends Controller
@@ -20,7 +20,8 @@ class TermsOfServiceController extends Controller
     {
         $termsFile = Jetstream::localizedMarkdownPath('terms.md');
 
-        $environment = Environment::createCommonMarkEnvironment();
+        $environment = new Environment();
+
         $environment->addExtension(new GithubFlavoredMarkdownExtension());
 
         return view('terms.index', [

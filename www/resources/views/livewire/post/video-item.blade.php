@@ -1,5 +1,5 @@
 {{-- <div class="h-96 overflow-hidden flex items-center"> --}}
-<div>
+<div class="mt-3">
     @if ($media['type'] == \App\Models\Media::IMAGE)
         <img class="object-contain" src="{{ route('media', ['id' => $media['id']]) }}"
             alt="@{{ $post['user']['name'] }}">
