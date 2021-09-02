@@ -35,7 +35,7 @@
             </div>
 
             <input type="hidden" name="parent_id" value="{{ $user['id'] }}">
-            <input type="hidden" name="invited_id" value="{{ $invitedId }}">
+            <input type="hidden" name="invited_id" value="{{ $invitedId ?? $user['id'] }}">
 
             @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
                 <div class="mt-4">
