@@ -10,12 +10,8 @@
     @endif
 
     @if ($finished)
-        <div class="bg-white rounded p-6 text-center">
-            <p>Il n'y a plus de contenu</p>
-        </div>
+        <x-all-content-loaded />
     @endif
-
-
 
     @push('scripts')
         <script>

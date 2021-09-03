@@ -7,5 +7,7 @@ return [
         'rules' => env("MEDIA_RULES"),
         'directory' => 'tmp',
         'disk' => 'local',
+        'disk' => 'local',
+        'max_upload_time' => 60
     ],
 ];

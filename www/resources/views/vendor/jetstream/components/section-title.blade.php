@@ -7,7 +7,10 @@
         </p>
     </div>
 
-    <div class="px-4 sm:px-0">
-        {{ $aside ?? '' }}
-    </div>
+    @if (!empty($aside))
+        <div class="px-4 sm:px-0">
+            {{ $aside }}
+        </div>
+    @endif
+
 </div>

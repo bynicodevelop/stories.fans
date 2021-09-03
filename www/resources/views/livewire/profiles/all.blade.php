@@ -1,7 +1,7 @@
 <div class="space-y-6">
     <input
         class="tracking-wide py-2 px-4 mb-3 leading-relaxed appearance-none block w-full bg-white border border-gray-200 rounded focus:outline-none focus:border-gray-500"
-        type="text" placeholder="{{ __('search') }}" wire:model.debounce.300ms="search">
+        type="text" placeholder="@lang('profile.search')" wire:model.debounce.300ms="search">
 
     @foreach ($users as $user)
         <div class="bg-white p-2 rounded">
@@ -27,9 +27,11 @@
 
     @if ($finished && empty($search))
         <div class="bg-white rounded p-6 text-center">
-            <p>Vous avez parcourue tous les profils</p>
+            <p>@lang('profile.all-profiles-found')</p>
         </div>
     @endif
+
+    <x-bottom-navigation-bar />
 
     @push('scripts')
         <script>

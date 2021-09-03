@@ -77,7 +77,8 @@ class EditorTest extends TestCase
         Livewire::test('post.editor')
             ->assertSet('mediaTmpUrl', null)
             ->set('media', $file)
-            ->assertNotSet('mediaTmpUrl', null);
+            ->assertNotSet('mediaTmpUrl', null)
+            ->assertNoRedirect();
     }
 
     public function test_isDisabled_to_be_disabled()
@@ -150,7 +151,8 @@ class EditorTest extends TestCase
             ->assertSet('isPremium', false)
             ->assertSet('media', null)
             ->assertSet('mediaTmpUrl', null)
-            ->assertSet('isDisabled', true);
+            ->assertSet('isDisabled', true)
+            ->assertNoRedirect();
 
         Queue::assertPushed(MediaManager::class);
     }
@@ -159,5 +161,19 @@ class EditorTest extends TestCase
     {
         Livewire::test('post.editor')
             ->assertForbidden();
+    }
+
+    public function test_redirect_after_create_post_on_mobile()
+    {
+        Queue::fake();
+
+        $this->actingAs(User::factory()->create());
+
+        Livewire::test('post.editor', [
+            'isMobile' => true,
+        ])
+            ->set('content', 'new content')
+            ->call('post')
+            ->assertRedirect('/home');
     }
 }

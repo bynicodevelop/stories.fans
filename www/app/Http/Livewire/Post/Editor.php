@@ -2,19 +2,14 @@
 
 namespace App\Http\Livewire\Post;
 
-use App\Events\PostCreatedEvent;
 use App\Jobs\MediaManager;
 use App\Models\Media;
 use App\Models\Post;
 use App\Traits\MediaHelper;
-use ContentRequiresException;
-use Facades\Livewire\GenerateSignedUploadUrl;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
-use Livewire\FileUploadConfiguration;
 use Livewire\WithFileUploads;
 
 class Editor extends Component
@@ -63,10 +58,22 @@ class Editor extends Component
 
     public $media;
 
+    /**
+     * @var string
+     */
     public $mediaTmpUrl;
 
     /**
-     *
+     * @var string
+     */
+    public $attributes;
+
+    /**
+     * @var boolean
+     */
+    public $isMobile = false;
+
+    /**
      * @var boolean
      */
     public $havePlan = false;
@@ -87,7 +94,7 @@ class Editor extends Component
         ];
     }
 
-    public function mount()
+    public function mount($attributes = null, $isMobile = false)
     {
         $this->authorize('create', Post::class);
 
@@ -97,6 +104,8 @@ class Editor extends Component
         $this->user = Auth::user();
 
         $this->havePlan = $this->user->plans()->count() > 0;
+        $this->attributes = $attributes;
+        $this->isMobile = $isMobile;
     }
 
     public function clear(): void
@@ -184,6 +193,10 @@ class Editor extends Component
         $this->clear();
         $this->isDisabled();
         $this->dispatchBrowserEvent('clear');
+
+        if ($this->isMobile) {
+            return redirect()->route('home');
+        }
     }
 
     public function render()

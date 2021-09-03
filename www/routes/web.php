@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CardController;
+use App\Http\Controllers\EditorController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\InvitationController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\PrivacyPolicyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SpyController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\TermsOfServiceController;
@@ -33,6 +35,8 @@ Route::get('/', [IndexController::class, 'index'])->name("index");
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/settings', [SettingController::class, 'index'])->name('settings');
+    Route::get('/editor', [EditorController::class, 'index'])->name('editor');
 
     Route::get('/user/profile/subscriptions', [SubscriptionController::class, 'index'])->name('subscriptions');
 

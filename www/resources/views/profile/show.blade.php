@@ -13,11 +13,15 @@
                 <x-jet-section-border />
             @endif
 
-            @livewire('profile.update-slug')
+            <div class="mt-10 sm:mt-0">
+                @livewire('profile.update-slug')
+            </div>
 
             <x-jet-section-border />
 
-            @livewire('profile.update-social-network')
+            <div class="mt-10 sm:mt-0">
+                @livewire('profile.update-social-network')
+            </div>
 
             <x-jet-section-border />
 
