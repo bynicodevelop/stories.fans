@@ -15,7 +15,7 @@
             <div class="flex-shrink-0 relative">
                 @if ($media['type'] == \App\Models\Media::VIDEO)
                     @can('seePost', $post)
-                        <video x-ref="video" @click="play = !play" loop playsinline preload="none"
+                        <video x-ref="video" @click="play = !play" loop playsinline preload="auto"
                             poster="{{ route('media', ['id' => $media['id'], 'preview' => true]) }}">
                             <source src="{{ route('media', ['id' => $media['id']]) }}">
                         </video>
