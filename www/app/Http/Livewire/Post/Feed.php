@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Post;
 
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -52,20 +53,12 @@ class Feed extends Component
 
     public function render(): View
     {
-        /**
-         *
-         * @var User $user
-         */
-        $user = Auth::user();
-
-        $followers = $user->feed()->with(['posts' => function ($query) {
-            $paginate = $query->orderBy('created_at', 'desc')->paginate($this->perPage);
-
-            $this->finished = !$paginate->hasPages();
-        }])->get();
+        $posts = Post::whereIn('user_id', $this->user->getFollowers->map(function ($u) {
+            return $u['follow_id'];
+        }))->with('media')->orderBy("created_at", "desc")->paginate($this->perPage);
 
         return view('livewire.post.feed', [
-            'posts' => $followers->flatMap->posts
+            'posts' => $posts->items()
         ]);
     }
 }
