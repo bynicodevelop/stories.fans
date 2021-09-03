@@ -1,4 +1,4 @@
-<div class="space-y-6">
+<div class="space-y-6 {{ $attributes }}">
     <div class="bg-white rounded px-4 py-4">
         <div class="flex mb-4">
             <a href="{{ route('profiles-slug', ['slug' => $user['slug']]) }}">
@@ -18,7 +18,7 @@
                 class="tracking-wide px-2 mb-3 leading-relaxed appearance-none block w-full bg-white border border-gray-200 rounded focus:outline-none focus:border-gray-500">
                 <textarea id="editor" wire:model="content" rows="4" class="border-none resize-none h-16"></textarea>
             </div>
-            <div class="flex justify-between" x-data="{ isUploading: false, progress: 0 }"
+            <div class="flex justify-between" x-cloak x-data="{ isUploading: false, progress: 0 }"
                 x-on:livewire-upload-start="isUploading = true; $wire.uploading(true)"
                 x-on:livewire-upload-finish="isUploading = false; $wire.uploading(false)"
                 x-on:livewire-upload-error="isUploading = false; $wire.uploading(false)"
@@ -127,7 +127,7 @@
                     forceSync: true,
                 });
 
-                simplemde.codemirror.on("change", function() {
+                simplemde.codemirror.on("change", function(e) {
                     @this.content = simplemde.value();
                 });
 

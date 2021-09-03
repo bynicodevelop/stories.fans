@@ -1,5 +1,5 @@
 <nav x-data="{ open: false }"
-    class="border-b border-gray-100 mb-10 md:mb-0 {{ Route::current()->getName() == 'index' ? '' : 'bg-white' }}">
+    class="border-b border-gray-100 md:mb-0 {{ Route::current()->getName() == 'index' ? '' : 'bg-white' }}">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -29,6 +29,16 @@
             </div>
 
             @auth
+                <div class="md:hidden flex items-center ml-6">
+                    @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
+                        <a href="{{ route('profiles-slug', ['slug' => Auth::user()->slug]) }}"
+                            class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
+                            <img class="h-8 w-8 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}"
+                                alt="{{ Auth::user()->name }}" />
+                        </a>
+                    @endif
+                </div>
+
                 <div class="hidden sm:flex sm:items-center sm:ml-6">
                     <!-- Teams Dropdown -->
                     @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
@@ -157,7 +167,7 @@
 
                                     <x-jet-dropdown-link href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
-                                                                                                                                                                        this.closest('form').submit();">
+                                                                                                                                                                                                                                                            this.closest('form').submit();">
                                         {{ __('navigation.logout') }}
                                     </x-jet-dropdown-link>
                                 </form>

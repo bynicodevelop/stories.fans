@@ -67,16 +67,19 @@
     @livewire('alert-component')
 
     <div class="min-h-screen bg-gray-100">
-        @livewire('navigation-menu')
+        {{-- design settings page condition --}}
+        <div class="{{ Route::currentRouteName() == 'settings' ? 'mb-0' : 'mb-10' }}">
+            @livewire('navigation-menu')
 
-        <!-- Page Heading -->
-        @if (isset($header))
-            <header class="bg-white shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    {{ $header }}
-                </div>
-            </header>
-        @endif
+            <!-- Page Heading -->
+            @if (isset($header))
+                <header class="bg-white shadow">
+                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                        {{ $header }}
+                    </div>
+                </header>
+            @endif
+        </div>
 
         <!-- Page Content -->
         <main>
@@ -85,22 +88,7 @@
 
         @include('cookie-consent::index')
 
-        <footer>
-            <div class="max-w-3xl mx-auto flex items-center justify-center h-32">
-                <a class="text-sm mx-3 hover:text-pink-500 hover:underline transition duration-500 ease-in-out"
-                    href="{{ route('index') }}">
-                    © {{ date('Y') }} {{ config('app.name') }}
-                </a>
-                <a class="text-sm mx-3 hover:text-pink-500 hover:underline transition duration-500 ease-in-out"
-                    href="{{ route('terms.show') }}" target="_blank" title="{{ __('footer.terms_of_service') }}">
-                    @lang('footer.terms_of_service')
-                </a>
-                <a class="text-sm mx-3 hover:text-pink-500 hover:underline transition duration-500 ease-in-out"
-                    href="{{ route('policy.show') }}" target="_blank" title="{{ __('footer.privacy_policy') }}">
-                    @lang('footer.privacy_policy')
-                </a>
-            </div>
-        </footer>
+        <x-footer-component class="hidden md:block" />
     </div>
 
     @stack('modals')

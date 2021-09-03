@@ -19,4 +19,6 @@ return [
     "bio" => "Statut",
     "follow" => "Suivre",
     "unfollow" => "Ne plus suivre",
+    "all-profiles-found" => "Vous avez parcouru tous les profiles.",
+    "search" => "Chercher quelqu'un...",
 ];
