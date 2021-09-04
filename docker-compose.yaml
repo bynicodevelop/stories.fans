@@ -82,7 +82,6 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.php-apache.rule=Host(`stories.localhost`)"
       - "traefik.http.routers.php-apache.entrypoints=web"
-
     depends_on:
       - traefik
       - database
