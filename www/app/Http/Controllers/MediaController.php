@@ -23,6 +23,8 @@ class MediaController extends Controller
 
     public function index(Request $request, $id)
     {
+        ini_set('memory_limit', '1024M');
+
         $isBlurred = false;
 
         /**
