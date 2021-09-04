@@ -16,9 +16,10 @@
             <div class="flex-shrink-0 relative">
                 @if ($media['type'] == \App\Models\Media::VIDEO)
                     @can('seePost', $post)
-                        <video x-ref="video-{{ $post['id'] }}" loop playsinline preload="auto" controls
+                        <video id="video-{{ $post['id'] }}" x-ref="video-{{ $post['id'] }}" loop playsinline
+                            preload="auto" controls
                             poster="{{ route('media', ['id' => $media['id'], 'preview' => true]) }}">
-                            <source src="{{ route('media', ['id' => $media['id']]) }}" type="video/mp4">
+                            {{-- <source src="{{ route('media', ['id' => $media['id']]) }}" type="video/mp4"> --}}
                         </video>
                     @else
                         <img src="{{ route('media', ['id' => $media['id'], 'preview' => true]) }}"
@@ -54,7 +55,15 @@
                         </svg>
                     </a>
                 @endguest
+                <script>
+                    var assetURL = "{{ route('media', ['id' => $media['id']]) }}";
 
+                    // creating the MediaSource, just with the "new" keyword, and the URL for it
+                    var url = URL.createObjectURL(new MediaSource());
+
+                    // attaching the MediaSource to the video tag
+                    document.getElementById("video-{{ $post['id'] }}").src = assetURL;
+                </script>
             </div>
         </div>
     @endif
