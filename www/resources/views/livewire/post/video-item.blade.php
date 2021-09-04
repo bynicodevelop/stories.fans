@@ -5,17 +5,18 @@
             alt="@{{ $post['user']['name'] }}">
     @else
 
-        <div x-data="{ play: false }" x-init="$watch('play', (value) => {
+        {{-- <div x-data="{ play: false }" x-init="$watch('play', (value) => {
             if (value) {
                 $refs['video-{{ $post['id'] }}'].play()
             } else {
                 $refs['video-{{ $post['id'] }}'].pause()
             }
-        })">
+        })"> --}}
+        <div>
             <div class="flex-shrink-0 relative">
                 @if ($media['type'] == \App\Models\Media::VIDEO)
                     @can('seePost', $post)
-                        <video x-ref="video-{{ $post['id'] }}" @click="play = !play" loop playsinline preload="auto"
+                        <video x-ref="video-{{ $post['id'] }}" loop playsinline preload="auto" controls
                             poster="{{ route('media', ['id' => $media['id'], 'preview' => true]) }}">
                             <source src="{{ route('media', ['id' => $media['id']]) }}">
                         </video>
@@ -29,7 +30,7 @@
                 @endif
 
                 @auth
-                    <div @click="play = true" x-show="!play" x-transition:leave="transition ease-in duration-300"
+                    {{-- <div @click="play = true" x-show="!play" x-transition:leave="transition ease-in duration-300"
                         x-transition:leave-start="opacity-100 transform scale-100"
                         x-transition:leave-end="opacity-0 transform scale-90"
                         class="absolute inset-0 w-full h-full flex items-center justify-center">
@@ -39,7 +40,7 @@
                                 d="M55.5039 40.3359L37.1094 28.0729C35.7803 27.1869 34 28.1396 34 29.737V54.263C34 55.8604 35.7803 56.8131 37.1094 55.9271L55.5038 43.6641C56.6913 42.8725 56.6913 41.1275 55.5039 40.3359Z">
                             </path>
                         </svg>
-                    </div>
+                    </div> --}}
                 @endauth
 
                 @guest
