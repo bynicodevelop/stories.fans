@@ -32,36 +32,23 @@
 
     <script src="{{ mix('js/app.js') }}" defer></script>
 
-    @if (!empty(config('tabmanager.tag_manager_id')))
-        <!-- Google Tag Manager -->
+    @if (!empty(config('app.analytics')))
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{ config('app.analytics') }}"></script>
         <script>
-            (function(w, d, s, l, i) {
-                w[l] = w[l] || [];
-                w[l].push({
-                    'gtm.start': new Date().getTime(),
-                    event: 'gtm.js'
-                });
-                var f = d.getElementsByTagName(s)[0],
-                    j = d.createElement(s),
-                    dl = l != 'dataLayer' ? '&l=' + l : '';
-                j.async = true;
-                j.src =
-                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-                f.parentNode.insertBefore(j, f);
-            })(window, document, 'script', 'dataLayer', '{{ config('tabmanager.tag_manager_id') }}');
+            window.dataLayer = window.dataLayer || [];
+
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
+
+            gtag('config', '{{ config('app.analytics') }}');
         </script>
-        <!-- End Google Tag Manager -->
     @endif
 </head>
 
 <body class="font-sans antialiased">
-    @if (!empty(config('tabmanager.tag_manager_id')))
-        <!-- Google Tag Manager (noscript) -->
-        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ config('tabmanager.tag_manager_id') }}"
-                height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-        <!-- End Google Tag Manager (noscript) -->
-    @endif
-
     <x-jet-banner />
 
     @livewire('alert-component')
