@@ -60,6 +60,8 @@ return [
 
     'asset_url' => env('ASSET_URL', null),
 
+    'analytics' => env('ANALYTICS'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
