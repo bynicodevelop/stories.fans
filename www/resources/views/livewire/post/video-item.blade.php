@@ -6,16 +6,16 @@
     @else
 
         <div x-data="{ play: false }" x-init="$watch('play', (value) => {
-    if (value) {
-        $refs.video.play()
-    } else {
-        $refs.video.pause()
-    }
-})">
+            if (value) {
+                $refs['video-{{ $post['id'] }}'].play()
+            } else {
+                $refs['video-{{ $post['id'] }}'].pause()
+            }
+        })">
             <div class="flex-shrink-0 relative">
                 @if ($media['type'] == \App\Models\Media::VIDEO)
                     @can('seePost', $post)
-                        <video x-ref="video" @click="play = !play" loop playsinline preload="auto"
+                        <video x-ref="video-{{ $post['id'] }}" @click="play = !play" loop playsinline preload="auto"
                             poster="{{ route('media', ['id' => $media['id'], 'preview' => true]) }}">
                             <source src="{{ route('media', ['id' => $media['id']]) }}">
                         </video>
