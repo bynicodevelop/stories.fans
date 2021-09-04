@@ -18,7 +18,7 @@
                     @can('seePost', $post)
                         <video x-ref="video-{{ $post['id'] }}" loop playsinline preload="auto" controls
                             poster="{{ route('media', ['id' => $media['id'], 'preview' => true]) }}">
-                            <source src="{{ route('media', ['id' => $media['id']]) }}">
+                            <source src="{{ route('media', ['id' => $media['id']]) }}" type="video/mp4">
                         </video>
                     @else
                         <img src="{{ route('media', ['id' => $media['id'], 'preview' => true]) }}"
