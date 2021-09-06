@@ -19,7 +19,7 @@
                         <video id="video-{{ $post['id'] }}" x-ref="video-{{ $post['id'] }}" loop playsinline
                             preload="auto" controls
                             poster="{{ route('media', ['id' => $media['id'], 'preview' => true]) }}">
-                            {{-- <source src="{{ route('media', ['id' => $media['id']]) }}" type="video/mp4"> --}}
+                            <source src="{{ route('media', ['id' => $media['id']]) }}" type="video/mp4">
                         </video>
                     @else
                         <img src="{{ route('media', ['id' => $media['id'], 'preview' => true]) }}"
@@ -56,13 +56,13 @@
                     </a>
                 @endguest
                 <script>
-                    var assetURL = "{{ route('media', ['id' => $media['id']]) }}";
+                    // var assetURL = "{{ route('media', ['id' => $media['id']]) }}";
 
-                    // creating the MediaSource, just with the "new" keyword, and the URL for it
-                    var url = URL.createObjectURL(new MediaSource());
+                    // // creating the MediaSource, just with the "new" keyword, and the URL for it
+                    // var url = URL.createObjectURL(new MediaSource());
 
-                    // attaching the MediaSource to the video tag
-                    document.getElementById("video-{{ $post['id'] }}").src = assetURL;
+                    // // attaching the MediaSource to the video tag
+                    // document.getElementById("video-{{ $post['id'] }}").src = assetURL;
                 </script>
             </div>
         </div>

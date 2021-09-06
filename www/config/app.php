@@ -62,6 +62,8 @@ return [
 
     'analytics' => env('ANALYTICS'),
 
+    'disable_context_menu' => env('DISABLE_CONTEXT_MENU', true),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

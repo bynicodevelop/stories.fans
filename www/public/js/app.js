@@ -4955,16 +4955,26 @@ __webpack_require__(/*! ./prism */ "./resources/js/prism.js");
 
 
 
-if (window.configJS != undefined) {
-  window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_1__.default({
-    broadcaster: "socket.io",
-    host: window.configJS.websocket_url
-  });
+if (window.configJS == undefined) {
+  window.configJS = {
+    websocket_url: null,
+    disable_context_menu: "production"
+  };
 }
 
+window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_1__.default({
+  broadcaster: "socket.io",
+  host: window.configJS.websocket_url
+});
 window.Alpine = alpinejs__WEBPACK_IMPORTED_MODULE_0__.default;
 alpinejs__WEBPACK_IMPORTED_MODULE_0__.default.start();
 Prism.highlightAll();
+
+if (window.configJS.disable_context_menu == true) {
+  document.addEventListener("contextmenu", function (e) {
+    e.preventDefault();
+  });
+}
 
 /***/ }),
 

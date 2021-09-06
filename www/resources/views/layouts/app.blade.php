@@ -19,7 +19,8 @@
 
     <script>
         window.configJS = {
-            websocket_url: "{{ config('app.websocket_url') }}"
+            websocket_url: "{{ config('app.websocket_url') }}",
+            disable_context_menu: "{{ config('app.disable_context_menu') }}",
         }
     </script>
 

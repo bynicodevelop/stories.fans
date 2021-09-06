@@ -23,6 +23,9 @@ class MediaController extends Controller
 
     public function index(Request $request, $id)
     {
+        set_time_limit(0);
+        ini_set('memory_limit', '4G');
+
         $isBlurred = false;
 
         /**
@@ -67,15 +70,34 @@ class MediaController extends Controller
                 }
             }
 
-            $stream = Storage::readStream("private/{$name}.{$ext}");
+            return redirect(Storage::url("private/{$name}.{$ext}"));
 
-            return response()->stream(function () use ($stream) {
-                fpassthru($stream);
-            }, 200, [
-                "Content-Type" => "video/mp4",
-                "Cache-Control" => "max-age=2592000, public",
-                "Expires" => gmdate('D, d M Y H:i:s', time() + 2592000) . ' GMT',
-            ]);
+            // $fs = Storage::getDriver();
+
+            // $metaData = $fs->getMetadata($storagePath);
+            // $stream = $fs->readStream($storagePath);
+
+            // if (ob_get_level()) ob_end_clean();
+
+            // return response()->stream(
+            //     function () use ($stream) {
+            //         fpassthru($stream);
+            //     },
+            //     200,
+            //     [
+            //         'Content-Type' => $metaData['type'],
+            //         'Content-disposition' => 'attachment; filename="' . $metaData['path'] . '"',
+            //     ]
+            // );
+            // $stream = Storage::readStream("private/{$name}.{$ext}");
+
+            // return response()->stream(function () use ($stream) {
+            //     fpassthru($stream);
+            // }, 200, [
+            //     "Content-Type" => "video/mp4",
+            //     "Cache-Control" => "max-age=2592000, public",
+            //     "Expires" => gmdate('D, d M Y H:i:s', time() + 2592000) . ' GMT',
+            // ]);
         } catch (Exception $e) {
             Log::error("MediaController: ", [
                 "message" => $e->getMessage()
