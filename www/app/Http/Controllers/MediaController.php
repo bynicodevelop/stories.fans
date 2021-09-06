@@ -42,34 +42,34 @@ class MediaController extends Controller
                 $isBlurred = true;
             }
 
-            $storagePath = Storage::get("private/{$name}.{$ext}"); // storage_path("app/private/{$name}.{$ext}");
+            // $storagePath = Storage::get("private/{$name}.{$ext}"); // storage_path("app/private/{$name}.{$ext}");
 
             if ($type == Media::IMAGE) {
-                $image = Image::make($storagePath);
+                return redirect($this->getImage($name, $ext, $isBlurred));
+                // $image = Image::make($storagePath);
 
-                if ($isBlurred) {
-                    $image->blur(60);
-                }
+                // if ($isBlurred) {
+                //     $image->blur(60);
+                // }
 
-                return $image->response();
+                // return $image->response();
             } else {
                 extract($this->mediaService->blurred($user, $id));
 
                 $isPreview = $request->input('preview');
 
-
                 if (!is_null($isPreview)) {
                     return redirect($this->getPreview($name, $isBlurred));
 
-                    $previewStoragePath = Storage::get("private/{$name}-preview.jpg");
+                    // $previewStoragePath = Storage::get("private/{$name}-preview.jpg");
 
-                    $image = Image::make($previewStoragePath);
+                    // $image = Image::make($previewStoragePath);
 
-                    if ($isBlurred) {
-                        $image->pixelate(40);
-                    }
+                    // if ($isBlurred) {
+                    //     $image->pixelate(40);
+                    // }
 
-                    return $image->response();
+                    // return $image->response();
                 }
             }
 

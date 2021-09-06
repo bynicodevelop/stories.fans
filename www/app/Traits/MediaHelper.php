@@ -33,8 +33,21 @@ trait MediaHelper
         ];
     }
 
-    public function getPreview(string $name, bool $isBlurred)
+    public function getPreview(string $name, bool $isBlurred = false)
     {
+        if ($isBlurred) {
+            return Storage::url("private/{$name}-preview-blurred.jpg");
+        }
+
         return Storage::url("private/{$name}-preview.jpg");
+    }
+
+    public function getImage(string $name, string $ext, bool $isBlurred = false)
+    {
+        if ($isBlurred) {
+            return Storage::url("private/{$name}-blurred.{$ext}");
+        }
+
+        return Storage::url("private/{$name}.{$ext}");
     }
 }

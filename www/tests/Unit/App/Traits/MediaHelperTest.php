@@ -4,8 +4,9 @@ namespace Tests\Unit\App\Traits;
 
 use App\Models\Media;
 use App\Traits\MediaHelper;
+use Illuminate\Support\Facades\Storage;
 use Livewire\TemporaryUploadedFile;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class MediaHelperTest extends TestCase
 {
@@ -56,5 +57,50 @@ class MediaHelperTest extends TestCase
         $this->assertEquals($result['typeMedia'], Media::VIDEO);
         $this->assertEquals($result['fileName'], $media->getFilename());
         $this->assertEquals($result['extFile'], $media->getClientOriginalExtension());
+    }
+
+    public function test_getPreview_without_blurred()
+    {
+        Storage::fake('private');
+
+        $url = $this->getPreview('my-image', false);
+
+        $this->assertEquals($url, "http://stories.localhost/private/my-image-preview.jpg");
+    }
+
+    public function test_getPreview_with_blurred()
+    {
+        Storage::fake('private');
+
+        $url = $this->getPreview('my-image', true);
+
+        $this->assertEquals($url, "http://stories.localhost/private/my-image-preview-blurred.jpg");
+    }
+
+    public function test_getImage_without_blurred_jpg()
+    {
+        Storage::fake('private');
+
+        $url = $this->getImage("my-image", "jpg", false);
+
+        $this->assertEquals($url, "http://stories.localhost/private/my-image.jpg");
+    }
+
+    public function test_getImage_without_blurred_png()
+    {
+        Storage::fake('private');
+
+        $url = $this->getImage("my-image", "png", false);
+
+        $this->assertEquals($url, "http://stories.localhost/private/my-image.png");
+    }
+
+    public function test_getImage_with_blurred()
+    {
+        Storage::fake('private');
+
+        $url = $this->getImage("my-image", "jpg", true);
+
+        $this->assertEquals($url, "http://stories.localhost/private/my-image-blurred.jpg");
     }
 }
