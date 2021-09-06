@@ -26,3 +26,4 @@ docker-compose.override.yml
 /.DS_Store
 /www/laravel-echo-server.json
 /redis
+/www/public/private
