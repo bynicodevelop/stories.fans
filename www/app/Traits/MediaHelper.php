@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Models\Media;
+use Illuminate\Support\Facades\Storage;
 
 trait MediaHelper
 {
@@ -30,5 +31,10 @@ trait MediaHelper
             'fileName' => $fileName,
             'extFile' => $extFile,
         ];
+    }
+
+    public function getPreview(string $name, bool $isBlurred)
+    {
+        return Storage::url("private/{$name}-preview.jpg");
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Media;
 use App\Models\User;
 use App\Services\MediaService;
+use App\Traits\MediaHelper;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -14,6 +15,8 @@ use Intervention\Image\Facades\Image;
 
 class MediaController extends Controller
 {
+    use MediaHelper;
+
     private $mediaService;
 
     public function __construct(MediaService $mediaService)
@@ -23,9 +26,6 @@ class MediaController extends Controller
 
     public function index(Request $request, $id)
     {
-        set_time_limit(0);
-        ini_set('memory_limit', '4G');
-
         $isBlurred = false;
 
         /**
@@ -57,7 +57,10 @@ class MediaController extends Controller
 
                 $isPreview = $request->input('preview');
 
+
                 if (!is_null($isPreview)) {
+                    return redirect($this->getPreview($name, $isBlurred));
+
                     $previewStoragePath = Storage::get("private/{$name}-preview.jpg");
 
                     $image = Image::make($previewStoragePath);
