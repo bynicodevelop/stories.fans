@@ -17,7 +17,7 @@
                 @if ($media['type'] == \App\Models\Media::VIDEO)
                     @can('seePost', $post)
                         <video id="video-{{ $post['id'] }}" x-ref="video-{{ $post['id'] }}" loop playsinline
-                            preload="auto" controls
+                            preload="auto" controls controlsList="nodownload"
                             poster="{{ route('media', ['id' => $media['id'], 'preview' => true]) }}">
                             <source src="{{ route('media', ['id' => $media['id']]) }}" type="video/mp4">
                         </video>
