@@ -5,9 +5,8 @@ return [
 
     'temporary_file_upload' => [
         'rules' => env("MEDIA_RULES"),
-        'directory' => 'tmp',
-        'disk' => 'local',
-        'disk' => 'local',
-        'max_upload_time' => 60
+        'directory' => env("MEDIA_TMP_DIRECTORY", "tmp"),
+        'disk' => env("MEDIA_DISK", "local"),
+        'max_upload_time' => env("MEDIA_MAX_UPLOAD_TIME", 60),
     ],
 ];
