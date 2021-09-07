@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Models\Media;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 trait MediaHelper
@@ -36,18 +37,68 @@ trait MediaHelper
     public function getPreview(string $name, bool $isBlurred = false)
     {
         if ($isBlurred) {
-            return Storage::url("private/{$name}-preview-blurred.jpg");
+            return Storage::url("private/{$name}/{$name}-preview-blurred.jpg");
         }
 
-        return Storage::url("private/{$name}-preview.jpg");
+        return Storage::url("private/{$name}/{$name}-preview.jpg");
     }
 
     public function getImage(string $name, string $ext, bool $isBlurred = false)
     {
         if ($isBlurred) {
-            return Storage::url("private/{$name}-blurred.{$ext}");
+            return Storage::url("private/{$name}/{$name}-blurred.{$ext}");
         }
 
-        return Storage::url("private/{$name}.{$ext}");
+        return Storage::url("private/{$name}/{$name}.{$ext}");
+    }
+
+    public function calculateBitrate($width, $height, $fps)
+    {
+        return ceil((($width * $height * $fps * .1) / 1000) / 100) * 100;
+    }
+
+    public function calculateResizeDimensions($width, $height, $widthToResize): array
+    {
+        if ($width - $widthToResize > 0) {
+            $resizeRatio = $width / $widthToResize;
+
+            $height = $height / $resizeRatio;
+            $width = $widthToResize;
+        }
+
+        return [
+            "width" => round($width),
+            "height" => round($height),
+        ];
+    }
+
+    public function formatCanResize($listWidth, $width): array
+    {
+        $listFormatSize = [];
+
+        foreach ($listWidth as $l) {
+            if ($l < $width) {
+                $listFormatSize[] = $l;
+            }
+        }
+
+        return $listFormatSize;
+    }
+
+    public function deleteVideoFiles($name)
+    {
+        $files = Storage::disk(config('filesystems.default'))->files("private/{$name}");
+
+        foreach ($files as $file) {
+            if (Storage::exists($file)) {
+                Storage::delete($file);
+
+                Log::info("File deleted: ", [
+                    "file" => $file
+                ]);
+            }
+        }
+
+        Storage::disk(config('filesystems.default'))->deleteDirectory("private/{$name}");
     }
 }

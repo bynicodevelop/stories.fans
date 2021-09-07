@@ -3,7 +3,11 @@
 namespace App\Jobs;
 
 use App\Events\PostCreatedEvent;
+use App\Exceptions\VideoStorageException;
 use App\Models\Media;
+use App\Traits\MediaHelper;
+use Exception;
+use FFMpeg\Coordinate\Dimension;
 use FFMpeg\Format\Video\X264;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -13,11 +17,12 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
+use ProtoneMedia\LaravelFFMpeg\Exporters\HLSExporter;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
 class MediaManager implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, MediaHelper;
 
     const LANDSCAPE = "landscape";
 
@@ -83,7 +88,7 @@ class MediaManager implements ShouldQueue
                 "path" => $path
             ]);
 
-            extract($this->videoStorage($path, $name));
+            extract($this->videoStorage($path, $name, $this->isPremium));
         }
 
         Log::debug("Create new post");
@@ -97,31 +102,45 @@ class MediaManager implements ShouldQueue
             "post_id" => $post["id"]
         ]);
 
-        if ($this->mediaType != Media::POST) {
-            Log::debug("Create new media");
+        try {
+            if ($this->mediaType != Media::POST) {
+                Log::debug("Create new media");
 
-            Log::debug("Orientation file: ", [
-                "orientation" => $orientation
+                Log::debug("Orientation file: ", [
+                    "orientation" => $orientation
+                ]);
+
+                $post->media()->create([
+                    "type" => $this->mediaType,
+                    "name_preview" => $preview,
+                    "name" => $name,
+                    "ext" => $ext,
+                    "orientation" => $orientation,
+                ]);
+            }
+
+            Log::info("Delete temporary file", [
+                "path" => $path
             ]);
 
-            $post->media()->create([
-                "type" => $this->mediaType,
-                "name_preview" => $preview,
-                "name" => $name,
-                "ext" => $ext,
-                "orientation" => $orientation,
+            if (Storage::disk('local')->exists("tmp/{$this->name}")) {
+                Storage::disk('local')->delete("tmp/{$this->name}");
+
+                Log::info("Deleted temporary file", [
+                    "path" => $path
+                ]);
+            }
+
+            event(new PostCreatedEvent());
+        } catch (VideoStorageException $v) {
+            Log::error("VideoStorageException", [
+                "message" => $v->getMessage()
+            ]);
+        } catch (Exception $e) {
+            Log::error("Exception", [
+                "message" => $e->getMessage()
             ]);
         }
-
-        Log::debug("Delete temporary file", [
-            "path" => $path
-        ]);
-
-        if (Storage::disk('local')->exists("tmp/{$this->name}")) {
-            Storage::disk('local')->delete("tmp/{$this->name}");
-        }
-
-        event(new PostCreatedEvent());
     }
 
     private function getOrientation(int $width, int $height): string
@@ -129,40 +148,156 @@ class MediaManager implements ShouldQueue
         return $width > $height ?  self::LANDSCAPE : self::PORTRAIT;
     }
 
-    private function videoStorage($storagePath, $name): array
+    public function generatePreview($name, $media, $videoDuration, $isPremium)
+    {
+        Log::info("Create preview from video", [
+            "path" => "conversion/{$name}/{$name}-preview.jpg"
+        ]);
+
+        $media->getFrameFromSeconds($videoDuration * .33)
+            ->export()
+            ->save("conversion/{$name}/{$name}-preview.jpg");
+
+        $image = Image::make(Storage::get("conversion/{$name}/{$name}-preview.jpg", 80));
+
+        $image->resize(700, null, function ($constraint) {
+            $constraint->aspectRatio();
+        });
+
+        $file = $image->stream()->detach();
+
+        Storage::disk(config('filesystems.default'))->put("private/{$name}/{$name}-preview.jpg", $file);
+
+        if ($isPremium) {
+            Log::info("Create blur preview from video for premium content", [
+                "path" => "conversion/{$name}/{$name}-preview.jpg"
+            ]);
+
+            $image = Image::make(Storage::get("conversion/{$name}/{$name}-preview.jpg"));
+
+            $image->blur(80);
+            $image->brightness(15);
+            $image->pixelate(30);
+
+            $file = $image->stream()->detach();
+
+            Storage::put("private/{$name}/{$name}-preview-blurred.jpg", $file);
+        }
+
+        if (collect(Storage::disk('local')->directories("conversion"))->filter(function ($path) use ($name) {
+            return $path === "conversion/{$name}";
+        })->count() > 0) {
+            Storage::disk('local')->deleteDirectory("conversion/{$name}");
+
+            Log::info("Aull previews deleted");
+        }
+    }
+
+    private function getVideoMeta($media)
+    {
+        /**
+         * @var FFMpeg\FFProbe\DataMapping\Stream
+         */
+        $videoStream = $media->getVideoStream();
+
+        $rateFrame = $videoStream->get('r_frame_rate');
+
+        $rateFrameExploded = explode("/", $rateFrame);
+
+        return [
+            "videoDuration" => $media->getDurationInSeconds(),
+            "videoDimensions" => $videoStream->getDimensions(),
+            "bitRate" => $videoStream->get('bit_rate'),
+            "fps" => $rateFrameExploded[0] / $rateFrameExploded[1],
+        ];
+    }
+
+    private function videoStorage($storagePath, $name, $isPremium = false): array
     {
         $media = FFMpeg::fromDisk('local')
             ->open($storagePath);
 
-        $videoDuration = $media->getDurationInSeconds();
-        $videoDimensions = $media->getVideoStream()
-            ->getDimensions();
+        extract($this->getVideoMeta($media));
 
-        $media->getFrameFromSeconds($videoDuration * .33)
-            ->export()
-            ->toDisk(config('filesystems.default'))
-            ->save("private/{$name}-preview.jpg");
+        $width = $videoDimensions->getWidth();
+        $height = $videoDimensions->getHeight();
 
-        $format = new X264();
+        Log::info("Generate preview from video", [
+            "name" => $name,
+            "media" => $media,
+            "videoDuration" => $videoDuration,
+            "isPremium" => $isPremium
+        ]);
+        $this->generatePreview($name, $media, $videoDuration, $isPremium);
 
-        $media = FFMpeg::fromDisk('local')
-            ->open($storagePath);
+        Log::info("Create new folder", [
+            "path" => "private/{$name}",
+        ]);
+        Storage::disk(config('filesystems.default'))->makeDirectory("private/{$name}");
+        chmod(storage_path("app/private/{$name}"), 0777);
 
-        $media
-            ->export()
-            ->toDisk(config('filesystems.default'))
-            ->inFormat($format)
-            ->save("private/{$name}-full.mp4");
+        $dataFormatting = [];
 
-        $media
-            ->export()
-            ->toDisk(config('filesystems.default'))
-            ->inFormat($format)
-            ->save("private/{$name}.mp4");
+        $dataFormatting[] = $this->calculateBitrate($width, $height, $fps);
+
+        $formatsCanResize = $this->formatCanResize([1920, 1280, 854], $width);
+        Log::info("Calculate resize formats", $formatsCanResize);
+
+        // $dataFormatting = [];
+
+        foreach ($formatsCanResize as $format) {
+            $newSize = $this->calculateResizeDimensions($width, $height, $format);
+            $bitrate = $this->calculateBitrate($newSize["width"], $newSize["height"], $fps);
+
+            $dataFormatting[] = $bitrate;
+        }
+        Log::info("List formats", $dataFormatting);
+
+        try {
+            $media = FFMpeg::fromDisk('local')
+                ->open($storagePath)
+                ->exportForHLS()
+                ->withRotatingEncryptionKey(function ($filename, $contents) use ($name) {
+                    Storage::disk(config('filesystems.default'))->put("private/{$name}/{$filename}", $contents);
+                });
+
+            foreach ($dataFormatting as $formatting) {
+                $media->addFormat((new X264)->setKiloBitrate($formatting));
+            }
+
+            $media->toDisk(config('filesystems.default'))
+                ->save("private/{$name}/{$name}.m3u8");
+        } catch (Exception $e) {
+            Log::error("Convertion error", [
+                "message" => $e->getMessage()
+            ]);
+
+            $this->deleteVideoFiles($name);
+
+            throw new VideoStorageException($e->getMessage());
+        }
+
+        // TODO: cf => https://zero-absolu.com/wp-content/uploads/2020/09/bitrate-twitch-par-zatomtom-pour-zero-absolu-gaming.png
+        // $media = FFMpeg::fromDisk('local')
+        //     ->open($storagePath)
+        //     ->exportForHLS()
+        //     ->withRotatingEncryptionKey(function ($filename, $contents) use ($name) {
+        //         Storage::disk(config('filesystems.default'))->put("private/{$name}/{$filename}", $contents);
+        //     });
+
+        // foreach ($dataFormatting as $formatting) {
+        //     $media->addFormat((new X264)->setKiloBitrate($formatting["bitrate"]), function ($media) use ($formatting) {
+        //         $media->scale($formatting["width"], $formatting["height"]);
+        //     });
+        // }
+
+        // $media->toDisk(config('filesystems.default'))
+        //     ->save("private/{$name}/{$name}.m3u8");
 
         return [
             "orientation" => $this->getOrientation($videoDimensions->getWidth(), $videoDimensions->getHeight()),
-            "ext" => "mp4",
+            "ext" => "m3u8",
+            // TODO: useless property (remove in futur version)
             "preview" => "{$name}-preview.jpg",
         ];
     }

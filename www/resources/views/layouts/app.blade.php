@@ -29,7 +29,8 @@
     @stack('styles')
 
     <!-- Scripts -->
-    <script src="{{ config('app.websocket_url') }}/socket.io/socket.io.js"></script>
+    <script src="{{ mix('js/videojs.js') }}"></script>
+    <script src="{{ config('app.websocket_url') }}/socket.io/socket.io.js" defer></script>
 
     <script src="{{ mix('js/app.js') }}" defer></script>
 

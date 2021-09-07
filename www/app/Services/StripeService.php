@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Exceptions\InvalidPriceId;
 use App\Exceptions\InvalidPriceIdException;
 use App\Exceptions\InvalidStripeIdException;
 use App\Exceptions\InvalidStripeServiceException;

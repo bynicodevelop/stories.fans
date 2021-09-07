@@ -17,6 +17,8 @@ mix.js("resources/js/app.js", "public/js").postCss(
     [require("postcss-import"), require("tailwindcss")]
 );
 
+mix.js("resources/js/videojs.js", "public/js");
+
 if (mix.inProduction()) {
     mix.version();
 
