@@ -186,7 +186,7 @@ class MediaHelperTest extends TestCase
                     720,
                 ],
                 "width" => 1280,
-                "result" => [1280, 1080, 720]
+                "result" => [1080, 720]
             ],
             [
                 "listWidth" => [
@@ -206,7 +206,7 @@ class MediaHelperTest extends TestCase
                     720,
                 ],
                 "width" => 720,
-                "result" => [720]
+                "result" => []
             ]
         ];
 
