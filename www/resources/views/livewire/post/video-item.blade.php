@@ -8,8 +8,8 @@
         <div class="flex-shrink-0 relative">
             @if ($media['type'] == \App\Models\Media::VIDEO)
                 @can('seePost', $post)
-                    <video-js id="video-{{ $post['id'] }}"
-                        class="vjs-default-skin vjs-big-play-centered vjs-fluid vjs-icon-hd" controls preload="auto"
+                    <video id="video-{{ $post['id'] }}"
+                        class="video-js vjs-default-skin vjs-big-play-centered vjs-fluid vjs-icon-hd" controls preload="auto"
                         poster="{{ route('media', ['id' => $media['id'], 'preview' => true]) }}">
                         <source src="{{ route('media', ['id' => $media['id']]) }}" type="application/x-mpegURL" />
                         <p class="vjs-no-js">
@@ -17,7 +17,7 @@
                             web browser that
                             <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
                         </p>
-                    </video-js>
+                    </video>
                 @else
                     <img src="{{ route('media', ['id' => $media['id'], 'preview' => true]) }}"
                         alt="@{{ $post['user']['name'] }}">
@@ -38,37 +38,13 @@
                     </svg>
                 </a>
             @endguest
-            <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    var player = videojs("video-{{ $post['id'] }}", {
-                        html5: {
-                            vhs: {
-                                overrideNative: true
-                            },
-                            nativeAudioTracks: false,
-                            nativeVideoTracks: false
-                        }
-                    });
-                    player.hlsStreamSelector();
-
-                    player.on("loadedmetadata", function() {
-
-                        // var qualityLevels = player.qualityLevels();
-
-                        // for (var i = 0; i < qualityLevels.length; i++) {
-                        //     var quality = qualityLevels[i];
-
-                        //     if (quality.width >= 720) {
-                        //         quality.enabled = true;
-                        //     } else {
-                        //         quality.enabled = false;
-                        //     }
-
-                        //     console.log(quality.width, "video-{{ $post['id'] }}", quality);
-                        // }
-                    })
-                })
-            </script>
         </div>
     @endif
+
+    @if ($media['type'] == \App\Models\Media::VIDEO)
+        <script>
+            instantiateVideoPlayer('video-{{ $post['id'] }}');
+        </script>
+    @endif
+
 </div>

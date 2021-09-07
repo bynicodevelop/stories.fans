@@ -9,7 +9,7 @@
         </div>
     @else
         @foreach ($posts as $post)
-            @livewire('post.item', ['post' => $post], key(time() . $post['id']))
+            @livewire('post.item', ['post' => $post], key($post['id']))
         @endforeach
     @endif
 

@@ -94396,6 +94396,22 @@ __webpack_require__(/*! videojs-hls-stream-selector */ "./node_modules/videojs-h
 
 
 window.videojs = video_js__WEBPACK_IMPORTED_MODULE_0__.default;
+var listVideoPlayers = [];
+
+window.instantiateVideoPlayer = function (id) {
+  if (listVideoPlayers[id] == undefined) {
+    listVideoPlayers[id] = (0,video_js__WEBPACK_IMPORTED_MODULE_0__.default)(id, {
+      html5: {
+        vhs: {
+          overrideNative: true
+        },
+        nativeAudioTracks: false,
+        nativeVideoTracks: false
+      }
+    });
+    listVideoPlayers[id].hlsStreamSelector();
+  }
+};
 })();
 
 /******/ })()

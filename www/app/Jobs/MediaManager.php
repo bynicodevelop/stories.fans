@@ -243,8 +243,6 @@ class MediaManager implements ShouldQueue
         $formatsCanResize = $this->formatCanResize([1920, 1280, 854], $width);
         Log::info("Calculate resize formats", $formatsCanResize);
 
-        // $dataFormatting = [];
-
         foreach ($formatsCanResize as $format) {
             $newSize = $this->calculateResizeDimensions($width, $height, $format);
             $bitrate = $this->calculateBitrate($newSize["width"], $newSize["height"], $fps);
@@ -277,23 +275,6 @@ class MediaManager implements ShouldQueue
             throw new VideoStorageException($e->getMessage());
         }
 
-        // TODO: cf => https://zero-absolu.com/wp-content/uploads/2020/09/bitrate-twitch-par-zatomtom-pour-zero-absolu-gaming.png
-        // $media = FFMpeg::fromDisk('local')
-        //     ->open($storagePath)
-        //     ->exportForHLS()
-        //     ->withRotatingEncryptionKey(function ($filename, $contents) use ($name) {
-        //         Storage::disk(config('filesystems.default'))->put("private/{$name}/{$filename}", $contents);
-        //     });
-
-        // foreach ($dataFormatting as $formatting) {
-        //     $media->addFormat((new X264)->setKiloBitrate($formatting["bitrate"]), function ($media) use ($formatting) {
-        //         $media->scale($formatting["width"], $formatting["height"]);
-        //     });
-        // }
-
-        // $media->toDisk(config('filesystems.default'))
-        //     ->save("private/{$name}/{$name}.m3u8");
-
         return [
             "orientation" => $this->getOrientation($videoDimensions->getWidth(), $videoDimensions->getHeight()),
             "ext" => "m3u8",
@@ -318,8 +299,8 @@ class MediaManager implements ShouldQueue
         // Create stream to send image from file
         $stdImage = $image->stream()->detach();
 
-        Storage::put("private/{$name}-full.{$this->ext}", $fullImage);
-        Storage::put("private/{$name}.{$this->ext}", $stdImage);
+        Storage::disk(config('filesystems.default'))->put("private/{$name}/{$name}-full.{$this->ext}", $fullImage);
+        Storage::disk(config('filesystems.default'))->put("private/{$name}/{$name}.{$this->ext}", $stdImage);
 
         return [
             "orientation" => $this->getOrientation($image->width(), $image->height()),
