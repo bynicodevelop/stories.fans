@@ -18,7 +18,12 @@
                     </p>
                     @auth
                         @can('delete', $comment)
-                            @livewire('post.post-comment-menu-contextual', ['comment' => $comment], key($comment['id']))
+                            <div class="hidden group-hover:inline">
+                                @livewire('commons.contextual-menu.modal', [
+                                'model' => $comment,
+                                'menus' => [ "delete", "cancel" ]
+                                ], key("comment-menu-item-{$comment['id']}"))
+                            </div>
                         @endcan
                     @endauth
                 </div>

@@ -1,4 +1,5 @@
-<div class="bg-white rounded">
+<div x-show="!$wire.deleted" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100"
+    x-transition:leave-end="opacity-0" class="bg-white rounded">
     <x-card-header-component :post="$post" :user="$post['user']" :wire:key="$post['id']" />
 
     <div class="{{ !empty($post['content']) ? 'mb-2' : '' }}">

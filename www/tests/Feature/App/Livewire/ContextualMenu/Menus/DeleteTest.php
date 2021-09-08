@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Feature\App\Livewire\Comment;
+namespace Tests\Feature\App\Livewire\ContextualMenu\Menus;
 
-use App\Http\Livewire\Post\PostCommentMenuContextual;
+use App\Http\Livewire\Commons\ContextualMenu\Menus\Delete;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
@@ -11,7 +11,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Livewire\Livewire;
 use Tests\TestCase;
 
-class PostCommentMenuContextualTest extends TestCase
+class DeleteTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -33,11 +33,10 @@ class PostCommentMenuContextualTest extends TestCase
 
         $this->actingAs($user);
 
-        Livewire::test(PostCommentMenuContextual::class)
-            ->set('comment', $user['posts'][0]['comments'][0])
+        Livewire::test(Delete::class)
+            ->set('model', $user['posts'][0]['comments'][0])
             ->call('delete')
-            ->assertEmitted('$refresh')
-            ->assertSet('openModal', false);
+            ->assertEmitted('closeModal');
 
         $nComments = Comment::count();
 
