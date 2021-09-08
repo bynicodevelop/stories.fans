@@ -4958,7 +4958,7 @@ __webpack_require__(/*! ./prism */ "./resources/js/prism.js");
 if (window.configJS == undefined) {
   window.configJS = {
     websocket_url: null,
-    disable_context_menu: "production"
+    disable_context_menu: true
   };
 }
 

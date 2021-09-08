@@ -55,6 +55,7 @@ COPY /www /var/www/html
 
 RUN mkdir -p /var/www/html/storage/app/public \
     /var/www/html/storage/app/private \
+    /var/www/html/storage/app/conversion \
     /var/www/html/storage/uploads \
     /var/www/html/storage/framework/cache \
     /var/www/html/storage/framework/sessions \

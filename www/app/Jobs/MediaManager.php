@@ -168,7 +168,7 @@ class MediaManager implements ShouldQueue
             ->export()
             ->save("conversion/{$name}/{$name}-preview.jpg");
 
-        $image = Image::make(Storage::get("conversion/{$name}/{$name}-preview.jpg", 80));
+        $image = Image::make(Storage::disk('local')->get("conversion/{$name}/{$name}-preview.jpg", 80));
 
         $image->resize(700, null, function ($constraint) {
             $constraint->aspectRatio();
@@ -183,7 +183,7 @@ class MediaManager implements ShouldQueue
                 "path" => "conversion/{$name}/{$name}-preview.jpg"
             ]);
 
-            $image = Image::make(Storage::get("conversion/{$name}/{$name}-preview.jpg"));
+            $image = Image::make(Storage::disk('local')->get("conversion/{$name}/{$name}-preview.jpg"));
 
             $this->blurredImage($image, $name);
         }
