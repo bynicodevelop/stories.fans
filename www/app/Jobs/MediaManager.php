@@ -81,7 +81,7 @@ class MediaManager implements ShouldQueue
                 "path" => $storagePath
             ]);
 
-            extract($this->imageStorage($storagePath, $name));
+            extract($this->imageStorage($storagePath, $name, $this->isPremium));
         } else if ($this->mediaType == Media::VIDEO) {
             Log::info("Run traitement video", [
                 "path" => $path
@@ -147,6 +147,17 @@ class MediaManager implements ShouldQueue
         return $width > $height ?  self::LANDSCAPE : self::PORTRAIT;
     }
 
+    private function blurredImage($image, $name, $ext = "png")
+    {
+        $image->blur(80);
+        $image->brightness(15);
+        $image->pixelate(30);
+
+        $file = $image->stream()->detach();
+
+        Storage::put("private/{$name}/{$name}-preview-blurred.{$ext}", $file);
+    }
+
     public function generatePreview($name, $media, $videoDuration, $isPremium)
     {
         Log::info("Create preview from video", [
@@ -174,13 +185,7 @@ class MediaManager implements ShouldQueue
 
             $image = Image::make(Storage::get("conversion/{$name}/{$name}-preview.jpg"));
 
-            $image->blur(80);
-            $image->brightness(15);
-            $image->pixelate(30);
-
-            $file = $image->stream()->detach();
-
-            Storage::put("private/{$name}/{$name}-preview-blurred.jpg", $file);
+            $this->blurredImage($image, $name);
         }
 
         if (collect(Storage::disk('local')->directories("conversion"))->filter(function ($path) use ($name) {
@@ -282,7 +287,7 @@ class MediaManager implements ShouldQueue
         ];
     }
 
-    private function imageStorage($storagePath, $name): array
+    private function imageStorage($storagePath, $name, $isPremium): array
     {
         $image = Image::make($storagePath)->orientate();
 
@@ -300,6 +305,14 @@ class MediaManager implements ShouldQueue
 
         Storage::disk(config('filesystems.default'))->put("private/{$name}/{$name}-full.{$this->ext}", $fullImage);
         Storage::disk(config('filesystems.default'))->put("private/{$name}/{$name}.{$this->ext}", $stdImage);
+
+        if ($isPremium) {
+            Log::info("Create blur preview from initial image for premium content", [
+                "path" => "conversion/{$name}/{$name}-preview.jpg"
+            ]);
+
+            $this->blurredImage($image, $name, $this->ext);
+        }
 
         return [
             "orientation" => $this->getOrientation($image->width(), $image->height()),

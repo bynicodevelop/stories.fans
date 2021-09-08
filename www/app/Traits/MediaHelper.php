@@ -46,7 +46,7 @@ trait MediaHelper
     public function getImage(string $name, string $ext, bool $isBlurred = false)
     {
         if ($isBlurred) {
-            return Storage::url("private/{$name}/{$name}-blurred.{$ext}");
+            return Storage::url("private/{$name}/{$name}-preview-blurred.{$ext}");
         }
 
         return Storage::url("private/{$name}/{$name}.{$ext}");

@@ -94409,7 +94409,20 @@ window.instantiateVideoPlayer = function (id) {
         nativeVideoTracks: false
       }
     });
+    listVideoPlayers[id].removeChild("BigPlayButton");
     listVideoPlayers[id].hlsStreamSelector();
+  }
+};
+
+window.isPlaying = function (id) {
+  return listVideoPlayers[id].paused();
+};
+
+window.play = function (id) {
+  if (listVideoPlayers[id].paused()) {
+    listVideoPlayers[id].play();
+  } else {
+    listVideoPlayers[id].pause();
   }
 };
 })();
