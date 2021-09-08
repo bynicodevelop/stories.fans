@@ -102,7 +102,7 @@ class MediaHelperTest extends TestCase
 
         $url = $this->getImage("my-image", "jpg", true);
 
-        $this->assertEquals($url, "http://stories.localhost/private/my-image/my-image-blurred.jpg");
+        $this->assertEquals($url, "http://stories.localhost/private/my-image/my-image-preview-blurred.jpg");
     }
 
     public function test_calculateBitrate()
