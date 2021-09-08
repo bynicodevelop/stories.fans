@@ -24,28 +24,13 @@ class Delete extends Component
     {
         $this->authorize('delete', $this->model);
 
-        $data = [
-            "id" => $this->model["id"],
-            "class" => Post::class
-        ];
-
-        switch (get_class($this->model)) {
-            case Comment::class:
-                $emitTo = 'post.post-comments-item';
-                $data["post_id"] = $this->model["post_id"];
-                $data["class"] = Comment::class;
-                break;
-            default:
-                // for Post::class
-                $emitTo = 'post.item';
-                break;
-        }
-
-        dispatch(new DeleteContent($this->model));
+        dispatch(new DeleteContent($this->model))->onQueue('media');
 
         $this->emitUp('closeModal');
 
-        $this->emitTo($emitTo, 'contentDeleted', $data);
+        if (get_class($this->model) == Post::class) {
+            $this->emitTo('post.item', 'isDeleted', $this->model);
+        }
     }
 
     public function render()

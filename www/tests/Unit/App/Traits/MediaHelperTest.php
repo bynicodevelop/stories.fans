@@ -228,7 +228,7 @@ class MediaHelperTest extends TestCase
 
         Storage::disk(config('filesystems.default'))->assertExists('private/avatar1/avatar1.jpg');
 
-        $this->deleteVideoFiles("avatar1");
+        $this->deleteFiles("avatar1");
 
         Storage::disk(config('filesystems.default'))->assertExists('private/avatar2/avatar2.jpg');
         Storage::disk(config('filesystems.default'))->assertMissing('private/avatar1/avatar1.jpg');

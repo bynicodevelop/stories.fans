@@ -2,27 +2,28 @@
 
 namespace App\Events;
 
-use Illuminate\Broadcasting\Channel;
+use App\Models\Comment;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
-class PostCreatedEvent implements ShouldBroadcastNow
+class RefreshCommentsEvent implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
+
+    public $comment;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Comment $comment)
     {
-        //
+        $this->comment = $comment;
     }
 
     /**
@@ -32,6 +33,13 @@ class PostCreatedEvent implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('post-created-event');
+        Log::info("Refresh comments event", [
+            "data" => [
+                "event" => "refresh-comments-{$this->comment['post_id']}",
+            ],
+            "class" => RefreshCommentsEvent::class
+        ]);
+
+        return new PrivateChannel("refresh-comments-{$this->comment['post_id']}");
     }
 }

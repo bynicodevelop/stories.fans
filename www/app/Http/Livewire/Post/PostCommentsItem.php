@@ -9,10 +9,13 @@ use Livewire\Component;
 
 class PostCommentsItem extends Component
 {
-    protected $listeners = [
-        '$refresh',
-        'contentDeleted'
-    ];
+    protected function getListeners()
+    {
+        return [
+            "echo-private:refresh-comments-{$this->post['id']},RefreshCommentsEvent" => 'commentDeleted',
+            '$refresh',
+        ];
+    }
 
     /**
      * @var Post
@@ -29,15 +32,9 @@ class PostCommentsItem extends Component
      */
     public $isUnique = false;
 
-    public function contentDeleted($data)
+    public function commentDeleted($postId)
     {
-        if ($this->post['id'] == $data['post_id'] && Comment::class == $data['class']) {
-            // Log::info("deleted", [
-            //     "data" => $data,
-            //     "class" => Item::class
-            // ]);
-
-            // $this->deleted = true;
+        if ($this->post['id'] == $postId) {
             $this->emitSelf('$refresh');
         }
     }

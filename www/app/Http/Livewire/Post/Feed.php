@@ -10,6 +10,16 @@ use Livewire\Component;
 
 class Feed extends Component
 {
+    protected function getListeners()
+    {
+        return [
+            "echo-private:refresh-posts-created,RefreshPostsEvent" => 'newPostCreated',
+            "echo-private:refresh-posts-deleted,RefreshPostsEvent" => 'newPostDeleted',
+            '$refresh' => 'refreshFeed',
+            'loadMore',
+        ];
+    }
+
     /**
      *
      * @var User $user
@@ -33,11 +43,6 @@ class Feed extends Component
      */
     public $posts;
 
-    protected $listeners = [
-        '$refresh' => 'refreshFeed',
-        'loadMore',
-    ];
-
     private function postRequest()
     {
         return Post::whereIn('user_id', $this->user->getFollowers->map(function ($u) {
@@ -58,6 +63,20 @@ class Feed extends Component
         $this->posts = $posts->items();
     }
 
+    public function newPostDeleted($data)
+    {
+        $this->emitTo('alert-component', 'showMessage', [
+            "message" => "post.deleted"
+        ]);
+    }
+
+    public function newPostCreated($data)
+    {
+        $post = Post::where("id", $data["post"]["id"])->with("media")->first();
+
+        array_unshift($this->posts, $post);
+    }
+
     public function refreshFeed()
     {
         $this->dispatchBrowserEvent('newPostsLoaded');
@@ -69,10 +88,12 @@ class Feed extends Component
 
         $posts = $this->postRequest();
 
-        if ($posts->hasPages()) {
-            $this->posts = $posts->items();
+        $this->posts = $posts->items();
 
+        if ($posts->hasPages()) {
             $this->refreshFeed();
+        } else {
+            $this->finished = true;
         }
     }
 

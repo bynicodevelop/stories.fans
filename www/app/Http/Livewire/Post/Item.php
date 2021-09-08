@@ -4,16 +4,11 @@ namespace App\Http\Livewire\Post;
 
 use App\Models\Post;
 use App\Traits\PremiumHelper;
-use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class Item extends Component
 {
     use PremiumHelper;
-
-    protected $listeners = [
-        'contentDeleted',
-    ];
 
     /**
      * @var boolean
@@ -30,14 +25,16 @@ class Item extends Component
      */
     public $isUnique = false;
 
-    public function contentDeleted($data)
+    protected function getListeners()
     {
-        if ($this->post['id'] == $data['id'] && Post::class == $data['class']) {
-            Log::info("deleted", [
-                "data" => $data,
-                "class" => Item::class
-            ]);
+        return [
+            'isDeleted',
+        ];
+    }
 
+    public function isDeleted($data)
+    {
+        if ($data['id'] == $this->post['id']) {
             $this->deleted = true;
         }
     }

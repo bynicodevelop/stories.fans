@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Events\PostCreatedEvent;
+use App\Events\RefreshPostsEvent;
 use App\Exceptions\VideoStorageException;
 use App\Models\Media;
 use App\Traits\MediaHelper;
@@ -129,7 +130,7 @@ class MediaManager implements ShouldQueue
                 ]);
             }
 
-            event(new PostCreatedEvent());
+            event(new RefreshPostsEvent($post, RefreshPostsEvent::CREATED));
         } catch (VideoStorageException $v) {
             Log::error("VideoStorageException", [
                 "message" => $v->getMessage()
@@ -268,7 +269,7 @@ class MediaManager implements ShouldQueue
                 "message" => $e->getMessage()
             ]);
 
-            $this->deleteVideoFiles($name);
+            $this->deleteFiles($name);
 
             throw new VideoStorageException($e->getMessage());
         }
