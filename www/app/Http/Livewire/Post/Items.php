@@ -26,9 +26,17 @@ class Items extends Component
     public $user;
 
     protected $listeners = [
+        "echo-private:refresh-posts-deleted,RefreshPostsEvent" => 'newPostDeleted',
         'loadMore' => 'loadMore',
         '$refresh'
     ];
+
+    public function newPostDeleted()
+    {
+        $this->emitTo('alert-component', 'showMessage', [
+            "message" => "post.deleted"
+        ]);
+    }
 
     public function mount(User $user)
     {

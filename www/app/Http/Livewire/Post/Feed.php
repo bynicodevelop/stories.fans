@@ -63,7 +63,7 @@ class Feed extends Component
         $this->posts = $posts->items();
     }
 
-    public function newPostDeleted($data)
+    public function newPostDeleted()
     {
         $this->emitTo('alert-component', 'showMessage', [
             "message" => "post.deleted"
