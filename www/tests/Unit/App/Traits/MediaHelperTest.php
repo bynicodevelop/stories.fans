@@ -66,7 +66,7 @@ class MediaHelperTest extends TestCase
 
         $url = $this->getPreview('my-image', false);
 
-        $this->assertEquals($url, "http://stories.localhost/private/my-image/my-image-preview.jpg");
+        $this->assertEquals($url, Storage::url("private/my-image/my-image-preview.jpg"));
     }
 
     public function test_getPreview_with_blurred()
@@ -75,7 +75,7 @@ class MediaHelperTest extends TestCase
 
         $url = $this->getPreview('my-image', true);
 
-        $this->assertEquals($url, "http://stories.localhost/private/my-image/my-image-preview-blurred.jpg");
+        $this->assertEquals($url, Storage::url("private/my-image/my-image-preview-blurred.jpg"));
     }
 
     public function test_getImage_without_blurred_jpg()
@@ -84,7 +84,7 @@ class MediaHelperTest extends TestCase
 
         $url = $this->getImage("my-image", "jpg", false);
 
-        $this->assertEquals($url, "http://stories.localhost/private/my-image/my-image.jpg");
+        $this->assertEquals($url, Storage::url("private/my-image/my-image.jpg"));
     }
 
     public function test_getImage_without_blurred_png()
@@ -93,7 +93,7 @@ class MediaHelperTest extends TestCase
 
         $url = $this->getImage("my-image", "png", false);
 
-        $this->assertEquals($url, "http://stories.localhost/private/my-image/my-image.png");
+        $this->assertEquals($url, Storage::url("private/my-image/my-image.png"));
     }
 
     public function test_getImage_with_blurred()
@@ -102,7 +102,7 @@ class MediaHelperTest extends TestCase
 
         $url = $this->getImage("my-image", "jpg", true);
 
-        $this->assertEquals($url, "http://stories.localhost/private/my-image/my-image-preview-blurred.jpg");
+        $this->assertEquals($url, Storage::url("private/my-image/my-image-preview-blurred.jpg"));
     }
 
     public function test_calculateBitrate()
