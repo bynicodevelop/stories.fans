@@ -147,7 +147,7 @@ class MediaManager implements ShouldQueue
         return $width > $height ?  self::LANDSCAPE : self::PORTRAIT;
     }
 
-    private function blurredImage($image, $name, $ext = "png")
+    private function blurredImage($image, $name, $ext = "jpg")
     {
         $image->blur(80);
         $image->brightness(15);

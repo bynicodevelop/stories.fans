@@ -71,11 +71,13 @@
         </div>
     @endif
 
-    @if ($media['type'] == \App\Models\Media::VIDEO && !$post['is_premium'])
+    @if ($media['type'] == \App\Models\Media::VIDEO)
         @auth
-            <script>
-                instantiateVideoPlayer('video-{{ $post['id'] }}');
-            </script>
+            @can('seePost', $post)
+                <script>
+                    instantiateVideoPlayer('video-{{ $post['id'] }}');
+                </script>
+            @endcan
         @endauth
     @endif
 
