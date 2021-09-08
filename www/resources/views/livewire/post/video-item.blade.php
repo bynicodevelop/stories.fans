@@ -41,7 +41,7 @@
         </div>
     @endif
 
-    @if ($media['type'] == \App\Models\Media::VIDEO)
+    @if ($media['type'] == \App\Models\Media::VIDEO && !$post['is_premium'])
         <script>
             instantiateVideoPlayer('video-{{ $post['id'] }}');
         </script>
