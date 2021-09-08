@@ -176,7 +176,7 @@ class MediaManager implements ShouldQueue
 
         $file = $image->stream()->detach();
 
-        Storage::disk(config('filesystems.default'))->put("private/{$name}/{$name}-preview.jpg", $file);
+        Storage::disk(config('filesystems.default'))->put("private/{$name}/{$name}-preview.jpg", $file, 'public');
 
         if ($isPremium) {
             Log::info("Create blur preview from video for premium content", [
@@ -260,7 +260,7 @@ class MediaManager implements ShouldQueue
                 ->open($storagePath)
                 ->exportForHLS()
                 ->withRotatingEncryptionKey(function ($filename, $contents) use ($name) {
-                    Storage::disk(config('filesystems.default'))->put("private/{$name}/{$filename}", $contents);
+                    Storage::disk(config('filesystems.default'))->put("private/{$name}/{$filename}", $contents, 'public');
                 });
 
             foreach ($dataFormatting as $formatting) {
@@ -303,8 +303,8 @@ class MediaManager implements ShouldQueue
         // Create stream to send image from file
         $stdImage = $image->stream()->detach();
 
-        Storage::disk(config('filesystems.default'))->put("private/{$name}/{$name}-full.{$this->ext}", $fullImage);
-        Storage::disk(config('filesystems.default'))->put("private/{$name}/{$name}.{$this->ext}", $stdImage);
+        Storage::disk(config('filesystems.default'))->put("private/{$name}/{$name}-full.{$this->ext}", $fullImage, 'public');
+        Storage::disk(config('filesystems.default'))->put("private/{$name}/{$name}.{$this->ext}", $stdImage, 'public');
 
         if ($isPremium) {
             Log::info("Create blur preview from initial image for premium content", [
