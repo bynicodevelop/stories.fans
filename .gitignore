@@ -27,3 +27,4 @@ docker-compose.override.yml
 /www/laravel-echo-server.json
 /redis
 /www/public/private
+/www/storage/debugbar

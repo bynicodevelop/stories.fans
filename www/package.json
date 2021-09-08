@@ -22,12 +22,16 @@
         "lodash": "^4.17.19",
         "postcss": "^8.3.6",
         "postcss-import": "^14.0.1",
-        "tailwindcss": "^2.2.7"
+        "tailwindcss": "^2.2.7",
+        "video.js": "^7.14.3"
     },
     "dependencies": {
         "@tailwindcss/aspect-ratio": "^0.2.1",
+        "@videojs/http-streaming": "^2.9.2",
         "grapesjs": "^0.17.19",
         "grapesjs-parser-postcss": "^0.1.1",
-        "socker.io": "^0.0.0-alpha-beta"
+        "socker.io": "^0.0.0-alpha-beta",
+        "videojs-contrib-quality-levels": "^2.1.0",
+        "videojs-hls-stream-selector": "^0.2.2"
     }
 }

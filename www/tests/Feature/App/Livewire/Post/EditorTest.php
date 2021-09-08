@@ -154,7 +154,7 @@ class EditorTest extends TestCase
             ->assertSet('isDisabled', true)
             ->assertNoRedirect();
 
-        Queue::assertPushed(MediaManager::class);
+        Queue::assertPushedOn('media', MediaManager::class);
     }
 
     public function test_send_post_with_unauthenticated_user()

@@ -190,8 +190,7 @@ return [
         Artesaos\SEOTools\Providers\SEOToolsServiceProvider::class,
         ProtoneMedia\LaravelFFMpeg\Support\ServiceProvider::class,
         App\Providers\BladeMarkdownProvider::class,
-
-
+        Barryvdh\Debugbar\ServiceProvider::class,
     ],
 
     /*
@@ -249,7 +248,8 @@ return [
         'Premium' => App\Helpers\PremiumHelper::class,
         'FormatNumber' => App\Helpers\FormatNumberHelper::class,
         'SEO' => Artesaos\SEOTools\Facades\SEOTools::class,
-        'FFMpegFacade' => ProtoneMedia\LaravelFFMpeg\Support\FFMpeg::class
+        'FFMpegFacade' => ProtoneMedia\LaravelFFMpeg\Support\FFMpeg::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
     ],
 
 ];

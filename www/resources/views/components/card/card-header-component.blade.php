@@ -14,5 +14,9 @@
             {{ $post['created_at']->diffForHumans() }}
         </span>
     </div>
-    @livewire('post.menu-contextual', ['post' => $post, 'user' => $user], key($post['id']))
+
+    @livewire('commons.contextual-menu.modal', [
+    'model' => $post,
+    'menus' => [ "share", "delete", "cancel" ]
+    ], key("post-menu-item-{$post['id']}"))
 </div>

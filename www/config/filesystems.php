@@ -36,6 +36,11 @@ return [
             'url' => env('APP_URL'),
         ],
 
+        'convertion' => [
+            'driver' => 'local',
+            'root' => storage_path('app/convertion'),
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

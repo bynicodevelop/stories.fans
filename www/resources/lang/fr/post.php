@@ -17,5 +17,6 @@ return [
     "required-content" => "Le contenu est requis",
     "required-comment" => "Le commentaire est requis",
     "all-content-loaded" => "Vous êtes arrivé au bout du rouleau 😁",
-    "button" => "Post"
+    "button" => "Post",
+    "deleted" => "Votre post est supprimé."
 ];

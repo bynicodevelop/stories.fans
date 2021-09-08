@@ -2,12 +2,20 @@
 
 namespace App\Http\Livewire\Post;
 
+use App\Models\Comment;
 use App\Models\Post;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class PostCommentsItem extends Component
 {
-    protected $listeners = ['$refresh'];
+    protected function getListeners()
+    {
+        return [
+            "echo-private:refresh-comments-{$this->post['id']},RefreshCommentsEvent" => 'commentDeleted',
+            '$refresh',
+        ];
+    }
 
     /**
      * @var Post
@@ -23,6 +31,13 @@ class PostCommentsItem extends Component
      * @var boolean
      */
     public $isUnique = false;
+
+    public function commentDeleted($postId)
+    {
+        if ($this->post['id'] == $postId) {
+            $this->emitSelf('$refresh');
+        }
+    }
 
     public function render()
     {

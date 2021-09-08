@@ -11,6 +11,11 @@ class Item extends Component
     use PremiumHelper;
 
     /**
+     * @var boolean
+     */
+    public $deleted = false;
+
+    /**
      * @var Post
      */
     public $post;
@@ -19,6 +24,20 @@ class Item extends Component
      * @var boolean
      */
     public $isUnique = false;
+
+    protected function getListeners()
+    {
+        return [
+            'isDeleted',
+        ];
+    }
+
+    public function isDeleted($data)
+    {
+        if ($data['id'] == $this->post['id']) {
+            $this->deleted = true;
+        }
+    }
 
     public function render()
     {

@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\Media;
 use App\Models\Post;
+use App\Traits\MediaHelper;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Storage;
 
 class DeleteMedia implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, MediaHelper;
 
     private $media;
 
@@ -26,7 +27,6 @@ class DeleteMedia implements ShouldQueue
      */
     public function __construct($media)
     {
-        Log::debug($media);
         $this->media = $media;
     }
 
@@ -37,22 +37,17 @@ class DeleteMedia implements ShouldQueue
      */
     public function handle()
     {
-        Log::debug($this->media);
+        Log::info("List of media", [
+            "data" => [
+                "files" => $this->media
+            ],
+            "class" => DeleteMedia::class
+        ]);
 
         foreach ($this->media as $media) {
-            $listPathes = [
-                "private/{$media['name']}.{$media['ext']}",
-                "private/{$media['name']}-full.{$media['ext']}",
-                "private/{$media['name']}-preview.{$media['ext']}",
-            ];
-
-            foreach ($listPathes as $path) {
-                if (Storage::exists($path)) {
-                    Storage::delete($path);
-                }
-            }
+            $this->deleteFiles($media['name']);
         }
 
-        Log::debug("All media deleted");
+        Log::info("All media deleted");
     }
 }

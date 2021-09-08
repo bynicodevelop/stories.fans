@@ -21,7 +21,7 @@ class Editor extends Component
     public function getListeners()
     {
         return [
-            'echo-private:post-created-event,PostCreatedEvent' => 'notifyNewPostCreated',
+            // 'echo-private:refresh-posts-create,RefreshPostsEvent' => 'notifyNewPostCreated',
             'preUploadMedia',
         ];
     }
