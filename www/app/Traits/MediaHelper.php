@@ -85,7 +85,7 @@ trait MediaHelper
         return $listFormatSize;
     }
 
-    public function deleteVideoFiles($name)
+    public function deleteFiles($name)
     {
         $files = Storage::disk(config('filesystems.default'))->files("private/{$name}");
 

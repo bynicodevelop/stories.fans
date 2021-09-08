@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Events\ContentDeletedEvent;
+use App\Models\Post;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -42,6 +43,10 @@ class DeleteContent implements ShouldQueue
             "data" => ["model" => $this->model],
             "class" => DeleteContent::class
         ]);
+
+        if (get_class($this->model) == Post::class) {
+            dispatch(new DeleteMedia($this->model->media->toArray()));
+        }
 
         $this->model->delete();
     }

@@ -27,7 +27,6 @@ class DeleteMedia implements ShouldQueue
      */
     public function __construct($media)
     {
-        Log::debug($media);
         $this->media = $media;
     }
 
@@ -38,10 +37,15 @@ class DeleteMedia implements ShouldQueue
      */
     public function handle()
     {
-        Log::info($this->media);
+        Log::info("List of media", [
+            "data" => [
+                "files" => $this->media
+            ],
+            "class" => DeleteMedia::class
+        ]);
 
         foreach ($this->media as $media) {
-            $this->deleteVideoFiles($media['name']);
+            $this->deleteFiles($media['name']);
         }
 
         Log::info("All media deleted");
