@@ -164,7 +164,7 @@ class MediaManager implements ShouldQueue
 
         $file = $image->stream()->detach();
 
-        Storage::disk(config('filesystems.default'))->put("private/{$name}/{$name}-preview-blurred.{$ext}", $file);
+        Storage::disk(config('filesystems.default'))->put("private/{$name}/{$name}-preview-blurred.{$ext}", $file, 'public');
     }
 
     public function generatePreview($name, $media, $videoDuration, $isPremium)

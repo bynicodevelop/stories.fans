@@ -186,13 +186,13 @@ class Editor extends Component
             $extFile
         ))->onQueue('media');
 
-        $this->emitTo('alert-component', 'showMessage', [
-            "message" => "post.post-send"
-        ]);
-
         $this->clear();
         $this->isDisabled();
         $this->dispatchBrowserEvent('clear');
+
+        $this->emitTo('alert-component', 'showMessage', [
+            "message" => "post.post-send"
+        ]);
 
         if ($this->isMobile) {
             return redirect()->route('home');
