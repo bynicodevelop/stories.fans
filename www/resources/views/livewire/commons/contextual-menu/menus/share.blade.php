@@ -8,12 +8,10 @@
     </div>
 
     <script type="application/javascript">
-        document.addEventListener("DOMContentLoader", function() {
-            let clipboard = new ClipboardJS('#btn-{{ $model['id'] }}');
+        let clipboard = new ClipboardJS('#btn-{{ $model['id'] }}');
 
-            clipboard.on('success', function(e) {
-                window.livewire.emit('copied')
-            });
-        })
+        clipboard.on('success', function(e) {
+            window.livewire.emit('copied')
+        });
     </script>
 </div>
