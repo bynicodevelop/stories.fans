@@ -10,44 +10,41 @@ use Livewire\Component;
 
 class Feed extends Component
 {
-    protected function getListeners()
-    {
-        return [
-            "echo-private:refresh-posts-created,RefreshPostsEvent" => 'newPostCreated',
-            "echo-private:refresh-posts-deleted,RefreshPostsEvent" => 'newPostDeleted',
-            '$refresh' => 'refreshFeed',
-            'loadMore',
-        ];
-    }
-
     /**
-     *
-     * @var User $user
-     */
-    public $user;
-
-    /**
-     *
      * @var boolean $finished
      */
     public $finished = false;
 
     /**
-     *
      * @var integer $perPage
      */
     public $perPage = 5;
 
     /**
-     * @var array
+     * @var User $user
+     */
+    public $user;
+
+    /**
+     * @var array $posts
      */
     public $posts;
+
+    protected $listeners = [
+        "echo-private:refresh-posts-created,RefreshPostsEvent" => 'newPostCreated',
+        "echo-private:refresh-posts-deleted,RefreshPostsEvent" => 'newPostDeleted',
+        '$refresh' => 'refreshFeed',
+        'loadMore',
+    ];
 
     private function postRequest()
     {
         return Post::whereIn('user_id', $this->user->getFollowers->map(function ($u) {
             return $u['follow_id'];
-        }))->with('media')->orderBy("created_at", "desc")->paginate($this->perPage);
+        }))
+            ->with('media')
+            ->orderBy("created_at", "desc")
+            ->paginate($this->perPage);
     }
 
     public function mount(User $user): void
@@ -56,18 +53,13 @@ class Feed extends Component
         $this->posts = [];
     }
 
-    public function loadPosts()
-    {
-        $posts = $this->postRequest();
-
-        $this->posts = $posts->items();
-    }
-
     public function newPostDeleted()
     {
         $this->emitTo('alert-component', 'showMessage', [
             "message" => "post.deleted"
         ]);
+
+        $this->refreshFeed();
     }
 
     public function newPostCreated($data)
@@ -75,26 +67,41 @@ class Feed extends Component
         $post = Post::where("id", $data["post"]["id"])->with("media")->first();
 
         array_unshift($this->posts, $post);
+
+        $this->refreshFeed();
     }
 
-    public function refreshFeed()
+    public function loadPosts()
     {
-        $this->dispatchBrowserEvent('newPostsLoaded');
+        $posts = $this->postRequest();
+
+        $this->posts = $posts->items();
+
+        $this->refreshFeed();
     }
 
     public function loadMore(): void
     {
+        if ($this->finished) {
+            return;
+        }
+
         $this->perPage += 5;
 
         $posts = $this->postRequest();
 
         $this->posts = $posts->items();
 
-        if ($posts->hasPages()) {
-            $this->refreshFeed();
-        } else {
+        if (!$posts->hasPages()) {
             $this->finished = true;
         }
+
+        $this->refreshFeed();
+    }
+
+    public function refreshFeed()
+    {
+        $this->dispatchBrowserEvent('newPostsLoaded');
     }
 
     public function render(): View

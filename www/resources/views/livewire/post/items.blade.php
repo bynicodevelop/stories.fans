@@ -1,4 +1,4 @@
-<div class="space-y-6">
+<div class="space-y-6" wire:init="loadPosts">
     @if (count($posts) == 0)
         <div class="bg-white rounded p-6 text-center">
             @if ($user['id'] == Auth::id())
