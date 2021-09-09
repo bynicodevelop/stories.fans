@@ -1,5 +1,5 @@
 <div>
-    @if ($nComments > $limitComments && !$isUnique)
+    @if ($nComments > $limitComments && !$isUniquePost)
         <div class="px-4 pt-2">
             <a class="text-sm text-gray-500 font-semibold tracking-wide"
                 href="{{ route('post', ['postId' => $post['id']]) }}">

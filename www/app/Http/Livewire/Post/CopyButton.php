@@ -12,6 +12,11 @@ class CopyButton extends Component
      */
     public $post;
 
+    /**
+     * @var boolean
+     */
+    public $isUniquePost = false;
+
     public function render()
     {
         $hasCopy = false;

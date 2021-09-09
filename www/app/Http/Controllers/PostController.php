@@ -70,9 +70,12 @@ class PostController extends Controller
 
         $this->seo()->opengraph()->setUrl($route);
         $this->seo()->opengraph()->addProperty('type', 'article');
-        $this->seo()->opengraph()->addImage($this->getPreview($post['media'][0]['name'], false));
 
-        $this->seo()->twitter()->addImage($this->getPreview($post['media'][0]['name'], false));
+        if (count($post['media'])) {
+            $this->seo()->opengraph()->addImage($this->getPreview($post['media'][0]['name'], false));
+            $this->seo()->twitter()->addImage($this->getPreview($post['media'][0]['name'], false));
+        }
+
 
         return view('post.index', compact('post'));
     }

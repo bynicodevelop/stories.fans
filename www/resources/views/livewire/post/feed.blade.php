@@ -23,8 +23,7 @@
 
             document.addEventListener('livewire:load', function() {
                 window.addEventListener('newPostsLoaded', function() {
-                    Prism.highlightAll();
-                    window.livewire.emit('loadMore')
+                    Prism.highlightAll()
                 })
             })
         </script>

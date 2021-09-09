@@ -30,7 +30,7 @@ class PostCommentsItem extends Component
     /**
      * @var boolean
      */
-    public $isUnique = false;
+    public $isUniquePost = false;
 
     public function commentDeleted($postId)
     {
@@ -45,7 +45,7 @@ class PostCommentsItem extends Component
 
         $commentsQuery = $this->post->comments()->with('user')->orderBy('created_at', 'asc');
 
-        if (!$this->isUnique) {
+        if (!$this->isUniquePost) {
             $commentsQuery->take($this->limitComments);
         }
 

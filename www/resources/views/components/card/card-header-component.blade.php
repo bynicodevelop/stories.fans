@@ -17,6 +17,7 @@
 
     @livewire('commons.contextual-menu.modal', [
     'model' => $post,
-    'menus' => [ "share", "delete", "cancel" ]
+    'menus' => [ "share", "delete", "cancel" ],
+    'isUniquePost' => $isUniquePost,
     ], key("post-menu-item-{$post['id']}"))
 </div>

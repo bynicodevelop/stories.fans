@@ -14,17 +14,20 @@ class CardFooterComponent extends Component
      */
     public $post;
 
-    public $isUnique = false;
+    /**
+     * @var boolean
+     */
+    public $isUniquePost = false;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct(Post $post, bool $isUnique)
+    public function __construct(Post $post, bool $isUniquePost)
     {
         $this->post = $post;
-        $this->isUnique = $isUnique;
+        $this->isUniquePost = $isUniquePost;
     }
 
     /**

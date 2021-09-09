@@ -1,5 +1,6 @@
 <div>
-    @livewire('post.post-comments-item', ['post' => $post, 'isUnique' => $isUnique], key("list-comments-{$post['id']}"))
+    @livewire('post.post-comments-item', ['post' => $post, 'isUniquePost' => $isUniquePost],
+    key("list-comments-{$post['id']}"))
 
     @auth
         <form x-data wire:submit.prevent="sendComment">

@@ -23,7 +23,7 @@ class Item extends Component
     /**
      * @var boolean
      */
-    public $isUnique = false;
+    public $isUniquePost = false;
 
     protected function getListeners()
     {

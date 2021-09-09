@@ -2,7 +2,8 @@
 
 <div>
     <div class="flex justify-end px-2 py-2">
-        @livewire('post.copy-button', ['post' => $post], key("share-btn-{$post['id']}"))
+        @livewire('post.copy-button', ['post' => $post, 'isUniquePost' => $isUniquePost],
+        key("share-btn-{$post['id']}"))
 
         @auth
             @livewire('post.like-button', ['post' => $post], key("like-btn-{$post['id']}"))
@@ -25,5 +26,6 @@
         @endcannot
     </div>
 
-    @livewire('post.post-comment', ['post' => $post, 'isUnique' => $isUnique], key("comment-form-{$post['id']}"))
+    @livewire('post.post-comment', ['post' => $post, 'isUniquePost' => $isUniquePost],
+    key("comment-form-{$post['id']}"))
 </div>

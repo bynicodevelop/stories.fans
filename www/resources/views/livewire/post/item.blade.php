@@ -1,6 +1,7 @@
 <div x-show="!$wire.deleted" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100"
     x-transition:leave-end="opacity-0" class="bg-white rounded">
-    <x-card-header-component :post="$post" :user="$post['user']" :wire:key="$post['id']" />
+    <x-card-header-component :post="$post" :isUniquePost="$isUniquePost" :user="$post['user']"
+        :wire:key="$post['id']" />
 
     <div class="{{ !empty($post['content']) ? 'mb-2' : '' }}">
         @foreach ($post['media'] as $media)
@@ -14,5 +15,5 @@
         </div>
     @endif
 
-    <x-card-footer-component :post="$post" :isUnique="$isUnique" :wire:key="$post['id']" />
+    <x-card-footer-component :post="$post" :isUniquePost="$isUniquePost" :wire:key="$post['id']" />
 </div>

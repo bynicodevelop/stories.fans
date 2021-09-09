@@ -26,7 +26,7 @@ class PostComment extends Component
      * 
      * @var boolean
      */
-    public $isUnique = false;
+    public $isUniquePost = false;
 
     /**
      * @var boolean

@@ -13,6 +13,11 @@ class Share extends Component
      */
     public $model;
 
+    /**
+     * @var boolean
+     */
+    public $isUniquePost = false;
+
     public function copied()
     {
         $this->emitTo('alert-component', 'showMessage', [
