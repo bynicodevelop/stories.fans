@@ -4969,6 +4969,16 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_1__.default({
 window.Alpine = alpinejs__WEBPACK_IMPORTED_MODULE_0__.default;
 alpinejs__WEBPACK_IMPORTED_MODULE_0__.default.start();
 Prism.highlightAll();
+var listClipBoard = [];
+
+window.clipboardInstantiate = function (id) {
+  if (listClipBoard[id] == undefined) {
+    listClipBoard[id] = new ClipboardJS(id);
+    listClipBoard[id].on("success", function (e) {
+      window.livewire.emit("copied");
+    });
+  }
+};
 
 if (window.configJS.disable_context_menu == true) {
   document.addEventListener("contextmenu", function (e) {

@@ -22,6 +22,18 @@ Alpine.start();
 
 Prism.highlightAll();
 
+const listClipBoard = [];
+
+window.clipboardInstantiate = (id) => {
+    if (listClipBoard[id] == undefined) {
+        listClipBoard[id] = new ClipboardJS(id);
+
+        listClipBoard[id].on("success", function (e) {
+            window.livewire.emit("copied");
+        });
+    }
+};
+
 if (window.configJS.disable_context_menu == true) {
     document.addEventListener("contextmenu", (e) => {
         e.preventDefault();

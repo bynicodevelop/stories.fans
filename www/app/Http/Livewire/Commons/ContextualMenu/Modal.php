@@ -25,6 +25,11 @@ class Modal extends Component
      */
     public $menus = [];
 
+    /**
+     * @var boolean
+     */
+    public $isUniquePost = false;
+
     public function closeModal()
     {
         $this->openModal = false;

@@ -8,11 +8,15 @@
         @endif
     </button>
 
-    <script type="application/javascript">
-        let clipboard = new ClipboardJS('#share-button-{{ $post['id'] }}');
-
-        clipboard.on('success', function(e) {
-            window.livewire.emit('copied')
-        });
-    </script>
+    @if ($isUniquePost)
+        <script type="application/javascript">
+            document.addEventListener("DOMContentLoaded", function() {
+                window.clipboardInstantiate('#share-button-{{ $post['id'] }}')
+            });
+        </script>
+    @else
+        <script type="application/javascript">
+            window.clipboardInstantiate('#share-button-{{ $post['id'] }}')
+        </script>
+    @endif
 </div>

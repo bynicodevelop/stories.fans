@@ -12,11 +12,13 @@
                 @foreach ($menus as $menu)
                     @if ($menu == 'delete')
                         @can('delete', $model)
-                            @livewire("commons.contextual-menu.menus.{$menu}", ['model' => $model],
+                            @livewire("commons.contextual-menu.menus.{$menu}", ['model' => $model, 'isUniquePost' =>
+                            $isUniquePost],
                             key("{$menu}-{$model['id']}"))
                         @endcan
                     @else
-                        @livewire("commons.contextual-menu.menus.{$menu}", ['model' => $model],
+                        @livewire("commons.contextual-menu.menus.{$menu}", ['model' => $model, 'isUniquePost' =>
+                        $isUniquePost],
                         key("{$menu}-{$model['id']}"))
                     @endif
                 @endforeach

@@ -21,14 +21,20 @@ class CardHeaderComponent extends Component
     public $user;
 
     /**
+     * @var boolean
+     */
+    public $isUniquePost = false;
+
+    /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct(Post $post, User $user)
+    public function __construct(Post $post, User $user, bool $isUniquePost)
     {
         $this->post = $post;
         $this->user = $user;
+        $this->isUniquePost = $isUniquePost;
     }
 
     /**
