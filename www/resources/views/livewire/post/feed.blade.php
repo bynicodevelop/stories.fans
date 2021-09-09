@@ -1,5 +1,5 @@
 <div class="space-y-6" wire:init="loadPosts">
-    @if (count($posts) == 0)
+    @if (count($posts) == 0 && !$isLoading)
         <div class="bg-white rounded p-6 text-center">
             <p>{{ __('feed.items-not-found') }}</p>
         </div>

@@ -10,6 +10,8 @@ use Livewire\Component;
 
 class Feed extends Component
 {
+    public $isLoading = true;
+
     /**
      * @var boolean $finished
      */
@@ -76,6 +78,8 @@ class Feed extends Component
         $posts = $this->postRequest();
 
         $this->posts = $posts->items();
+
+        $this->isLoading = false;
 
         $this->refreshFeed();
     }
