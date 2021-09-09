@@ -7,6 +7,16 @@ window.videojs = videojs;
 
 const listVideoPlayers = [];
 
+videojs.Vhs.xhr.beforeRequest = function (options) {
+    const cachebuster = Math.round(new Date().getTime() / 1000);
+    options.uri = options.uri + "?no-cache=" + cachebuster;
+
+    options.headers = {
+        "Cache-Control": "no-cache",
+    };
+    return options;
+};
+
 window.instantiateVideoPlayer = (id) => {
     if (listVideoPlayers[id] == undefined) {
         listVideoPlayers[id] = videojs(id, {
