@@ -94398,6 +94398,15 @@ __webpack_require__(/*! videojs-hls-stream-selector */ "./node_modules/videojs-h
 window.videojs = video_js__WEBPACK_IMPORTED_MODULE_0__.default;
 var listVideoPlayers = [];
 
+video_js__WEBPACK_IMPORTED_MODULE_0__.default.Vhs.xhr.beforeRequest = function (options) {
+  var cachebuster = Math.round(new Date().getTime() / 1000);
+  options.uri = options.uri + "?no-cache=" + cachebuster;
+  options.headers = {
+    "Cache-Control": "no-cache"
+  };
+  return options;
+};
+
 window.instantiateVideoPlayer = function (id) {
   if (listVideoPlayers[id] == undefined) {
     listVideoPlayers[id] = (0,video_js__WEBPACK_IMPORTED_MODULE_0__.default)(id, {

@@ -69,13 +69,22 @@ class MediaManager implements ShouldQueue
 
         $path = "tmp/{$this->name}";
 
-        Log::debug("Media uploaded info:", [
+        if (!Storage::disk('local')->exists("tmp/{$this->name}")) {
+            Log::info("Temporary file not exists", [
+                "path_name" => "tmp/{$this->name}",
+                "class" => MediaManager::class
+            ]);
+            return;
+        }
+
+        Log::info("Start of treatment:", [
             "path" => $path,
             "mediaType" => $this->mediaType,
+            "class" => MediaManager::class
         ]);
 
         if ($this->mediaType == Media::IMAGE) {
-            $storagePath = storage_path("app/{$path}"); // Storage::disk('local')->get($path);
+            $storagePath = storage_path("app/{$path}");
 
             Log::info("Run traitement image", [
                 "path" => $storagePath
@@ -90,22 +99,22 @@ class MediaManager implements ShouldQueue
             extract($this->videoStorage($path, $name, $this->isPremium));
         }
 
-        Log::debug("Create new post");
+        Log::info("Create new post");
 
         $post = $this->user->posts()->create([
             "content" => empty($this->content) ? null : $this->content,
             "is_premium" => $this->isPremium,
         ]);
 
-        Log::debug("Post created", [
+        Log::info("Post created", [
             "post_id" => $post["id"]
         ]);
 
         try {
             if ($this->mediaType != Media::POST) {
-                Log::debug("Create new media");
+                Log::info("Create new media");
 
-                Log::debug("Orientation file: ", [
+                Log::info("Orientation file: ", [
                     "orientation" => $orientation
                 ]);
 
@@ -155,15 +164,11 @@ class MediaManager implements ShouldQueue
 
         $file = $image->stream()->detach();
 
-        Storage::put("private/{$name}/{$name}-preview-blurred.{$ext}", $file);
+        Storage::disk(config('filesystems.default'))->put("private/{$name}/{$name}-preview-blurred.{$ext}", $file);
     }
 
     public function generatePreview($name, $media, $videoDuration, $isPremium)
     {
-        Log::info("Create preview from video", [
-            "path" => "conversion/{$name}/{$name}-preview.jpg"
-        ]);
-
         $media->getFrameFromSeconds($videoDuration * .33)
             ->export()
             ->save("conversion/{$name}/{$name}-preview.jpg");
@@ -228,9 +233,9 @@ class MediaManager implements ShouldQueue
 
         Log::info("Generate preview from video", [
             "name" => $name,
-            "media" => $media,
             "videoDuration" => $videoDuration,
-            "isPremium" => $isPremium
+            "isPremium" => $isPremium,
+            "class" => MediaManager::class
         ]);
         $this->generatePreview($name, $media, $videoDuration, $isPremium);
 
@@ -238,7 +243,7 @@ class MediaManager implements ShouldQueue
             "path" => "private/{$name}",
         ]);
         Storage::disk(config('filesystems.default'))->makeDirectory("private/{$name}");
-        chmod(storage_path("app/private/{$name}"), 0777);
+        // chmod(storage_path("app/private/{$name}"), 0777);
 
         $dataFormatting = [];
 
