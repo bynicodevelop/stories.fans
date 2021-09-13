@@ -6,6 +6,7 @@ use App\Events\PostCreatedEvent;
 use App\Events\RefreshPostsEvent;
 use App\Exceptions\VideoStorageException;
 use App\Models\Media;
+use App\Services\PreviewService;
 use App\Traits\MediaHelper;
 use Exception;
 use FFMpeg\Format\Video\X264;
@@ -166,9 +167,9 @@ class MediaManager implements ShouldQueue
 
         $image = Image::make(Storage::disk('local')->get("conversion/{$name}/{$name}-preview.jpg", 80));
 
-        $image->resize(700, null, function ($constraint) {
-            $constraint->aspectRatio();
-        });
+        dd($image->getWidth(), $image->getHeight());
+
+        dd($image->getWidth(), $image->getHeight());
 
         $file = $image->stream()->detach();
 
@@ -284,33 +285,66 @@ class MediaManager implements ShouldQueue
 
     private function imageStorage($storagePath, $name, $isPremium): array
     {
-        $image = Image::make($storagePath)->orientate();
+        $previewServiceFull = new PreviewService();
 
-        // Create stream to send image from file
-        $fullImage = $image->stream()->detach();
+        $previewServiceFull->open($storagePath)
+            ->toDisk(config('filesystems.default'))
+            ->setVisibility('public')
+            ->baseName($name)
+            ->setExtension($this->ext)
+            ->fileName("-full")
+            ->save("/private");
 
-        $image = Image::make($storagePath)->orientate();
+        $previewServiceResize = new PreviewService();
 
-        $image->resize(1080, null, function ($constraint) {
-            $constraint->aspectRatio();
-        });
+        $previewServiceResize->open($storagePath)
+            ->resize(720)
+            ->toDisk(config('filesystems.default'))
+            ->setVisibility('public')
+            ->baseName($name)
+            ->setExtension($this->ext)
+            ->save("/private");
 
-        // Create stream to send image from file
-        $stdImage = $image->stream()->detach();
 
-        Storage::disk(config('filesystems.default'))->put("private/{$name}/{$name}-full.{$this->ext}", $fullImage, 'public');
-        Storage::disk(config('filesystems.default'))->put("private/{$name}/{$name}.{$this->ext}", $stdImage, 'public');
+        // $image = Image::make($storagePath)->orientate();
+
+        // // Create stream to send image from file
+        // $fullImage = $image->stream()->detach();
+
+        // $image = Image::make($storagePath)->orientate();
+
+        // $image->resize(1080, null, function ($constraint) {
+        //     $constraint->aspectRatio();
+        // });
+
+        // // Create stream to send image from file
+        // $stdImage = $image->stream()->detach();
+
+        // Storage::disk(config('filesystems.default'))->put("private/{$name}/{$name}-full.{$this->ext}", $fullImage, 'public');
+        // Storage::disk(config('filesystems.default'))->put("private/{$name}/{$name}.{$this->ext}", $stdImage, 'public');
 
         if ($isPremium) {
             Log::info("Create blur preview from initial image for premium content", [
                 "path" => "conversion/{$name}/{$name}-preview.jpg"
             ]);
 
-            $this->blurredImage($image, $name, $this->ext);
+            $previewServiceResizeBlurred = new PreviewService();
+
+            $previewServiceResizeBlurred->open($storagePath)
+                ->resize(720)
+                ->toDisk(config('filesystems.default'))
+                ->setVisibility('public')
+                ->baseName($name)
+                ->fileName("-preview-blurred")
+                ->setExtension($this->ext)
+                ->blurred()
+                ->save("/private");
+
+            // $this->blurredImage($image, $name, $this->ext);
         }
 
         return [
-            "orientation" => $this->getOrientation($image->width(), $image->height()),
+            "orientation" => $previewServiceFull->getOrientation(),
             "ext" => $this->ext,
             "preview" => null,
         ];

@@ -165,17 +165,17 @@ class Editor extends Component
 
         extract($this->getMediaProperties($this->media));
 
-        // $fileManager = new MediaManager(
-        //     $this->user,
-        //     empty($this->content) ? null : $this->content,
-        //     $this->isPremium,
-        //     $typeMedia,
-        //     $fileName,
-        //     $extFile
-        // );
+        $fileManager = new MediaManager(
+            $this->user,
+            empty($this->content) ? null : $this->content,
+            $this->isPremium,
+            $typeMedia,
+            $fileName,
+            $extFile
+        );
 
-        // $fileManager->handle();
-        // dd("ok");
+        $fileManager->handle();
+        dd("ok");
 
         dispatch(new MediaManager(
             $this->user,
