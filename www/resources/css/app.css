@@ -13,3 +13,11 @@
 [x-cloak] {
     display: none !important;
 }
+
+video[poster]{
+    object-fit: cover;
+}
+
+.vjs-poster {
+    background-size: cover;
+}

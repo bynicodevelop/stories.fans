@@ -1,9 +1,9 @@
 <div x-show="!$wire.deleted" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100"
-    x-transition:leave-end="opacity-0" class="bg-white rounded">
+    x-transition:leave-end="opacity-0" class="bg-white rounded max-h-screen overflow-hidden">
     <x-card-header-component :post="$post" :isUniquePost="$isUniquePost" :user="$post['user']"
         :wire:key="$post['id']" />
 
-    <div class="{{ !empty($post['content']) ? 'mb-2' : '' }}">
+    <div class="{{ !empty($post['content']) ? 'mb-2' : '' }} relative overflow-hidden">
         @foreach ($post['media'] as $media)
             @livewire('post.video-item', ['post' => $post, 'media' => $media])
         @endforeach

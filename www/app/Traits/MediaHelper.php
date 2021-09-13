@@ -101,4 +101,9 @@ trait MediaHelper
 
         Storage::disk(config('filesystems.default'))->deleteDirectory("private/{$name}");
     }
+
+    public function getOrientation(int $width, int $height): string
+    {
+        return $width > $height ?  Media::LANDSCAPE : Media::PORTRAIT;
+    }
 }
