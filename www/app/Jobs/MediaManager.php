@@ -23,10 +23,6 @@ class MediaManager implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, MediaHelper;
 
-    const LANDSCAPE = "landscape";
-
-    const PORTRAIT = "portrait";
-
     /**
      *
      * @var User
@@ -151,11 +147,6 @@ class MediaManager implements ShouldQueue
         }
     }
 
-    private function getOrientation(int $width, int $height): string
-    {
-        return $width > $height ?  self::LANDSCAPE : self::PORTRAIT;
-    }
-
     private function blurredImage($image, $name, $ext = "jpg")
     {
         $image->blur(80);
@@ -198,7 +189,7 @@ class MediaManager implements ShouldQueue
         })->count() > 0) {
             Storage::disk('local')->deleteDirectory("conversion/{$name}");
 
-            Log::info("Aull previews deleted");
+            Log::info("All previews deleted");
         }
     }
 
@@ -243,7 +234,6 @@ class MediaManager implements ShouldQueue
             "path" => "private/{$name}",
         ]);
         Storage::disk(config('filesystems.default'))->makeDirectory("private/{$name}");
-        // chmod(storage_path("app/private/{$name}"), 0777);
 
         $dataFormatting = [];
 
@@ -285,7 +275,7 @@ class MediaManager implements ShouldQueue
         }
 
         return [
-            "orientation" => $this->getOrientation($videoDimensions->getWidth(), $videoDimensions->getHeight()),
+            "orientation" => $this->getOrientation($width, $height),
             "ext" => "m3u8",
             // TODO: useless property (remove in futur version)
             "preview" => "{$name}-preview.jpg",

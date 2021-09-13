@@ -94421,6 +94421,8 @@ window.instantiateVideoPlayer = function (id) {
     listVideoPlayers[id].removeChild("BigPlayButton");
     listVideoPlayers[id].hlsStreamSelector();
   }
+
+  return listVideoPlayers[id];
 };
 
 window.isPlaying = function (id) {
@@ -94431,6 +94433,12 @@ window.play = function (id) {
   if (listVideoPlayers[id].paused()) {
     listVideoPlayers[id].play();
   } else {
+    listVideoPlayers[id].pause();
+  }
+};
+
+window.pause = function (id) {
+  if (!listVideoPlayers[id].paused()) {
     listVideoPlayers[id].pause();
   }
 };
