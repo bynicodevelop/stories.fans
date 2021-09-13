@@ -1,11 +1,13 @@
 <x-app-layout>
-    <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
+    <div class="max-w-xl mx-auto sm:px-6 lg:px-8">
         <div class="overflow-hidden space-y-6">
             <div class="relative p-3 pb-5 bg-white grid justify-items-center rounded">
-                <a class="absolute top-3 right-5 md:hidden" href="{{ route('settings') }}"
-                    class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
-                    <i class="fas fa-cogs text-gray-500"></i>
-                </a>
+                @auth
+                    <a class="absolute top-3 right-5 md:hidden" href="{{ route('settings') }}"
+                        class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
+                        <i class="fas fa-cogs text-gray-500"></i>
+                    </a>
+                @endauth
 
                 <div class="mb-5">
                     <x-header-profile :user="$user" />

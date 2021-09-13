@@ -33,6 +33,8 @@ window.instantiateVideoPlayer = (id) => {
 
         listVideoPlayers[id].hlsStreamSelector();
     }
+
+    return listVideoPlayers[id];
 };
 
 window.isPlaying = (id) => listVideoPlayers[id].paused();
@@ -41,6 +43,12 @@ window.play = (id) => {
     if (listVideoPlayers[id].paused()) {
         listVideoPlayers[id].play();
     } else {
+        listVideoPlayers[id].pause();
+    }
+};
+
+window.pause = (id) => {
+    if (!listVideoPlayers[id].paused()) {
         listVideoPlayers[id].pause();
     }
 };

@@ -9,6 +9,10 @@ class Media extends Model
 {
     use HasFactory;
 
+    const LANDSCAPE = "landscape";
+
+    const PORTRAIT = "portrait";
+
     const VIDEO = "video";
 
     const IMAGE = "image";

@@ -7,15 +7,19 @@ services:
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
       - "--entrypoints.websocket.address=:6001"
     networks:
       - backend
     ports:
+      - "443:443"
       - "80:80"
       - "8080:8080"
       - "6001:6001"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./docker/certs:/certs/
+      - ./docker/traefik.yaml:/etc/traefik/traefik.yaml
 
   redis:
     image: redis
@@ -57,10 +61,10 @@ services:
       - ECHO_DEVMODE=true
       - LARAVEL_ECHO_SERVER_DEBUG=true
     labels:
-      - "traefik.port=6001"
       - "traefik.enable=true"
       - "traefik.http.routers.laravel-echo.rule=Host(`stories.localhost`)"
       - "traefik.http.routers.laravel-echo.entrypoints=websocket"
+      - "traefik.http.routers.laravel-echo.tls=true"
     networks:
       - backend
     depends_on:
@@ -78,10 +82,10 @@ services:
     volumes:
       - ./www:/var/www/html
     labels:
-      - "traefik.port=80"
       - "traefik.enable=true"
       - "traefik.http.routers.php-apache.rule=Host(`stories.localhost`)"
-      - "traefik.http.routers.php-apache.entrypoints=web"
+      - "traefik.http.routers.php-apache.entrypoints=websecure"
+      - "traefik.http.routers.php-apache.tls=true"
     depends_on:
       - traefik
       - database

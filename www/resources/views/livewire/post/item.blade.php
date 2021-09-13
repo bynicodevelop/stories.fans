@@ -3,7 +3,7 @@
     <x-card-header-component :post="$post" :isUniquePost="$isUniquePost" :user="$post['user']"
         :wire:key="$post['id']" />
 
-    <div class="{{ !empty($post['content']) ? 'mb-2' : '' }}">
+    <div class="{{ !empty($post['content']) ? 'mb-2' : '' }} relative overflow-hidden">
         @foreach ($post['media'] as $media)
             @livewire('post.video-item', ['post' => $post, 'media' => $media])
         @endforeach
