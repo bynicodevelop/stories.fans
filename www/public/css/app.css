@@ -779,6 +779,10 @@ video {
 	right: 0px;
 }.top-0{
 	top: 0px;
+}.top-2{
+	top: 0.5rem;
+}.right-2{
+	right: 0.5rem;
 }.-top-2\/4{
 	top: -50%;
 }.left-2\/4{
@@ -787,8 +791,6 @@ video {
 	top: 50%;
 }.left-2\/3{
 	left: 66.666667%;
-}.top-2{
-	top: 0.5rem;
 }.left-1\/4{
 	left: 25%;
 }.right-20{
@@ -1239,6 +1241,9 @@ video {
 }.bg-gray-200{
 	--tw-bg-opacity: 1;
 	background-color: rgba(229, 231, 235, var(--tw-bg-opacity));
+}.bg-black{
+	--tw-bg-opacity: 1;
+	background-color: rgba(0, 0, 0, var(--tw-bg-opacity));
 }.bg-pink-500{
 	--tw-bg-opacity: 1;
 	background-color: rgba(236, 72, 153, var(--tw-bg-opacity));
@@ -1265,12 +1270,12 @@ video {
 	padding: 0.5rem;
 }.p-6{
 	padding: 1.5rem;
+}.p-3{
+	padding: 0.75rem;
 }.p-0{
 	padding: 0px;
 }.p-1{
 	padding: 0.25rem;
-}.p-3{
-	padding: 0.75rem;
 }.px-4{
 	padding-left: 1rem;
 	padding-right: 1rem;
@@ -1313,6 +1318,9 @@ video {
 }.py-10{
 	padding-top: 2.5rem;
 	padding-bottom: 2.5rem;
+}.px-0{
+	padding-left: 0px;
+	padding-right: 0px;
 }.px-5{
 	padding-left: 1.25rem;
 	padding-right: 1.25rem;
@@ -1525,6 +1533,8 @@ video {
 	opacity: 0.75;
 }.opacity-50{
 	opacity: 0.5;
+}.opacity-30{
+	opacity: 0.3;
 }.opacity-25{
 	opacity: 0.25;
 }.opacity-70{
@@ -1543,6 +1553,9 @@ video {
 	box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }.shadow-xl{
 	--tw-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+	box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}.shadow-2xl{
+	--tw-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 	box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }.shadow-none{
 	--tw-shadow: 0 0 #0000;
@@ -2931,7 +2944,22 @@ pre[class*="language-"] {
        object-fit: cover;
 }.vjs-poster {
     background-size: cover;
-}.hover\:cursor-pointer:hover{
+}.vjs-nofull .vjs-fullscreen-control {
+    display:none;
+}/*
+ Permet de forcer l'affichage vertical des vidéos en mode protrait
+ */@media screen and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {
+    .vertical-video-modal {
+      transform: rotate(-90deg);
+      transform-origin: left top;
+      width: 100vh;
+      overflow-x: hidden;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      max-height: inherit;
+    }
+  }.hover\:cursor-pointer:hover{
 	cursor: pointer;
 }.hover\:border-gray-300:hover{
 	--tw-border-opacity: 1;
@@ -3225,6 +3253,8 @@ pre[class*="language-"] {
 		margin-bottom: 2.5rem;
 	}.md\:mb-0{
 		margin-bottom: 0px;
+	}.md\:ml-6{
+		margin-left: 1.5rem;
 	}.md\:mb-3{
 		margin-bottom: 0.75rem;
 	}.md\:block{

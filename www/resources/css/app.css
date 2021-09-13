@@ -21,3 +21,23 @@ video[poster]{
 .vjs-poster {
     background-size: cover;
 }
+
+.vjs-nofull .vjs-fullscreen-control {
+    display:none;
+}
+
+/*
+ Permet de forcer l'affichage vertical des vidéos en mode protrait
+ */
+@media screen and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {
+    .vertical-video-modal {
+      transform: rotate(-90deg);
+      transform-origin: left top;
+      width: 100vh;
+      overflow-x: hidden;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      max-height: inherit;
+    }
+  }
