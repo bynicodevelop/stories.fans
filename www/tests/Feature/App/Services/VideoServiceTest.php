@@ -3,6 +3,7 @@
 namespace Tests\Feature\App\services;
 
 use App\Exceptions\ExtractPreviewAtRequiresException;
+use App\Models\Media;
 use App\Services\VideoService;
 use FFMpeg\Coordinate\Dimension;
 use FFMpeg\FFProbe\DataMapping\Stream;
@@ -42,7 +43,7 @@ class VideoServiceTest extends TestCase
     }
 
     /**
-     * Vérifie que le service peu générer une préview
+     * Vérifie que le service peu générer une preview
      */
     public function test_generatePreview()
     {
@@ -57,8 +58,6 @@ class VideoServiceTest extends TestCase
 
         $dimensions = Mockery::mock(Dimension::class);
         $dimensions->shouldReceive('getWidth')->once()->andReturn("1280");
-        $dimensions->shouldReceive('getHeight')->once()->andReturn("720");
-
 
         $stream = Mockery::mock(Stream::class);
         $stream->shouldReceive('getDimensions')->once()->andReturn($dimensions);
@@ -99,5 +98,52 @@ class VideoServiceTest extends TestCase
             ->save("private/");
 
         Storage::disk('local')->assertExists("private/{$baseName}/{$baseName}-preview.jpg");
+    }
+
+    public function test_getOrientation_PROTRAIT()
+    {
+        Storage::fake('local');
+
+        $baseName = "123456";
+        $fileNameStart = "file.mp4";
+
+        $file = UploadedFile::fake()->create($fileNameStart);
+
+        Storage::disk('local')->put("tmp/{$fileNameStart}", $file);
+
+        $dimensions = Mockery::mock(Dimension::class);
+        $dimensions->shouldReceive('getWidth')->once()->andReturn("1280");
+
+        $stream = Mockery::mock(Stream::class);
+        $stream->shouldReceive('getDimensions')->once()->andReturn($dimensions);
+
+        $mediaExporter = Mockery::mock(MediaExporter::class);
+        $mediaExporter->shouldReceive('getFrameContents')->once();
+
+        $mediaOpener = Mockery::mock(MediaOpener::class);
+        $mediaOpener->shouldReceive('getDurationInSeconds')->once()->andReturn(10);
+        $mediaOpener->shouldReceive('getVideoStream')->once()->andReturn($stream);
+        $mediaOpener->shouldReceive('getFrameFromSeconds')->with(10 * .33)->once()->andReturnSelf();
+        $mediaOpener->shouldReceive('export')->once()->andReturn($mediaExporter);
+
+        $ffmpegMock = $this->createPartialMock(FFMpeg::class, []);
+        $ffmpegMock->shouldReceive('fromDisk')->with('local')->once()->andReturnSelf();
+        $ffmpegMock->shouldReceive('open')->with("tmp/{$fileNameStart}")->once()->andReturn($mediaOpener);
+
+        $imageMock = $this->createPartialMock(Image::class, []);
+
+        $mockImage = $imageMock->shouldReceive('make')->once()->andReturnSelf();
+        $mockImage->shouldReceive('orientate')->once()->andReturnSelf();
+        $mockImage->shouldReceive('getWidth')->once()->andReturn(1280);
+        $mockImage->shouldReceive('getHeight')->once()->andReturn(720);
+
+        $videoService = new VideoService();
+
+        $videoService
+            ->fromDisk('local')
+            ->extractPreviewAt(.33)
+            ->open("tmp/{$fileNameStart}");
+
+        $this->assertEquals($videoService->getOrientation(), Media::LANDSCAPE);
     }
 }

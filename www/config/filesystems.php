@@ -47,9 +47,9 @@ return [
             ],
         ],
 
-        'convertion' => [
+        'conversion' => [
             'driver' => 'local',
-            'root' => storage_path('app/convertion'),
+            'root' => storage_path('app/conversion'),
         ],
 
         'public' => [

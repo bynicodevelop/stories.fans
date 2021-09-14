@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Models\Media;
+
 class AbstractMediaService
 {
     protected $media;
@@ -23,6 +25,30 @@ class AbstractMediaService
     protected $height;
 
     protected $isBlurred = false;
+
+    protected function resizeMedia($width)
+    {
+        if (!is_null($this->width)) {
+            if ($width > $this->width) {
+                $this->media->resize(
+                    $this->width,
+                    $this->height,
+                    function ($constraint) {
+                        $constraint->aspectRatio();
+                    }
+                );
+            }
+        }
+    }
+
+    protected function blurMedia()
+    {
+        if ($this->isBlurred) {
+            $this->media->blur(80);
+            $this->media->brightness(15);
+            $this->media->pixelate(30);
+        }
+    }
 
     public function setVisibility(string $visibility): self
     {
@@ -86,27 +112,8 @@ class AbstractMediaService
         return $this;
     }
 
-    protected function resizeMedia($width)
+    public function getOrientation(): string
     {
-        if (!is_null($this->width)) {
-            if ($width > $this->width) {
-                $this->media->resize(
-                    $this->width,
-                    $this->height,
-                    function ($constraint) {
-                        $constraint->aspectRatio();
-                    }
-                );
-            }
-        }
-    }
-
-    protected function blurMedia()
-    {
-        if ($this->isBlurred) {
-            $this->media->blur(80);
-            $this->media->brightness(15);
-            $this->media->pixelate(30);
-        }
+        return $this->media->getWidth() >= $this->media->getHeight() ?  Media::LANDSCAPE : Media::PORTRAIT;
     }
 }

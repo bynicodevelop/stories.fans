@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Media;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
@@ -29,17 +28,12 @@ class PreviewService extends AbstractMediaService
 
         $this->blurMedia();
 
-        $this->file = $this->media->stream()->detach();
+        $resource = $this->media->stream()->detach();
 
         $path = str_replace("//", '/', "$path/{$this->baseName}/{$this->baseName}{$this->fileName}.{$this->extension}");
 
-        Storage::disk($this->diskTo)->put($path, $this->file, $this->visibility);
+        Storage::disk($this->diskTo)->put($path, $resource, $this->visibility);
 
         return $this;
-    }
-
-    public function getOrientation(): string
-    {
-        return $this->media->getWidth() >= $this->media->getHeight() ?  Media::LANDSCAPE : Media::PORTRAIT;
     }
 }

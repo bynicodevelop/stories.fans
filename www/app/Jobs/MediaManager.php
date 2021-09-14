@@ -7,6 +7,7 @@ use App\Events\RefreshPostsEvent;
 use App\Exceptions\VideoStorageException;
 use App\Models\Media;
 use App\Services\PreviewService;
+use App\Services\VideoConversionService;
 use App\Services\VideoService;
 use App\Traits\MediaHelper;
 use Exception;
@@ -149,87 +150,13 @@ class MediaManager implements ShouldQueue
         }
     }
 
-    private function blurredImage($image, $name, $ext = "jpg")
-    {
-        $image->blur(80);
-        $image->brightness(15);
-        $image->pixelate(30);
-
-        $file = $image->stream()->detach();
-
-        Storage::disk(config('filesystems.default'))->put("private/{$name}/{$name}-preview-blurred.{$ext}", $file, 'public');
-    }
-
-    public function generatePreview($name, $media, $videoDuration, $isPremium)
-    {
-        $media->getFrameFromSeconds($videoDuration * .33)
-            ->export()
-            ->save("conversion/{$name}/{$name}-preview.jpg");
-
-        $image = Image::make(Storage::disk('local')->get("conversion/{$name}/{$name}-preview.jpg", 80));
-
-        dd($image->getWidth(), $image->getHeight());
-
-        dd($image->getWidth(), $image->getHeight());
-
-        $file = $image->stream()->detach();
-
-        Storage::disk(config('filesystems.default'))->put("private/{$name}/{$name}-preview.jpg", $file, 'public');
-
-        if ($isPremium) {
-            Log::info("Create blur preview from video for premium content", [
-                "path" => "conversion/{$name}/{$name}-preview.jpg"
-            ]);
-
-            $image = Image::make(Storage::disk('local')->get("conversion/{$name}/{$name}-preview.jpg"));
-
-            $this->blurredImage($image, $name);
-        }
-
-        if (collect(Storage::disk('local')->directories("conversion"))->filter(function ($path) use ($name) {
-            return $path === "conversion/{$name}";
-        })->count() > 0) {
-            Storage::disk('local')->deleteDirectory("conversion/{$name}");
-
-            Log::info("All previews deleted");
-        }
-    }
-
-    private function getVideoMeta($media)
-    {
-        /**
-         * @var FFMpeg\FFProbe\DataMapping\Stream
-         */
-        $videoStream = $media->getVideoStream();
-
-        $rateFrame = $videoStream->get('r_frame_rate');
-
-        $rateFrameExploded = explode("/", $rateFrame);
-
-        return [
-            "videoDuration" => $media->getDurationInSeconds(),
-            "videoDimensions" => $videoStream->getDimensions(),
-            "bitRate" => $videoStream->get('bit_rate'),
-            "fps" => $rateFrameExploded[0] / $rateFrameExploded[1],
-        ];
-    }
-
     private function videoStorage($storagePath, $name, $isPremium = false): array
     {
-        $media = FFMpeg::fromDisk('local')
-            ->open($storagePath);
-
-        extract($this->getVideoMeta($media));
-
-        $width = $videoDimensions->getWidth();
-        $height = $videoDimensions->getHeight();
-
         Log::info("Generate preview from video", [
             "name" => $name,
             "isPremium" => $isPremium,
             "class" => MediaManager::class
         ]);
-        // $this->generatePreview($name, $media, $videoDuration, $isPremium);
         $videoServicePreview = new VideoService();
 
         $videoServicePreview
@@ -264,55 +191,33 @@ class MediaManager implements ShouldQueue
                 ->save("private/");
         }
 
-        // Log::info("Create new folder", [
-        //     "path" => "private/{$name}",
-        // ]);
-        // Storage::disk(config('filesystems.default'))->makeDirectory("private/{$name}");
-
-        $dataFormatting = [];
-
-        $dataFormatting[] = $this->calculateBitrate($width, $height, $fps);
-
-        $formatsCanResize = $this->formatCanResize([1920, 1280, 854], $width);
-        Log::info("Calculate resize formats", $formatsCanResize);
-
-        foreach ($formatsCanResize as $format) {
-            $newSize = $this->calculateResizeDimensions($width, $height, $format);
-            $bitrate = $this->calculateBitrate($newSize["width"], $newSize["height"], $fps);
-
-            $dataFormatting[] = $bitrate;
-        }
-        Log::info("List formats", $dataFormatting);
-
         try {
-            $media = FFMpeg::fromDisk('local')
+            $videoConversionService = new VideoConversionService();
+
+            $videoConversionService
+                ->fromDisk(config('filesystems.default'))
                 ->open($storagePath)
-                ->exportForHLS()
-                ->withRotatingEncryptionKey(function ($filename, $contents) use ($name) {
-                    Storage::disk(config('filesystems.default'))->put("private/{$name}/{$filename}", $contents, 'public');
-                });
-
-            foreach ($dataFormatting as $formatting) {
-                $media->addFormat((new X264)->setKiloBitrate($formatting));
-            }
-
-            $media->toDisk(config('filesystems.default'))
-                ->save("private/{$name}/{$name}.m3u8");
+                ->convertInFormats([1920, 1280, 854])
+                ->baseName($name)
+                ->setExtension("m3u8")
+                ->toDisk(config('filesystems.default'))
+                ->save("private/");
         } catch (Exception $e) {
             Log::error("Convertion error", [
                 "message" => $e->getMessage()
             ]);
 
-            $this->deleteFiles($name);
+            $this->deletePrivateFiles($name);
 
             throw new VideoStorageException($e->getMessage());
         }
 
+        $this->deleteConversionFiles($name);
+
         return [
-            "orientation" => $this->getOrientation($width, $height),
+            "orientation" => $videoServicePreview->getOrientation(),
             "ext" => "m3u8",
-            // TODO: useless property (remove in futur version)
-            "preview" => "{$name}-preview.jpg",
+            "preview" => null,
         ];
     }
 

@@ -13,14 +13,10 @@ class VideoService extends AbstractMediaService
 
     private $widthDimension;
 
-    private $heightDimension;
-
     public function open($path)
     {
-        $this->file = $path;
-
         $file = FFMpeg::fromDisk($this->diskFrom)
-            ->open($this->file);
+            ->open($path);
 
         if (is_null($this->extractPreviewAt)) {
             throw new ExtractPreviewAtRequiresException();
@@ -30,7 +26,6 @@ class VideoService extends AbstractMediaService
         $dimensions = $stream->getDimensions();
 
         $this->widthDimension = $dimensions->getWidth();
-        $this->heightDimension = $dimensions->getHeight();
 
         $duration = $file->getDurationInSeconds();
 
@@ -58,8 +53,8 @@ class VideoService extends AbstractMediaService
 
         $path = str_replace("//", "/", "{$path}/{$this->baseName}/{$this->baseName}{$this->fileName}.{$this->extension}");
 
-        $this->media = $this->media->stream()->detach();
+        $resource = $this->media->stream()->detach();
 
-        Storage::disk($this->diskTo)->put($path, $this->media, $this->visibility);
+        Storage::disk($this->diskTo)->put($path, $resource, $this->visibility);
     }
 }
