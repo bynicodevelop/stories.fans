@@ -37,6 +37,7 @@ class PreviewServiceTest extends TestCase
         $mockImage = $imageMock->shouldReceive('make')->once()->andReturnSelf();
 
         $mockImage->shouldReceive('orientate')->once()->andReturnSelf();
+        $mockImage->shouldReceive('getWidth')->once()->andReturn(10);
 
         $stream = $mockImage->shouldReceive('stream')->once()->andReturn($this->createMock(StreamInterface::class, []));
 
@@ -75,6 +76,7 @@ class PreviewServiceTest extends TestCase
         $mockImage = $imageMock->shouldReceive('make')->once()->andReturnSelf();
 
         $mockImage->shouldReceive('orientate')->once()->andReturnSelf();
+        $mockImage->shouldReceive('getWidth')->once()->andReturn(10);
 
         $stream = $mockImage->shouldReceive('stream')->once()->andReturn($this->createMock(StreamInterface::class, []));
 
@@ -113,6 +115,7 @@ class PreviewServiceTest extends TestCase
         $mockImage = $imageMock->shouldReceive('make')->once()->andReturnSelf();
 
         $mockImage->shouldReceive('orientate')->once()->andReturnSelf();
+        $mockImage->shouldReceive('getWidth')->once()->andReturn(10);
 
         $stream = $mockImage->shouldReceive('stream')->once()->andReturn($this->createMock(StreamInterface::class, []));
 
@@ -215,7 +218,6 @@ class PreviewServiceTest extends TestCase
         Storage::fake('local');
 
         $fileNameStart = "file.jpg";
-        $fileNameEnd = "123456";
 
         $file = UploadedFile::fake()->image($fileNameStart, 1080, 1080)->size(100);
 
@@ -242,7 +244,6 @@ class PreviewServiceTest extends TestCase
         Storage::fake('local');
 
         $fileNameStart = "file.jpg";
-        $fileNameEnd = "123456";
 
         $file = UploadedFile::fake()->image($fileNameStart, 1920, 1080)->size(100);
 
@@ -269,7 +270,6 @@ class PreviewServiceTest extends TestCase
         Storage::fake('local');
 
         $fileNameStart = "file.jpg";
-        $fileNameEnd = "123456";
 
         $file = UploadedFile::fake()->image($fileNameStart, 720, 1080)->size(100);
 

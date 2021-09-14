@@ -7,6 +7,7 @@ use App\Events\RefreshPostsEvent;
 use App\Exceptions\VideoStorageException;
 use App\Models\Media;
 use App\Services\PreviewService;
+use App\Services\VideoService;
 use App\Traits\MediaHelper;
 use Exception;
 use FFMpeg\Format\Video\X264;
@@ -225,16 +226,48 @@ class MediaManager implements ShouldQueue
 
         Log::info("Generate preview from video", [
             "name" => $name,
-            "videoDuration" => $videoDuration,
             "isPremium" => $isPremium,
             "class" => MediaManager::class
         ]);
-        $this->generatePreview($name, $media, $videoDuration, $isPremium);
+        // $this->generatePreview($name, $media, $videoDuration, $isPremium);
+        $videoServicePreview = new VideoService();
 
-        Log::info("Create new folder", [
-            "path" => "private/{$name}",
-        ]);
-        Storage::disk(config('filesystems.default'))->makeDirectory("private/{$name}");
+        $videoServicePreview
+            ->extractPreviewAt(.33)
+            ->open($storagePath)
+            ->toDisk(config('filesystems.default'))
+            ->setVisibility('public')
+            ->baseName($name)
+            ->resize(720)
+            ->fileName('-preview')
+            ->setExtension('jpg')
+            ->save("private/");
+
+        if ($isPremium) {
+            Log::info("Generate premium preview from video", [
+                "name" => $name,
+                "isPremium" => $isPremium,
+                "class" => MediaManager::class
+            ]);
+            $videoServicePremium = new VideoService();
+
+            $videoServicePremium
+                ->extractPreviewAt(.33)
+                ->open($storagePath)
+                ->toDisk(config('filesystems.default'))
+                ->setVisibility('public')
+                ->baseName($name)
+                ->resize(720)
+                ->fileName("-preview-blurred")
+                ->setExtension('jpg')
+                ->blurred()
+                ->save("private/");
+        }
+
+        // Log::info("Create new folder", [
+        //     "path" => "private/{$name}",
+        // ]);
+        // Storage::disk(config('filesystems.default'))->makeDirectory("private/{$name}");
 
         $dataFormatting = [];
 
@@ -305,24 +338,6 @@ class MediaManager implements ShouldQueue
             ->setExtension($this->ext)
             ->save("/private");
 
-
-        // $image = Image::make($storagePath)->orientate();
-
-        // // Create stream to send image from file
-        // $fullImage = $image->stream()->detach();
-
-        // $image = Image::make($storagePath)->orientate();
-
-        // $image->resize(1080, null, function ($constraint) {
-        //     $constraint->aspectRatio();
-        // });
-
-        // // Create stream to send image from file
-        // $stdImage = $image->stream()->detach();
-
-        // Storage::disk(config('filesystems.default'))->put("private/{$name}/{$name}-full.{$this->ext}", $fullImage, 'public');
-        // Storage::disk(config('filesystems.default'))->put("private/{$name}/{$name}.{$this->ext}", $stdImage, 'public');
-
         if ($isPremium) {
             Log::info("Create blur preview from initial image for premium content", [
                 "path" => "conversion/{$name}/{$name}-preview.jpg"
@@ -339,8 +354,6 @@ class MediaManager implements ShouldQueue
                 ->setExtension($this->ext)
                 ->blurred()
                 ->save("/private");
-
-            // $this->blurredImage($image, $name, $this->ext);
         }
 
         return [
