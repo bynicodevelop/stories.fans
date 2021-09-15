@@ -157,6 +157,7 @@ class MediaManager implements ShouldQueue
 
         $videoServicePreview
             ->extractPreviewAt(.33)
+            ->fromDisk('local')
             ->open($storagePath)
             ->toDisk(config('filesystems.default'))
             ->setVisibility('public')
@@ -176,6 +177,7 @@ class MediaManager implements ShouldQueue
 
             $videoServicePremium
                 ->extractPreviewAt(.33)
+                ->fromDisk('local')
                 ->open($storagePath)
                 ->toDisk(config('filesystems.default'))
                 ->setVisibility('public')
@@ -191,7 +193,7 @@ class MediaManager implements ShouldQueue
             $videoConversionService = new VideoConversionService();
 
             $videoConversionService
-                ->fromDisk(config('filesystems.default'))
+                ->fromDisk('local')
                 ->open($storagePath)
                 ->setVisibility('public')
                 ->convertInFormats([1920, 1280, 854])
