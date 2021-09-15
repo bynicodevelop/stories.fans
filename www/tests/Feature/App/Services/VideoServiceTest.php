@@ -95,6 +95,7 @@ class VideoServiceTest extends TestCase
             ->setExtension('jpg')
             ->fileName('-preview')
             ->resize(720)
+            ->toDisk('local')
             ->save("private/");
 
         Storage::disk('local')->assertExists("private/{$baseName}/{$baseName}-preview.jpg");
