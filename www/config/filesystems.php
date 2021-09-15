@@ -34,6 +34,7 @@ return [
             'driver' => 'local',
             'root' => storage_path('app'),
             'url' => env('APP_URL'),
+            'visibility' => 'public',
             'permissions' => [
                 'file' => [
                     'public' => 0664,
@@ -46,9 +47,9 @@ return [
             ],
         ],
 
-        'convertion' => [
+        'conversion' => [
             'driver' => 'local',
-            'root' => storage_path('app/convertion'),
+            'root' => storage_path('app/conversion'),
         ],
 
         'public' => [
