@@ -45,7 +45,7 @@ class DeleteMedia implements ShouldQueue
         ]);
 
         foreach ($this->media as $media) {
-            $this->deleteFiles($media['name']);
+            $this->deletePrivateFiles($media['name']);
         }
 
         Log::info("All media deleted");

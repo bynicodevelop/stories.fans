@@ -219,7 +219,7 @@ class MediaHelperTest extends TestCase
         }
     }
 
-    public function test_deleteDirectory()
+    public function test_deletePrivateFiles()
     {
         Storage::fake(config('filesystems.default'));
 
@@ -228,9 +228,24 @@ class MediaHelperTest extends TestCase
 
         Storage::disk(config('filesystems.default'))->assertExists('private/avatar1/avatar1.jpg');
 
-        $this->deleteFiles("avatar1");
+        $this->deletePrivateFiles("avatar1");
 
         Storage::disk(config('filesystems.default'))->assertExists('private/avatar2/avatar2.jpg');
         Storage::disk(config('filesystems.default'))->assertMissing('private/avatar1/avatar1.jpg');
+    }
+
+    public function test_deleteConversionFile()
+    {
+        Storage::fake("conversion");
+
+        Storage::disk(config('filesystems.default'))->put('conversion/avatar1/avatar1.jpg', UploadedFile::fake()->image('avatar1.jpg'));
+        Storage::disk(config('filesystems.default'))->put('conversion/avatar2/avatar2.jpg', UploadedFile::fake()->image('avatar2.jpg'));
+
+        Storage::disk(config('filesystems.default'))->assertExists('conversion/avatar1/avatar1.jpg');
+
+        $this->deleteConversionFiles("avatar1");
+
+        Storage::disk(config('filesystems.default'))->assertExists('conversion/avatar2/avatar2.jpg');
+        Storage::disk(config('filesystems.default'))->assertMissing('conversion/avatar1/avatar1.jpg');
     }
 }

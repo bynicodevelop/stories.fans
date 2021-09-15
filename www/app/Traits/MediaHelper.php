@@ -85,7 +85,7 @@ trait MediaHelper
         return $listFormatSize;
     }
 
-    public function deleteFiles($name)
+    public function deletePrivateFiles($name)
     {
         $files = Storage::disk(config('filesystems.default'))->files("private/{$name}");
 
@@ -100,6 +100,23 @@ trait MediaHelper
         }
 
         Storage::disk(config('filesystems.default'))->deleteDirectory("private/{$name}");
+    }
+
+    public function deleteConversionFiles($name)
+    {
+        $files = Storage::disk(config('filesystems.default'))->files("conversion/{$name}");
+
+        foreach ($files as $file) {
+            if (Storage::exists($file)) {
+                Storage::delete($file);
+
+                Log::info("File deleted: ", [
+                    "file" => $file
+                ]);
+            }
+        }
+
+        Storage::disk(config('filesystems.default'))->deleteDirectory("conversion/{$name}");
     }
 
     public function getOrientation(int $width, int $height): string
