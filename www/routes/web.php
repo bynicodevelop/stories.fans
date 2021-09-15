@@ -11,7 +11,6 @@ use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PrivacyPolicyController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SpyController;
 use App\Http\Controllers\SubscriptionController;

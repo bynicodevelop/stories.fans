@@ -3,6 +3,7 @@
 namespace App\Actions\Fortify;
 
 use App\Jobs\CreateInvitedHash;
+use App\Mail\NewFollowerMail;
 use App\Mail\WelcomeMail;
 use App\Models\InvitationStat;
 use App\Models\User;
@@ -65,6 +66,9 @@ class CreateNewUser implements CreatesNewUsers
 
         Mail::to($user)
             ->queue((new WelcomeMail($user))->onQueue('email'));
+
+        Mail::to($parentUser)
+            ->queue((new NewFollowerMail($parentUser, $user))->onQueue('email'));
 
         return $user;
     }
