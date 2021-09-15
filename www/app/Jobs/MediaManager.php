@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Events\PostCreatedEvent;
 use App\Events\RefreshPostsEvent;
 use App\Exceptions\VideoStorageException;
 use App\Models\Media;
@@ -11,7 +10,6 @@ use App\Services\VideoConversionService;
 use App\Services\VideoService;
 use App\Traits\MediaHelper;
 use Exception;
-use FFMpeg\Format\Video\X264;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -19,8 +17,6 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\Facades\Image;
-use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
 class MediaManager implements ShouldQueue
 {
@@ -197,6 +193,7 @@ class MediaManager implements ShouldQueue
             $videoConversionService
                 ->fromDisk(config('filesystems.default'))
                 ->open($storagePath)
+                ->setVisibility('public')
                 ->convertInFormats([1920, 1280, 854])
                 ->baseName($name)
                 ->setExtension("m3u8")
