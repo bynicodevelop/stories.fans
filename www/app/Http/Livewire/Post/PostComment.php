@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Post;
 
+use App\Jobs\NewCommentPosted;
 use App\Models\Post;
 use ContentRequiresException;
 use Illuminate\Support\Facades\Auth;
@@ -57,6 +58,10 @@ class PostComment extends Component
 
             return;
         }
+
+        $newCommentPosted = new NewCommentPosted($this->post);
+
+        $newCommentPosted->handle();
 
         $this->post->comments()->create([
             "comment" => $this->comment,

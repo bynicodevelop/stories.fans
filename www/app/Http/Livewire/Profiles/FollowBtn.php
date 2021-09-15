@@ -2,8 +2,10 @@
 
 namespace App\Http\Livewire\Profiles;
 
+use App\Mail\NewFollowerMail;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 use Livewire\Component;
 
@@ -44,6 +46,11 @@ class FollowBtn extends Component
     public function toggleFollow(): void
     {
         $this->authUser->follow($this->user);
+
+        if ($this->authUser->isFollowed($this->user)) {
+            Mail::to($this->user)
+                ->queue((new NewFollowerMail($this->user, $this->authUser))->onQueue('email'));
+        }
     }
 
     public function render(): View
