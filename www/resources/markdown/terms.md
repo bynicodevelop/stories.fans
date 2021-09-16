@@ -142,7 +142,15 @@ Si l'utilisateur annule son abonnement le 20, alors il pourra profiter des conte
 
 À la fin de cette période, l'utilisateur n'aura plus accès aux contenus exclusifs.
 
-## ARTICLE 10 : Droit applicable et juridiction compétente
+## ARTICLE 10 : Commissions sur les ventes d'abonnements
+
+Le Stories.fans applique une commissions forfaitaire sur les ventes d'abonnement réalisés par l'Utilisateur.
+
+Cette commission s'élève à 30% de l'abonnement ou du renouvellevement d'abonnement. Cette commission est applicable sur toutes les ventes réalisé sur le site.
+
+L'Utilisateur peut visualiser ses gains bruts (sans la commission) et nets dans son interface utilisateur disponible à l'adresse suivante : https://stories.fans/payments.
+
+## ARTICLE 11 : Droit applicable et juridiction compétente
 
 La législation française s'applique au présent contrat. En cas d'absence de résolution amiable d'un litige né entre les parties, les tribunaux français seront seuls compétents pour en connaître.
 Pour toute question relative à l’application des présentes CGU, vous pouvez joindre l’éditeur aux coordonnées inscrites à l’ARTICLE 1.
