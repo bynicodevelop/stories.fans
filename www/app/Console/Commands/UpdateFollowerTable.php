@@ -7,7 +7,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class UpdateFollowereTable extends Command
+class UpdateFollowerTable extends Command
 {
     /**
      * The name and signature of the console command.

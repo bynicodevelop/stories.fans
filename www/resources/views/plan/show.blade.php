@@ -12,7 +12,6 @@
                     @else
                         {{ $user['bio'] }}
                     @endif
-
                 </span>
             </div>
         </div>
@@ -37,12 +36,12 @@
                                 <h2 class="text-center font-bold uppercase mb-4">{{ __('plan.monthly') }}</h2>
                                 @if (!empty($plan['price_quarterly']) || !empty($plan['price_annually']))
                                     <h3 class="text-center font-bold text-4xl mb-5">
-                                        ${{ number_format($plan['price_monthly'] / 100, 2) }}<span
+                                        {{ number_format($plan['price_monthly'] / 100, 2) }} €<span
                                             class="text-sm">{{ __('plan.per-month') }}</span>
                                     </h3>
                                 @else
                                     <h3 class="text-center font-bold text-4xl md:text-5xl mb-5">
-                                        ${{ number_format($plan['price_monthly'] / 100, 2) }}<span
+                                        {{ number_format($plan['price_monthly'] / 100, 2) }} €<span
                                             class="text-sm">{{ __('plan.per-month') }}</span>
                                     </h3>
                                 @endif
@@ -73,7 +72,7 @@
                                 <div class="w-full flex-grow">
                                     <h2 class="text-center font-bold uppercase mb-4">{{ __('plan.quarterly') }}</h2>
                                     <h3 class="text-center font-bold text-4xl md:text-5xl mb-5">
-                                        ${{ number_format($plan['price_quarterly'] / 100 / 3, 2) }}<span
+                                        {{ number_format($plan['price_quarterly'] / 100 / 3, 2) }} €<span
                                             class="text-sm">{{ __('plan.per-month') }}</span></h3>
                                     <ul class="text-sm mb-8">
                                         <li class="leading-tight"><i class="fas fa-check text-base"></i>
@@ -112,12 +111,12 @@
 
                                     @if (!empty($plan['price_quarterly']))
                                         <h3 class="text-center font-bold text-4xl mb-5">
-                                            ${{ number_format($plan['price_annually'] / 100 / 12, 2) }}<span
+                                            {{ number_format($plan['price_annually'] / 100 / 12, 2) }} €<span
                                                 class="text-sm">{{ __('plan.per-month') }}</span>
                                         </h3>
                                     @else
                                         <h3 class="text-center font-bold text-4xl md:text-5xl mb-5">
-                                            ${{ number_format($plan['price_annually'] / 100 / 12, 2) }}<span
+                                            {{ number_format($plan['price_annually'] / 100 / 12, 2) }} €<span
                                                 class="text-sm">{{ __('plan.per-month') }}</span>
                                         </h3>
                                     @endif
