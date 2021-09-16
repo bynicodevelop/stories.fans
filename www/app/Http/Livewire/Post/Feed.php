@@ -4,12 +4,14 @@ namespace App\Http\Livewire\Post;
 
 use App\Models\Post;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Livewire\Component;
 
 class Feed extends Component
 {
+    /**
+     * @var boolean
+     */
     public $isLoading = true;
 
     /**

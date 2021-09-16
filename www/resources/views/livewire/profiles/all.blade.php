@@ -1,4 +1,4 @@
-<div class="space-y-6">
+<div class="space-y-6" wire:init="loadPosts">
     <input
         class="tracking-wide py-2 px-4 mb-3 leading-relaxed appearance-none block w-full bg-white border border-gray-200 rounded focus:outline-none focus:border-gray-500"
         type="text" placeholder="@lang('profile.search')" wire:model.debounce.300ms="search">
