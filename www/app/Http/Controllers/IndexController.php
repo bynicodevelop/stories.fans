@@ -11,23 +11,10 @@ class IndexController extends Controller
 {
     public function index()
     {
+        if (Auth::check()) {
+            return view("home", ["user" => Auth::user()]);
+        }
+
         return view("index");
-    }
-
-    public function email()
-    {
-        /**
-         * @var User $user
-         */
-        $user = Auth::user();
-
-        Mail::to($user)
-            ->send(new WelcomeMail($user));
-
-        return response()->json([
-            'name' => 'Cool',
-        ]);
-
-        // return new WelcomeMail($user);
     }
 }

@@ -37,7 +37,6 @@
                             </x-jet-danger-button>
                         </div>
                     @endif
-
                 </div>
             </div>
         @endforeach
