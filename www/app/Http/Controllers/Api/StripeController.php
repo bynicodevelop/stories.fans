@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Helpers\PriceHelper;
 use App\Http\Controllers\Controller;
-use App\Mail\CancelledSubscriptionMail;
 use App\Mail\InvoiceMail;
 use App\Mail\NewSubscriberMail;
 use App\Models\Fee;
