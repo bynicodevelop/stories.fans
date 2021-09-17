@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Helpers\PriceHelper;
 use App\Http\Controllers\Controller;
-use App\Mail\CancelledSubscriptionMail;
 use App\Mail\InvoiceMail;
 use App\Mail\NewSubscriberMail;
 use App\Models\Fee;
@@ -30,18 +29,36 @@ class StripeController extends Controller
 
     private function _createSubscription($data)
     {
+        Log::info("Create subscription", [
+            "data" => $data,
+            "class" => StripeController::class
+        ]);
         $fee = Fee::latestFee();
 
         extract($this->_getUserSubscription($data));
 
-        // Log::debug($userSubscription);
+        Log::debug("User subscription", [
+            "data" => $userSubscription,
+            "class" => StripeController::class
+        ]);
 
+        Log::debug("Create subscription", [
+            "data" => [
+                "plan_id" => $userSubscription["plan_id"],
+                "fee_id" => $fee["id"],
+                "net_price" => PriceHelper::netPrice($userSubscription['plan'][$userSubscription['price_period']], $fee['fee']),
+                "hosted_invoice_url" => $data["data"]["object"]["hosted_invoice_url"],
+            ],
+            "class" => StripeController::class
+        ]);
         $payment = $userSubscription->payments()->create([
             "plan_id" => $userSubscription["plan_id"],
             "fee_id" => $fee["id"],
             "net_price" => PriceHelper::netPrice($userSubscription['plan'][$userSubscription['price_period']], $fee['fee']),
             "hosted_invoice_url" => $data["data"]["object"]["hosted_invoice_url"],
         ]);
+
+        Log::debug("Subscription created");
 
         Mail::to($subscriber)
             ->queue((new InvoiceMail($subscriber, $author, $payment))
