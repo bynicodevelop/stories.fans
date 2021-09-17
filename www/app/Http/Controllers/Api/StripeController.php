@@ -42,6 +42,28 @@ class StripeController extends Controller
             "class" => StripeController::class
         ]);
 
+        if (is_null($userSubscription)) {
+            Log::debug("Subscription not exists", [
+                "class" => StripeController::class
+            ]);
+
+            return response()->json([
+                "status" => true
+            ]);
+        }
+
+        $result = $userSubscription->payments()->where("plan_id", $userSubscription["plan_id"])->first();
+
+        if (!is_null($result)) {
+            Log::debug("Subscription already exists", [
+                "class" => StripeController::class
+            ]);
+
+            return response()->json([
+                "status" => true
+            ]);
+        }
+
         Log::debug("Create subscription", [
             "data" => [
                 "plan_id" => $userSubscription["plan_id"],
